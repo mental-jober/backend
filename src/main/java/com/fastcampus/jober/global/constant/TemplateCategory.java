@@ -1,5 +1,6 @@
 package com.fastcampus.jober.global.constant;
 
+import java.util.Arrays;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -8,4 +9,11 @@ public enum TemplateCategory {
     CONTRACT("계약"), LAW("법률");
 
     private String name;
+
+    public static TemplateCategory findByName(String name) {
+        return Arrays.stream(TemplateCategory.values())
+            .filter(category -> category.name.equals(name))
+            .findFirst()
+            .orElseThrow();
+    }
 }

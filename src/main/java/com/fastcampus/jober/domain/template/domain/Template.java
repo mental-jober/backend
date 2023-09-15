@@ -1,12 +1,10 @@
 package com.fastcampus.jober.domain.template.domain;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -25,9 +23,6 @@ public class Template {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToMany(mappedBy = "template", cascade = CascadeType.REMOVE)
-    private List<TemplateType> templateType;
 
     @Column(nullable = false, length = 30)
     private String title;
