@@ -1,6 +1,6 @@
 package com.fastcampus.jober.domain.template.service;
 
-import com.fastcampus.jober.domain.member.Member;
+import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.template.domain.MyTemplate;
 import com.fastcampus.jober.domain.template.domain.Template;
 import com.fastcampus.jober.domain.template.dto.TemplateResponseDto;

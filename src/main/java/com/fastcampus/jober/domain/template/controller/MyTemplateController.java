@@ -1,8 +1,8 @@
 package com.fastcampus.jober.domain.template.controller;
 
-import com.fastcampus.jober.core.auth.session.MemberDetails;
 import com.fastcampus.jober.domain.template.dto.TemplateResponseDto.ListDto;
 import com.fastcampus.jober.domain.template.service.MyTemplateService;
+import com.fastcampus.jober.global.auth.session.MemberDetails;
 import com.fastcampus.jober.global.util.ApiUtil;
 import com.fastcampus.jober.global.util.ApiUtil.Response;
 import lombok.RequiredArgsConstructor;
