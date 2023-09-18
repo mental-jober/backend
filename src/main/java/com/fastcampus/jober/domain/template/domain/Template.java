@@ -2,6 +2,7 @@ package com.fastcampus.jober.domain.template.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,12 +13,14 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Template {
 
     @Id
@@ -34,7 +37,7 @@ public class Template {
     @Column(length = 200)
     private String thumbnailImageUrl;
 
-    @CreationTimestamp
+    @CreatedDate
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
