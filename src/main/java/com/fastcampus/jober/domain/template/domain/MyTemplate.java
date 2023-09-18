@@ -1,6 +1,6 @@
 package com.fastcampus.jober.domain.template.domain;
 
-import com.fastcampus.jober.domain.member.Member;
+import com.fastcampus.jober.domain.member.domain.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;

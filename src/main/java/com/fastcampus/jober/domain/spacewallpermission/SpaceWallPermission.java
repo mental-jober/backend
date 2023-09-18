@@ -1,17 +1,25 @@
 package com.fastcampus.jober.domain.spacewallpermission;
 
-import com.fastcampus.jober.global.constant.Auths;
-import com.fastcampus.jober.domain.member.Member;
-import com.fastcampus.jober.global.constant.Type;
+import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.spacewall.SpaceWall;
-import jakarta.persistence.*;
+import com.fastcampus.jober.global.constant.Auths;
+import com.fastcampus.jober.global.constant.Type;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import java.time.LocalDateTime;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -22,13 +30,13 @@ public class SpaceWallPermission {
     @Column(nullable = false)
     private Long id;
 
-//    @JsonIgnore
+    //    @JsonIgnore
     @OneToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     @PrimaryKeyJoinColumn
     private SpaceWall spaceWall;
 
-//    @JsonIgnore
+    //    @JsonIgnore
     @OneToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     @PrimaryKeyJoinColumn
