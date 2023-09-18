@@ -5,6 +5,7 @@ import com.fastcampus.jober.domain.template.dto.TemplateResponseDto.ListDto;
 import com.fastcampus.jober.domain.template.repository.TemplateRepository;
 import com.fastcampus.jober.domain.template.repository.TemplateTypeRepository;
 import com.fastcampus.jober.global.constant.TemplateCategory;
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,17 +37,17 @@ public class TemplateService {
 
     private Page<Template> findTemplatePage(String type, String keyword, Pageable pageable) {
 
-        if (type == null && keyword == null) {
+        if (StringUtils.isBlank(type) && StringUtils.isBlank(keyword)) {
             return templateRepository.findAll(pageable);
         }
 
-        if (type == null && keyword != null) {
+        if (StringUtils.isBlank(type) && !StringUtils.isBlank(keyword)) {
             return templateRepository.findAllByKeywordContains(keyword, pageable);
         }
 
         TemplateCategory templateCategory = TemplateCategory.findByName(type);
 
-        if (type != null && keyword == null) {
+        if (!StringUtils.isBlank(type) && StringUtils.isBlank(keyword)) {
             return templateTypeRepository.findByTemplateCategory(templateCategory, pageable);
         }
 
