@@ -1,6 +1,9 @@
-package com.fastcampus.jober.member;
+package com.fastcampus.jober.domain.spacewallpermission;
 
-import com.fastcampus.jober.spacewall.SpaceWall;
+import com.fastcampus.jober.global.constant.Auths;
+import com.fastcampus.jober.domain.member.Member;
+import com.fastcampus.jober.global.constant.Type;
+import com.fastcampus.jober.domain.spacewall.SpaceWall;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;

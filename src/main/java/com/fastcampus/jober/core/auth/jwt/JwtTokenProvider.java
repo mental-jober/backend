@@ -1,6 +1,6 @@
 package com.fastcampus.jober.core.auth.jwt;
 
-import com.fastcampus.jober.member.Member;
+import com.fastcampus.jober.domain.member.Member;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.Claims;

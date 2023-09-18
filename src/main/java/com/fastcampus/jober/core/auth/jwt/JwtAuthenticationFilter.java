@@ -1,7 +1,7 @@
 package com.fastcampus.jober.core.auth.jwt;
 
 import com.fastcampus.jober.core.auth.session.MemberDetails;
-import com.fastcampus.jober.member.Member;
+import com.fastcampus.jober.domain.member.Member;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

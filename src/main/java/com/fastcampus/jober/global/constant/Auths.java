@@ -1,4 +1,4 @@
-package com.fastcampus.jober.member;
+package com.fastcampus.jober.global.constant;
 
 public enum Auths {
 
