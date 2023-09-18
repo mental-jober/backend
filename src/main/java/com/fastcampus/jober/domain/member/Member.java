@@ -1,4 +1,4 @@
-package com.fastcampus.jober.member;
+package com.fastcampus.jober.domain.member;
 
 import jakarta.persistence.*;
 import lombok.*;

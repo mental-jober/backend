@@ -1,8 +1,8 @@
 package com.fastcampus.jober.core.auth.session;
 
 import com.fastcampus.jober.core.exception.Exception401;
-import com.fastcampus.jober.member.Member;
-import com.fastcampus.jober.member.MemberRepository;
+import com.fastcampus.jober.domain.member.Member;
+import com.fastcampus.jober.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,6 +1,6 @@
 package com.fastcampus.jober.core.auth.session;
 
-import com.fastcampus.jober.member.Member;
+import com.fastcampus.jober.domain.member.Member;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

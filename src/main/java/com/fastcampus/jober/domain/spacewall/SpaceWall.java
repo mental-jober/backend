@@ -1,4 +1,4 @@
-package com.fastcampus.jober.spacewall;
+package com.fastcampus.jober.domain.spacewall;
 
 import jakarta.persistence.*;
 import lombok.*;
