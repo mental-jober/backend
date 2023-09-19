@@ -1,6 +1,7 @@
 package com.fastcampus.jober.domain.template.service;
 
 import com.fastcampus.jober.domain.member.domain.Member;
+import com.fastcampus.jober.domain.member.repository.MemberRepository;
 import com.fastcampus.jober.domain.template.domain.MyTemplate;
 import com.fastcampus.jober.domain.template.domain.Template;
 import com.fastcampus.jober.domain.template.dto.TemplateResponseDto;
@@ -8,9 +9,9 @@ import com.fastcampus.jober.domain.template.dto.TemplateResponseDto.ListDto;
 import com.fastcampus.jober.domain.template.repository.MyTemplateRepository;
 import com.fastcampus.jober.domain.template.repository.TemplateRepository;
 import com.fastcampus.jober.global.constant.ErrorCode;
+import com.fastcampus.jober.global.error.exception.MemberException;
+import com.fastcampus.jober.global.error.exception.MyTemplateException;
 import com.fastcampus.jober.global.error.exception.TemplateException;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,12 +25,13 @@ public class MyTemplateService {
 
     private final MyTemplateRepository myTemplateRepository;
     private final TemplateRepository templateRepository;
+    private final MemberRepository memberRepository;
 
     public Page<TemplateResponseDto.ListDto> findMyTemplates(int page, int size, Member member) {
         if (page < 0) {
             throw new TemplateException(ErrorCode.PAGE_BAD_REQUEST);
         }
-        
+
         Pageable pageable = PageRequest.of(page, size);
 
         Page<Template> templatePage = myTemplateRepository.findTemplatesByMember(member, pageable);
@@ -46,16 +48,16 @@ public class MyTemplateService {
     }
 
     @Transactional
-    public void removeMyTemplate(Member member, Long templateId) {
-        Template template = templateRepository.findById(templateId)
-            .orElseThrow(() -> new TemplateException(
-                ErrorCode.TEMPLATE_NOT_FOUND));
+    public void removeMyTemplate(Long memberId, Long myTemplateId) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new MemberException(ErrorCode.MEMBER_NOT_FOUND));
 
-        List<Template> templates = new ArrayList<>();
-        templates.add(template);
+        MyTemplate myTemplate = myTemplateRepository.findById(myTemplateId)
+            .orElseThrow(() -> new MyTemplateException(ErrorCode.MYTEMPLATE_NOT_FOUND));
 
-        MyTemplate myTemplate = myTemplateRepository.findByMemberAndTemplatesIn(member, templates)
-            .orElseThrow();
+        if (!myTemplate.getMember().equals(member)) {
+            throw new MemberException(ErrorCode.MYTEMPLATE_MEMBER_NOT_MATCHED);
+        }
 
         myTemplateRepository.delete(myTemplate);
     }
