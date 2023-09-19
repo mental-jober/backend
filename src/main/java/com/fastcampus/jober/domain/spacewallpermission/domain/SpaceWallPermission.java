@@ -50,6 +50,9 @@ public class SpaceWallPermission {
     @Enumerated(value = EnumType.STRING)
     private Auths auths; // READ / EDIT / DELETE
 
+    @Column
+    private Long parentId; // 상위 페이지 ID
+
     @Column(nullable = false)
     @CreatedDate
     private LocalDateTime createdAt;
