@@ -32,6 +32,14 @@ public class Workspace {
     protected Workspace() {
 
     }
+    @Builder
+    public Workspace(Long id, String name, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+        this.id = id;
+        this.name = name;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
+    }
 
     @PrePersist
     public void prePersist() {

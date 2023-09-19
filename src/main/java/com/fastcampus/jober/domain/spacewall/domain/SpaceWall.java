@@ -90,4 +90,23 @@ public class SpaceWall {
         }
     }
 
+    @Builder
+    public SpaceWall(Long id, SpaceWallLayout layout, Member createMember, Workspace workspace, String url, String title, String description, String profileImageUrl, String backgroundImageUrl, String pathIds, String shareUrl, LocalDateTime shareExpiredAt, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt, int sequence) {
+        this.id = id;
+        this.layout = layout;
+        this.createMember = createMember;
+        this.workspace = workspace;
+        this.url = url;
+        this.title = title;
+        this.description = description;
+        this.profileImageUrl = profileImageUrl;
+        this.backgroundImageUrl = backgroundImageUrl;
+        this.pathIds = pathIds;
+        this.shareUrl = shareUrl;
+        this.shareExpiredAt = shareExpiredAt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
+        this.sequence = sequence;
+    }
 }
