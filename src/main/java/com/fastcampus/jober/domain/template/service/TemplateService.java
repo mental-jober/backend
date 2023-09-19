@@ -7,7 +7,9 @@ import com.fastcampus.jober.domain.template.dto.TemplateResponseDto.ListDto;
 import com.fastcampus.jober.domain.template.repository.MyTemplateRepository;
 import com.fastcampus.jober.domain.template.repository.TemplateRepository;
 import com.fastcampus.jober.domain.template.repository.TemplateTypeRepository;
+import com.fastcampus.jober.global.constant.ErrorCode;
 import com.fastcampus.jober.global.constant.TemplateCategory;
+import com.fastcampus.jober.global.error.exception.TemplateException;
 import io.micrometer.common.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,10 @@ public class TemplateService {
     private final MyTemplateRepository myTemplateRepository;
 
     public Page<ListDto> findTemplates(String type, String keyword, int page, int size) {
+        if (page < 0) {
+            throw new TemplateException(ErrorCode.PAGE_BAD_REQUEST);
+        }
+
         Pageable pageable = PageRequest.of(page, size);
 
         Page<Template> templatePage = findTemplatePage(type, keyword, pageable);
@@ -41,8 +47,9 @@ public class TemplateService {
         return listDtos;
     }
 
-    public int addTemplate(Member member, Long templateId) {
-        Template template = templateRepository.findById(templateId).orElseThrow();
+    public void addTemplate(Member member, Long templateId) {
+        Template template = templateRepository.findById(templateId)
+            .orElseThrow(() -> new TemplateException(ErrorCode.TEMPLATE_NOT_FOUND));
 
         List<Template> templates = new ArrayList<>();
         templates.add(template);
@@ -50,8 +57,6 @@ public class TemplateService {
         MyTemplate myTemplate = MyTemplate.builder().member(member).templates(templates).build();
 
         myTemplateRepository.save(myTemplate);
-
-        return 1;
     }
 
     private Page<Template> findTemplatePage(String type, String keyword, Pageable pageable) {

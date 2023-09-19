@@ -7,6 +7,8 @@ import com.fastcampus.jober.domain.template.dto.TemplateResponseDto;
 import com.fastcampus.jober.domain.template.dto.TemplateResponseDto.ListDto;
 import com.fastcampus.jober.domain.template.repository.MyTemplateRepository;
 import com.fastcampus.jober.domain.template.repository.TemplateRepository;
+import com.fastcampus.jober.global.constant.ErrorCode;
+import com.fastcampus.jober.global.error.exception.TemplateException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,10 @@ public class MyTemplateService {
     private final TemplateRepository templateRepository;
 
     public Page<TemplateResponseDto.ListDto> findMyTemplates(int page, int size, Member member) {
+        if (page < 0) {
+            throw new TemplateException(ErrorCode.PAGE_BAD_REQUEST);
+        }
+        
         Pageable pageable = PageRequest.of(page, size);
 
         Page<Template> templatePage = myTemplateRepository.findTemplatesByMember(member, pageable);
@@ -40,8 +46,10 @@ public class MyTemplateService {
     }
 
     @Transactional
-    public int removeMyTemplate(Member member, Long templateId) {
-        Template template = templateRepository.findById(templateId).orElseThrow();
+    public void removeMyTemplate(Member member, Long templateId) {
+        Template template = templateRepository.findById(templateId)
+            .orElseThrow(() -> new TemplateException(
+                ErrorCode.TEMPLATE_NOT_FOUND));
 
         List<Template> templates = new ArrayList<>();
         templates.add(template);
@@ -50,7 +58,5 @@ public class MyTemplateService {
             .orElseThrow();
 
         myTemplateRepository.delete(myTemplate);
-
-        return 1;
     }
 }
