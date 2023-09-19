@@ -1,9 +1,6 @@
-package com.fastcampus.jober.domain.spacewallpermission.domain;
+package com.fastcampus.jober.domain.spacewallmember;
 
-import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
-import com.fastcampus.jober.domain.spacewallmember.SpaceWallMember;
-import com.fastcampus.jober.global.constant.Auths;
-import com.fastcampus.jober.global.constant.Type;
+import com.fastcampus.jober.domain.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
@@ -14,33 +11,19 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "space_wall_member")
 @Data
-public class SpaceWallPermission {
+public class SpaceWallMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
 
-    //    @JsonIgnore
     @OneToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     @PrimaryKeyJoinColumn
-    private SpaceWall spaceWall;
-
-    //    @JsonIgnore
-    @OneToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @PrimaryKeyJoinColumn
-    private SpaceWallMember spaceWallMember;
-
-    @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private Type type; // WHITE / BLACK
-
-    @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private Auths auths; // READ / EDIT / DELETE
+    private Member member;
 
     @Column(nullable = false)
     @CreatedDate
