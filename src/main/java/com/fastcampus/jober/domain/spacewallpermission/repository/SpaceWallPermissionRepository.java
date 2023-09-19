@@ -22,4 +22,7 @@ public interface SpaceWallPermissionRepository extends JpaRepository<SpaceWallPe
             nativeQuery = true
     )
     void insertPermission(@Param("spaceWallMemberId") Long spaceWallMemberId, @Param("auths") Auths auths);
+
+    @Query("SELECT swp.auths FROM SpaceWallPermission swp WHERE swp.spaceWallMember.id = :spaceWallMemberId")
+    Auths selectAuths(@Param("spaceWallMemberId") Long spaceWallMemberId);
 }

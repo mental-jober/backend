@@ -6,10 +6,11 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface SpaceWallMemberRepository extends JpaRepository<SpaceWallMember, Long>
-{
+import java.util.List;
+
+public interface SpaceWallMemberRepository extends JpaRepository<SpaceWallMember, Long> {
     @Query("SELECT swm FROM SpaceWallMember swm WHERE swm.spaceWall.id = :spaceWallId AND swm.member.id = :memberId")
-    SpaceWallMember findSpaceWallMemberByEmail(@Param("spaceWallId") Long spaceWallId, @Param("memberId") Long memberId);
+    SpaceWallMember selectSpaceWallMember(@Param("spaceWallId") Long spaceWallId, @Param("memberId") Long memberId);
 
     @Modifying
     @Query(
@@ -18,4 +19,7 @@ public interface SpaceWallMemberRepository extends JpaRepository<SpaceWallMember
             nativeQuery = true
     )
     void insertMember(@Param("memberId") Long memberId, @Param("spaceWallId") Long spaceWallId);
+
+    @Query("SELECT swm FROM SpaceWallMember swm WHERE swm.spaceWall.id = :spaceWallId")
+    List<SpaceWallMember> selectAllSpaceWallMembersBySpaceWallId(@Param("spaceWallId") Long spaceWallId);
 }

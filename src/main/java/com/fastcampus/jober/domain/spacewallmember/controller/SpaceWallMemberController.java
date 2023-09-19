@@ -1,15 +1,13 @@
 package com.fastcampus.jober.domain.spacewallmember.controller;
 
 import com.fastcampus.jober.domain.spacewallmember.dto.SpaceWallMemberRequest;
+import com.fastcampus.jober.domain.spacewallmember.dto.SpaceWallMemberResponse;
 import com.fastcampus.jober.domain.spacewallmember.service.SpaceWallMemberService;
 import com.fastcampus.jober.global.utils.api.dto.ResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,7 +24,7 @@ public class SpaceWallMemberController {
      * @return : 확인 메세지
      */
     @PostMapping("/spaces/{spaceWallId}/member")
-    public ResponseEntity<?> spaceWallMemberAdd (
+    public ResponseEntity<?> spaceWallMemberAdd(
             @PathVariable Long spaceWallId,
             @Valid @RequestBody List<SpaceWallMemberRequest.AssignDTO> requests
     ) {
@@ -36,5 +34,19 @@ public class SpaceWallMemberController {
         spaceWallMemberService.saveSpaceWallMember(spaceWallId, requests);
 
         return ResponseEntity.ok(new ResponseDTO<>("공유 멤버 및 권한 등록했습니다."));
+    }
+
+    /**
+     * 공유스페이스 멤버를 조회합니다.
+     * @param spaceWallId : 공유스페이스 id
+     * @return : 공유스페이스 멤버 정보
+     */
+    @GetMapping("/spaces/{spaceWallId}/member")
+    public ResponseEntity<?> spaceWallMemberList(@PathVariable Long spaceWallId) {
+        // TODO - API 호출자가 권한을 가지고 있는지 체크
+
+        return ResponseEntity.ok(
+                new ResponseDTO<>(spaceWallMemberService.findSpaceWallMember(spaceWallId), "공유 멤버를 조회합니다.")
+        );
     }
 }
