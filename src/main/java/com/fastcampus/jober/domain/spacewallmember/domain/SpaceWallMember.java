@@ -1,8 +1,8 @@
-package com.fastcampus.jober.domain.spacewallpermission.domain;
+package com.fastcampus.jober.domain.spacewallmember.domain;
 
-import com.fastcampus.jober.domain.spacewallmember.domain.SpaceWallMember;
-import com.fastcampus.jober.global.constant.Auths;
-import com.fastcampus.jober.global.constant.Type;
+import com.fastcampus.jober.domain.member.domain.Member;
+import com.fastcampus.jober.domain.spacewall.SpaceWall;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -13,31 +13,28 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "space_wall_permission")
+@Table(name = "space_wall_member")
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class SpaceWallPermission {
+public class SpaceWallMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
 
-    //    @JsonIgnore
-    @OneToOne
+    @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "space_wall_member_id")
-    private SpaceWallMember spaceWallMember;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-    @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private Type type; // WHITE / BLACK
-
-    @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private Auths auths; // READ / EDIT / DELETE
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "space_wall_id")
+    private SpaceWall spaceWall;
 
     @Column(nullable = false)
     @CreatedDate
@@ -55,4 +52,5 @@ public class SpaceWallPermission {
     protected void onUpdate() { // 권한 수정 시 호출
         this.updatedAt = LocalDateTime.now();
     }
+
 }
