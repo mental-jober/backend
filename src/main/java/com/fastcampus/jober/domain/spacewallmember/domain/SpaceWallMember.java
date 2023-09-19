@@ -1,7 +1,7 @@
 package com.fastcampus.jober.domain.spacewallmember.domain;
 
 import com.fastcampus.jober.domain.member.domain.Member;
-import com.fastcampus.jober.domain.spacewall.SpaceWall;
+import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,7 +13,10 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "space_wall_member")
+@Table(
+        name = "space_wall_member",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"space_wall_id", "member_id"})
+})
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor

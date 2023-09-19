@@ -5,6 +5,7 @@ import com.fastcampus.jober.domain.spacewall.dto.SpaceWallDto;
 import com.fastcampus.jober.domain.spacewalllayout.SpaceWallLayout;
 import com.fastcampus.jober.domain.workspace.Workspace;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@AllArgsConstructor
 @Builder
 @Table(name = "space_wall")
 public class SpaceWall {
