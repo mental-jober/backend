@@ -2,6 +2,7 @@ package com.fastcampus.jober.domain.spacewall.controller;
 
 import com.fastcampus.jober.domain.spacewall.dto.SpaceWallDto;
 import com.fastcampus.jober.domain.spacewall.service.SpaceWallService;
+import com.fastcampus.jober.domain.spacewallpermission.domain.SpaceWallPermission;
 import com.fastcampus.jober.domain.spacewallpermission.service.SpaceWallPermissionService;
 import com.fastcampus.jober.global.constant.Auths;
 import com.fastcampus.jober.global.constant.ErrorCode;

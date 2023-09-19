@@ -4,6 +4,7 @@ import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.member.repository.MemberRepository;
 import com.fastcampus.jober.domain.spacewallmember.domain.SpaceWallMember;
 import com.fastcampus.jober.domain.spacewallmember.dto.SpaceWallMemberRequest;
+import com.fastcampus.jober.domain.spacewallmember.dto.SpaceWallMemberResponse;
 import com.fastcampus.jober.domain.spacewallmember.repository.SpaceWallMemberRepository;
 import com.fastcampus.jober.domain.spacewallpermission.repository.SpaceWallPermissionRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,7 +33,7 @@ public class SpaceWallMemberService {
             // TODO - Member에 등록되지 않은 email인 경우 체크, 예외처리? 또는 무시?
 
             SpaceWallMember assignedMember =
-                    spaceWallMemberRepository.findSpaceWallMemberByEmail(spaceWallId, member.getId());
+                    spaceWallMemberRepository.selectSpaceWallMember(spaceWallId, member.getId());
 
             // 공유 멤버 등록되어 있지 않은 경우
             if (assignedMember == null) {
@@ -39,7 +41,7 @@ public class SpaceWallMemberService {
                 spaceWallMemberRepository.insertMember(member.getId(), spaceWallId);
                 // 공유스페이스 멤버 권한 추가
                 spaceWallPermissionRepository.insertPermission(
-                        spaceWallMemberRepository.findSpaceWallMemberByEmail(spaceWallId, member.getId()).getId(),
+                        spaceWallMemberRepository.selectSpaceWallMember(spaceWallId, member.getId()).getId(),
                         request.getAuths()
                 );
                 continue;
@@ -47,5 +49,23 @@ public class SpaceWallMemberService {
             // 공유 멤버 등록되어 있는 경우
             spaceWallPermissionRepository.updatePermission(assignedMember.getId(), request.getAuths());
         }
+    }
+
+    @Transactional
+    public List<SpaceWallMemberResponse.SpaceWallMemberDTO> findSpaceWallMember(Long spaceWallId) {
+        List<SpaceWallMemberResponse.SpaceWallMemberDTO> response = new ArrayList<>();
+
+        List<SpaceWallMember> spaceWallMemberList = spaceWallMemberRepository.selectAllSpaceWallMembersBySpaceWallId(spaceWallId);
+        for (SpaceWallMember spaceWallMember : spaceWallMemberList) {
+
+            response.add(
+                    SpaceWallMemberResponse.SpaceWallMemberDTO.builder()
+                            .id(spaceWallMember.getId())
+                            .email(spaceWallMember.getMember().getEmail())
+                            .auths(spaceWallPermissionRepository.selectAuths(spaceWallMember.getId()))
+                            .build()
+            );
+        }
+        return response;
     }
 }
