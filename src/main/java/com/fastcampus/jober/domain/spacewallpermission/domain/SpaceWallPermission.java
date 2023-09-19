@@ -1,7 +1,7 @@
-package com.fastcampus.jober.domain.spacewallpermission;
+package com.fastcampus.jober.domain.spacewallpermission.domain;
 
 import com.fastcampus.jober.domain.member.domain.Member;
-import com.fastcampus.jober.domain.spacewall.SpaceWall;
+import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
 import com.fastcampus.jober.global.constant.Auths;
 import com.fastcampus.jober.global.constant.Type;
 import jakarta.persistence.Column;
