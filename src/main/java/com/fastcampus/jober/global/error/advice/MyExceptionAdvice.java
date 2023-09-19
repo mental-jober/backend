@@ -1,9 +1,12 @@
 package com.fastcampus.jober.global.error.advice;
 
+import com.fastcampus.jober.global.error.exception.DomainException;
 import com.fastcampus.jober.global.error.exception.Exception401;
 import com.fastcampus.jober.global.error.exception.Exception403;
 import com.fastcampus.jober.global.error.exception.Exception500;
 import com.fastcampus.jober.global.error.exception.ExceptionValid;
+import com.fastcampus.jober.global.util.ApiUtil;
+import com.fastcampus.jober.global.util.ApiUtil.ApiResponse;
 import com.fastcampus.jober.global.utils.api.ApiUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +37,22 @@ public class MyExceptionAdvice {
         return new ResponseEntity<>(e.body(), e.status());
     }
 
+    @ExceptionHandler(DomainException.class)
+    public ResponseEntity<?> globalExceptionHandler(DomainException e) {
+        ApiResponse response = ApiUtil.result(e.getCode(), e.getMessage(), null);
+
+        return new ResponseEntity<>(response, e.getHttpStatus());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> methodValidException(MethodArgumentNotValidException e) {
+        ExceptionValid ev = new ExceptionValid(
+            e.getBindingResult().getFieldError().getCode(),
+            e.getBindingResult().getFieldError().getDefaultMessage()
+        );
+        return new ResponseEntity<>(ev.body(), ev.status());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> unknownServerError(Exception e) {
 
@@ -44,14 +63,5 @@ public class MyExceptionAdvice {
             );
         log.error(e.getMessage(), e);
         return new ResponseEntity<>(apiResult, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> methodValidException(MethodArgumentNotValidException e) {
-        ExceptionValid ev = new ExceptionValid(
-            e.getBindingResult().getFieldError().getCode(),
-            e.getBindingResult().getFieldError().getDefaultMessage()
-        );
-        return new ResponseEntity<>(ev.body(), ev.status());
     }
 }
