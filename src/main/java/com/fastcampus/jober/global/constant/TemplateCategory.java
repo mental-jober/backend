@@ -1,5 +1,6 @@
 package com.fastcampus.jober.global.constant;
 
+import com.fastcampus.jober.global.error.exception.TemplateException;
 import java.util.Arrays;
 import lombok.AllArgsConstructor;
 
@@ -14,6 +15,6 @@ public enum TemplateCategory {
         return Arrays.stream(TemplateCategory.values())
             .filter(category -> category.name.equals(name))
             .findFirst()
-            .orElseThrow();
+            .orElseThrow(() -> new TemplateException(ErrorCode.TEMPLATE_TYPE_NOT_FOUND));
     }
 }

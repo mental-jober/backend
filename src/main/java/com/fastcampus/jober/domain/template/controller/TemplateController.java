@@ -4,7 +4,6 @@ import com.fastcampus.jober.domain.template.dto.TemplateResponseDto.ListDto;
 import com.fastcampus.jober.domain.template.service.TemplateService;
 import com.fastcampus.jober.global.auth.session.MemberDetails;
 import com.fastcampus.jober.global.util.ApiUtil;
-import com.fastcampus.jober.global.util.ApiUtil.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,7 @@ public class TemplateController {
     private final TemplateService templateService;
 
     @GetMapping
-    public ResponseEntity<Response> templateList(
+    public ResponseEntity<?> templateList(
         @RequestParam(required = false) String type,
         @RequestParam(required = false) String keyword,
         @RequestParam(required = false, defaultValue = "0") int page) {
@@ -37,13 +36,11 @@ public class TemplateController {
     }
 
     @PostMapping("/favorite")
-    public ResponseEntity<Response> templateAdd(
+    public ResponseEntity<?> templateAdd(
         @AuthenticationPrincipal MemberDetails memberDetails, @RequestParam Long templateId) {
-        int result = 0;
-
-        result = templateService.addTemplate(memberDetails.getMember(), templateId);
+        templateService.addTemplate(memberDetails.getMember(), templateId);
 
         return ResponseEntity.ok(
-            ApiUtil.result(HttpStatus.CREATED.value(), "정상적으로 처리되었습니다.", result));
+            ApiUtil.result(HttpStatus.CREATED.value(), "정상적으로 처리되었습니다.", null));
     }
 }

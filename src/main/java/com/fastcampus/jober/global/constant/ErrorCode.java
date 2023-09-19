@@ -16,7 +16,10 @@ public enum ErrorCode {
     EXISTING_EMAIL(HttpStatus.BAD_REQUEST, "이미 존재하는 이메일입니다"),
     CHECK_ID_PASSWORD(HttpStatus.BAD_REQUEST, "아이디와 비밀번호를 확인해주세요"),
     CHECK_ID(HttpStatus.BAD_REQUEST, "아이디를 확인해주세요"),
-    CHECK_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호를 확인해주세요");
+    CHECK_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호를 확인해주세요"),
+    TEMPLATE_NOT_FOUND(HttpStatus.BAD_REQUEST, "템플릿 정보를 찾을 수 없습니다."),
+    TEMPLATE_TYPE_NOT_FOUND(HttpStatus.BAD_REQUEST, "템플릿 분류를 확인해주세요."),
+    PAGE_BAD_REQUEST(HttpStatus.BAD_REQUEST, "페이지 번호는 0보다 작을 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

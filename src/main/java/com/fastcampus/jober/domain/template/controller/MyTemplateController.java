@@ -4,7 +4,6 @@ import com.fastcampus.jober.domain.template.dto.TemplateResponseDto.ListDto;
 import com.fastcampus.jober.domain.template.service.MyTemplateService;
 import com.fastcampus.jober.global.auth.session.MemberDetails;
 import com.fastcampus.jober.global.util.ApiUtil;
-import com.fastcampus.jober.global.util.ApiUtil.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -23,9 +22,8 @@ public class MyTemplateController {
 
     private final MyTemplateService myTemplateService;
 
-    //@TODO: 예외처리
     @GetMapping
-    public ResponseEntity<Response> myTemplateList(
+    public ResponseEntity<?> myTemplateList(
         @AuthenticationPrincipal MemberDetails memberDetails,
         @RequestParam(required = false, defaultValue = "0") int page) {
         page = page == 0 ? 0 : page - 1;
@@ -38,10 +36,10 @@ public class MyTemplateController {
     }
 
     @DeleteMapping("/favorite")
-    public ResponseEntity<Response> myTemplateRemove(
+    public ResponseEntity<?> myTemplateRemove(
         @AuthenticationPrincipal MemberDetails memberDetails, @RequestParam Long templateId) {
-        int result = myTemplateService.removeMyTemplate(memberDetails.getMember(), templateId);
+        myTemplateService.removeMyTemplate(memberDetails.getMember(), templateId);
 
-        return ResponseEntity.ok(ApiUtil.result(HttpStatus.OK.value(), "정상적으로 처리되었습니다.", result));
+        return ResponseEntity.ok(ApiUtil.result(HttpStatus.OK.value(), "정상적으로 처리되었습니다.", null));
     }
 }
