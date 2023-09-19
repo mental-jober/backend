@@ -1,4 +1,4 @@
-package com.fastcampus.jober.global.exception;
+package com.fastcampus.jober.global.error.exception;
 
 import com.fastcampus.jober.global.utils.api.dto.ResponseDTO;
 import lombok.Getter;
