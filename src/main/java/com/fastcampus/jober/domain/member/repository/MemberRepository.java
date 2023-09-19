@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    @Query("SELECT u FROM Member u WHERE u.email = :email")
+    @Query("SELECT m FROM Member m WHERE m.email = :email")
     Optional<Member> findByEmail(@Param("email") String email);
 }
