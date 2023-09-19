@@ -4,17 +4,10 @@ import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
 import com.fastcampus.jober.global.constant.Auths;
 import com.fastcampus.jober.global.constant.Type;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
+
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -66,7 +59,10 @@ public class SpaceWallPermission {
         this.createdAt = LocalDateTime.now();
     }
 
-    protected void onUpdate() { // 권한 수정 시 호출
-        this.updatedAt = LocalDateTime.now();
+    @PreUpdate
+    protected void onUpdate() { this.updatedAt = LocalDateTime.now();  }
+
+    public void setAuths(Auths auths) {
+        this.auths = auths;
     }
 }
