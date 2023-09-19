@@ -37,8 +37,9 @@ public class MyTemplateController {
 
     @DeleteMapping("/favorite")
     public ResponseEntity<?> myTemplateRemove(
-        @AuthenticationPrincipal MemberDetails memberDetails, @RequestParam Long templateId) {
-        myTemplateService.removeMyTemplate(memberDetails.getMember(), templateId);
+        @AuthenticationPrincipal MemberDetails memberDetails,
+        @RequestParam(name = "templateId") Long myTemplateId) {
+        myTemplateService.removeMyTemplate(memberDetails.getMember().getId(), myTemplateId);
 
         return ResponseEntity.ok(ApiUtil.result(HttpStatus.OK.value(), "정상적으로 처리되었습니다.", null));
     }
