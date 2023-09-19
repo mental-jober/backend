@@ -1,15 +1,16 @@
 package com.fastcampus.jober.domain.workspace;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Builder
+@AllArgsConstructor
 @Table(name = "workspace")
 public class Workspace {
 
