@@ -1,7 +1,7 @@
 package com.fastcampus.jober.global.utils;
 
-import com.fastcampus.jober.global.exception.Exception401;
-import com.fastcampus.jober.global.exception.Exception403;
+import com.fastcampus.jober.global.error.exception.Exception401;
+import com.fastcampus.jober.global.error.exception.Exception403;
 import com.fastcampus.jober.global.utils.api.dto.ResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;

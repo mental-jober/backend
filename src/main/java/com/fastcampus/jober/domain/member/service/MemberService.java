@@ -1,7 +1,7 @@
 package com.fastcampus.jober.domain.member.service;
 
-import static com.fastcampus.jober.global.exception.ErrorCode.CHECK_ID;
-import static com.fastcampus.jober.global.exception.ErrorCode.CHECK_PASSWORD;
+import static com.fastcampus.jober.global.constant.ErrorCode.CHECK_ID;
+import static com.fastcampus.jober.global.constant.ErrorCode.CHECK_PASSWORD;
 
 import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.member.dto.MemberRequest;
@@ -10,7 +10,7 @@ import com.fastcampus.jober.domain.member.dto.MemberResponse.MemberDTO;
 import com.fastcampus.jober.domain.member.repository.MemberRepository;
 import com.fastcampus.jober.global.auth.jwt.JwtTokenProvider;
 import com.fastcampus.jober.global.auth.session.MemberDetails;
-import com.fastcampus.jober.global.exception.Exception401;
+import com.fastcampus.jober.global.error.exception.Exception401;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;

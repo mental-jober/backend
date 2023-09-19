@@ -1,4 +1,4 @@
-package com.fastcampus.jober.global.exception;
+package com.fastcampus.jober.global.constant;
 
 public enum ErrorCode {
 

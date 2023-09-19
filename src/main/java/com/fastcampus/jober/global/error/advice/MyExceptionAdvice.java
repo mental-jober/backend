@@ -1,9 +1,9 @@
-package com.fastcampus.jober.global.exception.advice;
+package com.fastcampus.jober.global.error.advice;
 
-import com.fastcampus.jober.global.exception.Exception401;
-import com.fastcampus.jober.global.exception.Exception403;
-import com.fastcampus.jober.global.exception.Exception500;
-import com.fastcampus.jober.global.exception.ExceptionValid;
+import com.fastcampus.jober.global.error.exception.Exception401;
+import com.fastcampus.jober.global.error.exception.Exception403;
+import com.fastcampus.jober.global.error.exception.Exception500;
+import com.fastcampus.jober.global.error.exception.ExceptionValid;
 import com.fastcampus.jober.global.utils.api.ApiUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,11 +1,11 @@
 package com.fastcampus.jober.global.config;
 
-import static com.fastcampus.jober.global.exception.ErrorCode.INVALID_AUTHENTICATION;
-import static com.fastcampus.jober.global.exception.ErrorCode.INVALID_USER;
+import static com.fastcampus.jober.global.constant.ErrorCode.INVALID_AUTHENTICATION;
+import static com.fastcampus.jober.global.constant.ErrorCode.INVALID_USER;
 
 import com.fastcampus.jober.global.auth.jwt.JwtAuthenticationFilter;
-import com.fastcampus.jober.global.exception.Exception401;
-import com.fastcampus.jober.global.exception.Exception403;
+import com.fastcampus.jober.global.error.exception.Exception401;
+import com.fastcampus.jober.global.error.exception.Exception403;
 import com.fastcampus.jober.global.utils.FilterResponseUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
