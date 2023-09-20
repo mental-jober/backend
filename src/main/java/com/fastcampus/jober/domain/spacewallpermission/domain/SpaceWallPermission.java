@@ -2,6 +2,7 @@ package com.fastcampus.jober.domain.spacewallpermission.domain;
 
 import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
+import com.fastcampus.jober.domain.spacewallmember.domain.SpaceWallMember;
 import com.fastcampus.jober.global.constant.Auths;
 import com.fastcampus.jober.global.constant.Type;
 import jakarta.persistence.*;
@@ -28,6 +29,12 @@ public class SpaceWallPermission {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @PrimaryKeyJoinColumn
     private SpaceWall spaceWall;
+
+    //    @JsonIgnore
+    @OneToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "space_wall_member_id")
+    private SpaceWallMember spaceWallMember;
 
     //    @JsonIgnore
     @OneToOne
