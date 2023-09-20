@@ -1,7 +1,6 @@
 package com.fastcampus.jober.domain.spacewall.domain;
 
 import com.fastcampus.jober.domain.member.domain.Member;
-import com.fastcampus.jober.domain.spacewall.dto.SpaceWallDto;
 import com.fastcampus.jober.domain.spacewalllayout.SpaceWallLayout;
 import com.fastcampus.jober.domain.workspace.Workspace;
 import jakarta.persistence.*;
@@ -22,17 +21,17 @@ public class SpaceWall {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "layout_id", nullable = false)
-    private SpaceWallLayout layout;
-
-    @ManyToOne
-    @JoinColumn(name = "create_member_id", nullable = false)
-    private Member createMember;
-
-    @ManyToOne
-    @JoinColumn(name = "workspace_id", nullable = false)
-    private Workspace workspace;
+//    @ManyToOne
+//    @JoinColumn(name = "layout_id", nullable = false)
+//    private SpaceWallLayout layout;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "create_member_id", nullable = false)
+//    private Member createMember;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "workspace_id", nullable = false)
+//    private Workspace workspace;
 
     @Column(nullable = true, length = 100)
     private String url;
@@ -80,16 +79,22 @@ public class SpaceWall {
             this.createdAt = LocalDateTime.now();
         }
     }
-    public void update(SpaceWallDto.UpdateDto updateDto) {
-        if (updateDto.getUrl() != null) {
-            this.url = updateDto.getUrl();
-        }
-        if (updateDto.getTitle() != null) {
-            this.title = updateDto.getTitle();
-        }
-        if (updateDto.getDescription() != null) {
-            this.description = updateDto.getDescription();
-        }
+    public void updateUpdatedAt() {
+        this.updatedAt = LocalDateTime.now();
+    }
+    public void delete() {
+        this.deletedAt = LocalDateTime.now();
     }
 
+    public void update(SpaceWall updatedSpaceWall) {
+//        if (updatedSpaceWall.getLayout() != null) this.layout = updatedSpaceWall.getLayout();
+        if (updatedSpaceWall.getUrl() != null) this.url = updatedSpaceWall.getUrl();
+        if (updatedSpaceWall.getTitle() != null) this.title = updatedSpaceWall.getTitle();
+        if (updatedSpaceWall.getDescription() != null) this.description = updatedSpaceWall.getDescription();
+        if (updatedSpaceWall.getProfileImageUrl() != null) this.profileImageUrl = updatedSpaceWall.getProfileImageUrl();
+        if (updatedSpaceWall.getBackgroundImageUrl() != null) this.backgroundImageUrl = updatedSpaceWall.getBackgroundImageUrl();
+        if (updatedSpaceWall.getPathIds() != null) this.pathIds = updatedSpaceWall.getPathIds();
+        if (updatedSpaceWall.getShareUrl() != null) this.shareUrl = updatedSpaceWall.getShareUrl();
+        if (updatedSpaceWall.getShareExpiredAt() != null) this.shareExpiredAt = updatedSpaceWall.getShareExpiredAt();
+    }
 }
