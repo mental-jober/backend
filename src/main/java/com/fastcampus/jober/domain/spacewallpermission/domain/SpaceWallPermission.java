@@ -44,11 +44,11 @@ public class SpaceWallPermission {
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private Type type; // WHITE / BLACK
+    private Type type = Type.WHITE; // WHITE를 기본값으로 설정
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private Auths auths; // READ / EDIT / DELETE
+    private Auths auths = Auths.VIEWER; // READ를 기본값으로 설정
 
     @Column
     private Long parentId; // 상위 페이지 ID

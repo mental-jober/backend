@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SpaceWallPermissionResponseDto {
+public class SpaceWallPermissionResponse {
     private Long id;
     private Long spaceWallId;  // 공유 스페이스 ID
     private Long memberId;     // 회원 ID
@@ -22,7 +22,7 @@ public class SpaceWallPermissionResponseDto {
     private LocalDateTime updatedAt;
     private Long parentId;     // 상위 페이지 ID
 
-    public SpaceWallPermissionResponseDto(SpaceWallPermission spaceWallPermission) {
+    public SpaceWallPermissionResponse(SpaceWallPermission spaceWallPermission) {
         this.id = spaceWallPermission.getId();
         this.spaceWallId = spaceWallPermission.getSpaceWall().getId();
         this.memberId = spaceWallPermission.getMember().getId();

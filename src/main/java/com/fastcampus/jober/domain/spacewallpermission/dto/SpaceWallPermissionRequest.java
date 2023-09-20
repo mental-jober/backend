@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SpaceWallPermissionRequestDto {
+public class SpaceWallPermissionRequest {
     private Long spaceWallId;  // 공유 스페이스 ID
     private Long memberId;     // 회원 ID
     private Type type;         // WHITE / BLACK

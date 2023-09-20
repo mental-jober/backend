@@ -2,8 +2,8 @@ package com.fastcampus.jober.domain.spacewallpermission.service;
 
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
 import com.fastcampus.jober.domain.spacewallpermission.domain.SpaceWallPermission;
-import com.fastcampus.jober.domain.spacewallpermission.dto.SpaceWallPermissionRequestDto;
-import com.fastcampus.jober.domain.spacewallpermission.dto.SpaceWallPermissionResponseDto;
+import com.fastcampus.jober.domain.spacewallpermission.dto.SpaceWallPermissionRequest;
+import com.fastcampus.jober.domain.spacewallpermission.dto.SpaceWallPermissionResponse;
 import com.fastcampus.jober.domain.spacewallpermission.repository.SpaceWallPermissionRepository;
 import com.fastcampus.jober.global.constant.Auths;
 import com.fastcampus.jober.global.constant.Type;
@@ -18,18 +18,18 @@ public class SpaceWallPermissionService {
     private final SpaceWallPermissionRepository spaceWallPermissionRepository;
 
     @Transactional
-    public SpaceWallPermissionResponseDto updatePermission(Long id, SpaceWallPermissionRequestDto requestDto) {
+    public SpaceWallPermissionResponse updatePermission(Long id, SpaceWallPermissionRequest requestDto) {
         SpaceWallPermission spaceWallPermission = spaceWallPermissionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 공유페이스 권한 ID입니다."));
 
         spaceWallPermission.setAuths(requestDto.getAuths());
         spaceWallPermission.setType(requestDto.getType());
 
-        return new SpaceWallPermissionResponseDto(spaceWallPermission);
+        return new SpaceWallPermissionResponse(spaceWallPermission);
     }
 
     @Transactional
-    public SpaceWallPermissionResponseDto moveSpaceWallPermission(Long id, Long parentId) {
+    public SpaceWallPermissionResponse moveSpaceWallPermission(Long id, Long parentId) {
         SpaceWallPermission spaceWallPermission = spaceWallPermissionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 공유페이스 권한 ID입니다."));
 
@@ -45,7 +45,7 @@ public class SpaceWallPermissionService {
 
         spaceWallPermission.setParentId(parentId);
 
-        return new SpaceWallPermissionResponseDto(spaceWallPermission);
+        return new SpaceWallPermissionResponse(spaceWallPermission);
     }
 
     @Transactional
