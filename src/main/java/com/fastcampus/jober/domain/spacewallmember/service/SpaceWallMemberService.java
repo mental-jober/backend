@@ -9,11 +9,13 @@ import com.fastcampus.jober.domain.spacewallmember.repository.SpaceWallMemberRep
 import com.fastcampus.jober.domain.spacewallpermission.repository.SpaceWallPermissionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,27 +29,30 @@ public class SpaceWallMemberService {
     @Transactional
     public void saveSpaceWallMember(Long spaceWallId, List<SpaceWallMemberRequest.AssignDTO> requests) {
 
-        // 공유 멤버 등록된 email인지 체크
+        // 공동 작업자로 등록된 이메일인지 체크
         for (SpaceWallMemberRequest.AssignDTO request : requests) {
-            Member member = memberRepository.findByEmail(request.getEmail()).get();
-            // TODO - Member에 등록되지 않은 email인 경우 체크, 예외처리? 또는 무시?
+            Optional<Member> member = memberRepository.findByEmail(request.getEmail());
+            SpaceWallMember assignedMember = null;
+            if (member.isPresent())
+                assignedMember = spaceWallMemberRepository.selectSpaceWallMember(spaceWallId, member.get().getId());
 
-            SpaceWallMember assignedMember =
-                    spaceWallMemberRepository.selectSpaceWallMember(spaceWallId, member.getId());
-
-            // 공유 멤버 등록되어 있지 않은 경우
+            // 공동 작업자로 등록되어 있지 않은 경우
             if (assignedMember == null) {
-                // 공유스페이스 멤버 등록
-                spaceWallMemberRepository.insertMember(member.getId(), spaceWallId);
-                // 공유스페이스 멤버 권한 추가
-                spaceWallPermissionRepository.insertPermission(
-                        spaceWallMemberRepository.selectSpaceWallMember(spaceWallId, member.getId()).getId(),
+                spaceWallMemberRepository.insertMember(member.get().getId(), spaceWallId); // 공유스페이스 멤버 등록
+                spaceWallPermissionRepository.insertPermission( // 공유스페이스 멤버 권한 추가
+                        spaceWallMemberRepository.selectSpaceWallMember(spaceWallId, member.get().getId()).getId(),
                         request.getAuths()
                 );
                 continue;
             }
-            // 공유 멤버 등록되어 있는 경우
+            // 공동 작업자로 이미 등록되어 있는 경우 권한만 수정
             spaceWallPermissionRepository.updatePermission(assignedMember.getId(), request.getAuths());
+        }
+
+        // 요청 데이터와 DB에 저장된 데이터 사이즈 비교하고, 다를 경우 차이나는 공동 작업자 삭제
+        if (isEqualSizeOfSpaceWallMember(spaceWallId, requests.size())) {
+            List<String> emails = findAllEmailsNotInRequest(spaceWallId, requests);
+            removeAllSpaceWallMembers(spaceWallId, emails);
         }
     }
 
@@ -55,7 +60,7 @@ public class SpaceWallMemberService {
     public List<SpaceWallMemberResponse.SpaceWallMemberDTO> findSpaceWallMember(Long spaceWallId) {
         List<SpaceWallMemberResponse.SpaceWallMemberDTO> response = new ArrayList<>();
 
-        List<SpaceWallMember> spaceWallMemberList = spaceWallMemberRepository.selectAllSpaceWallMembersBySpaceWallId(spaceWallId);
+        List<SpaceWallMember> spaceWallMemberList = spaceWallMemberRepository.selectAllSpaceWallMembers(spaceWallId);
         for (SpaceWallMember spaceWallMember : spaceWallMemberList) {
 
             response.add(
@@ -67,5 +72,31 @@ public class SpaceWallMemberService {
             );
         }
         return response;
+    }
+
+    public boolean isEqualSizeOfSpaceWallMember(Long spaceWallId, int size) {
+        return spaceWallMemberRepository.selectSizeOfSpaceWallMember(spaceWallId) == size;
+    }
+
+    public void removeAllSpaceWallMembers(Long spaceWallId, List<String> emails) {
+        for (String email : emails) {
+            spaceWallMemberRepository.deleteAllSpaceWallMemberByEmail(spaceWallId, email);
+        }
+    }
+
+    @Transactional
+    public List<String> findAllEmailsNotInRequest(Long spaceWallId, List<SpaceWallMemberRequest.AssignDTO> requests) {
+        List<SpaceWallMember> spaceWallMembers = spaceWallMemberRepository.selectAllSpaceWallMembers(spaceWallId);
+        List<String> emails = new ArrayList<>();
+
+        for (SpaceWallMember spaceWallMember : spaceWallMembers) { // DB데이터 리스트
+            for (SpaceWallMemberRequest.AssignDTO request : requests) { // 요청데이터 리스트
+                String emailInDB = spaceWallMember.getMember().getEmail();
+                // 요청데이터 email과 DB데이터 email을 비교해서 같은 걸 찾으면 break; 같은 게 없다면 DB데이터 email을 리스트에 저장한다.
+                if (request.getEmail().equals(emailInDB)) continue;
+                emails.add(emailInDB);
+            }
+        }
+        return emails;
     }
 }
