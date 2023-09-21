@@ -3,11 +3,16 @@ package com.fastcampus.jober.domain.spacewallmember.domain;
 import com.fastcampus.jober.domain.BaseTimeEntity;
 import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
+import com.fastcampus.jober.domain.spacewallpermission.domain.SpaceWallPermission;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(
@@ -37,5 +42,9 @@ public class SpaceWallMember extends BaseTimeEntity {
     @JoinColumn(name = "space_wall_id")
     private SpaceWall spaceWall;
 
-
+    /**
+     *  양방향 참조 테스트
+     */
+    @OneToOne(mappedBy = "spaceWallMember")
+    private SpaceWallPermission spaceWallPermissions;
 }

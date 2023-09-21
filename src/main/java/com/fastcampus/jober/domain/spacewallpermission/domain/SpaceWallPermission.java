@@ -1,11 +1,10 @@
 package com.fastcampus.jober.domain.spacewallpermission.domain;
 
-import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.BaseTimeEntity;
+import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
 import com.fastcampus.jober.domain.spacewallmember.domain.SpaceWallMember;
 import com.fastcampus.jober.global.constant.Auths;
-import com.fastcampus.jober.global.constant.Type;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,10 +22,10 @@ public class SpaceWallPermission extends BaseTimeEntity {
     private Long id;
 
     //    @JsonIgnore
-    @OneToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @PrimaryKeyJoinColumn
-    private SpaceWall spaceWall;
+//    @OneToOne
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @PrimaryKeyJoinColumn
+//    private SpaceWall spaceWall;
 
     //    @JsonIgnore
     @OneToOne
@@ -36,14 +35,10 @@ public class SpaceWallPermission extends BaseTimeEntity {
     private SpaceWallMember spaceWallMember;
 
     //    @JsonIgnore
-    @OneToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @PrimaryKeyJoinColumn
-    private Member member;
-
-    @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private Type type = Type.WHITE; // WHITE를 기본값으로 설정
+//    @OneToOne
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @PrimaryKeyJoinColumn
+//    private Member member;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
