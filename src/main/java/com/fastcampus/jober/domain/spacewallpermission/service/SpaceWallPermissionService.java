@@ -22,9 +22,9 @@ public class SpaceWallPermissionService {
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 공유페이스 권한 ID입니다."));
 
         spaceWallPermission.setAuths(requestDto.getAuths());
-//        spaceWallPermission.setType(requestDto.getType());
 
-        return new SpaceWallPermissionResponse(spaceWallPermission);
+        SpaceWallPermission updatedPermission = spaceWallPermissionRepository.save(spaceWallPermission);
+        return new SpaceWallPermissionResponse(updatedPermission);
     }
 
     @Transactional
@@ -32,31 +32,25 @@ public class SpaceWallPermissionService {
         SpaceWallPermission spaceWallPermission = spaceWallPermissionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 공유페이스 권한 ID입니다."));
 
-        // 권한 검사
+        // 상위 ID가 있는 경우 권한이 상속되는지 확인하세요.
         if (parentId != null) {
             SpaceWallPermission parentPermission = spaceWallPermissionRepository.findById(parentId)
                     .orElseThrow(() -> new IllegalArgumentException("잘못된 상위 공유페이스 권한 ID입니다."));
 
-//            if (parentPermission.getType() == Type.BLACK) {
-//                throw new IllegalArgumentException("목록 페이지로 이동할 수 없습니다..");
-//            }
+            // 권한은 부모로부터 상속됩니다.
+            spaceWallPermission.setAuths(parentPermission.getAuths());
         }
 
         spaceWallPermission.setParentId(parentId);
-
-        return new SpaceWallPermissionResponse(spaceWallPermission);
+        SpaceWallPermission updatedPermission = spaceWallPermissionRepository.save(spaceWallPermission);
+        return new SpaceWallPermissionResponse(updatedPermission);
     }
 
     @Transactional
     public void assignPermissionToSpaceWall(Auths auth, SpaceWall spaceWall) {
         SpaceWallPermission permission = new SpaceWallPermission();
-//        permission.setSpaceWall(spaceWall);
         permission.setAuths(auth);
         spaceWallPermissionRepository.save(permission);
     }
 
-//    public SpaceWallPermission getPermissionForSpaceWall(SpaceWall spaceWall) {
-//        return spaceWallPermissionRepository.findBySpaceWall(spaceWall)
-//                .orElseThrow(() -> new IllegalArgumentException("해당 공유 스페이스에 대한 권한 정보를 찾을 수 없습니다."));
-//    }
 }

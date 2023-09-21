@@ -13,7 +13,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class SpaceWallPermission extends BaseTimeEntity {
 
     @Id
@@ -22,23 +22,11 @@ public class SpaceWallPermission extends BaseTimeEntity {
     private Long id;
 
     //    @JsonIgnore
-//    @OneToOne
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    @PrimaryKeyJoinColumn
-//    private SpaceWall spaceWall;
-
-    //    @JsonIgnore
     @OneToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "space_wall_member_id")
     @PrimaryKeyJoinColumn
     private SpaceWallMember spaceWallMember;
-
-    //    @JsonIgnore
-//    @OneToOne
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    @PrimaryKeyJoinColumn
-//    private Member member;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
