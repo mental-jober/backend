@@ -21,5 +21,13 @@ public interface SpaceWallMemberRepository extends JpaRepository<SpaceWallMember
     void insertMember(@Param("memberId") Long memberId, @Param("spaceWallId") Long spaceWallId);
 
     @Query("SELECT swm FROM SpaceWallMember swm WHERE swm.spaceWall.id = :spaceWallId")
-    List<SpaceWallMember> selectAllSpaceWallMembersBySpaceWallId(@Param("spaceWallId") Long spaceWallId);
+    List<SpaceWallMember> selectAllSpaceWallMembers(@Param("spaceWallId") Long spaceWallId);
+
+    @Query("SELECT COUNT(*) FROM SpaceWallMember swm WHERE swm.spaceWall.id = :spaceWallId")
+    int selectSizeOfSpaceWallMember(@Param("spaceWallId") Long spaceWallId);
+
+    @Modifying
+    @Query("DELETE FROM SpaceWallMember swm WHERE swm.spaceWall.id = :spaceWallId AND swm.member.email = :email")
+    void deleteAllSpaceWallMemberByEmail(@Param("spaceWallId") Long spaceWallId, @Param("email") String email);
+
 }
