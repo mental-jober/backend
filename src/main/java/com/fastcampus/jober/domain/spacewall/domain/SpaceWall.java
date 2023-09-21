@@ -1,5 +1,6 @@
 package com.fastcampus.jober.domain.spacewall.domain;
 
+import com.fastcampus.jober.domain.BaseTimeEntity;
 import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.spacewalllayout.SpaceWallLayout;
 import com.fastcampus.jober.domain.workspace.Workspace;
@@ -15,75 +16,54 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Table(name = "space_wall")
-public class SpaceWall {
+public class SpaceWall extends BaseTimeEntity {
 
     @Id
+    @Column(nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "layout_id", nullable = false)
-//    private SpaceWallLayout layout;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "create_member_id", nullable = false)
-//    private Member createMember;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "workspace_id", nullable = false)
-//    private Workspace workspace;
+    @ManyToOne
+    @JoinColumn(name = "layout_id", nullable = false)
+    private SpaceWallLayout layout;
 
-    @Column(nullable = true, length = 100)
+    @ManyToOne
+    @JoinColumn(name = "create_member_id", nullable = false)
+    private Member createMember;
+
+    @ManyToOne
+    @JoinColumn(name = "workspace_id", nullable = false)
+    private Workspace workspace;
+
+    @Column(length = 100, unique = true)
     private String url;
 
-    @Column(nullable = true, length = 100)
+    @Column(length = 100)
     private String title;
 
-    @Column(nullable = true, length = 100)
+    @Column(length = 1000)
     private String description;
 
-    @Column(name = "profile_image_url", nullable = true, length = 200)
+    @Column(name = "profile_image_url", length = 200)
     private String profileImageUrl;
 
-    @Column(name = "background_image_url", nullable = true, length = 200)
+    @Column(name = "background_image_url", length = 200)
     private String backgroundImageUrl;
 
-    @Column(name = "path_ids", nullable = true, length = 100)
+    @Column(name = "path_ids", length = 100)
     private String pathIds;
 
-    @Column(name = "share_url", nullable = true, length = 100)
+    @Column(name = "share_url", length = 100)
     private String shareUrl;
 
-    @Column(name = "share_expired_at", nullable = true)
+    @Column(name = "share_expired_at")
     private LocalDateTime shareExpiredAt;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(nullable = true)
-    private LocalDateTime updatedAt;
-
-    @Column(nullable = true)
-    private LocalDateTime deletedAt;
 
     @Column(nullable = false)
     private int sequence;
 
     protected SpaceWall() {
 
-    }
-
-    @PrePersist
-    public void prePersist() {
-        if (this.createdAt == null) {
-            this.createdAt = LocalDateTime.now();
-        }
-    }
-    public void updateUpdatedAt() {
-        this.updatedAt = LocalDateTime.now();
-    }
-    public void delete() {
-        this.deletedAt = LocalDateTime.now();
     }
 
     public void update(SpaceWall updatedSpaceWall) {
@@ -97,4 +77,5 @@ public class SpaceWall {
         if (updatedSpaceWall.getShareUrl() != null) this.shareUrl = updatedSpaceWall.getShareUrl();
         if (updatedSpaceWall.getShareExpiredAt() != null) this.shareExpiredAt = updatedSpaceWall.getShareExpiredAt();
     }
+
 }

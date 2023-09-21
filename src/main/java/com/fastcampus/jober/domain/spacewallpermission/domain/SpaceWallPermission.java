@@ -1,27 +1,24 @@
 package com.fastcampus.jober.domain.spacewallpermission.domain;
 
 import com.fastcampus.jober.domain.member.domain.Member;
+import com.fastcampus.jober.domain.BaseTimeEntity;
+import com.fastcampus.jober.domain.spaceWallMember.domain.SpaceWallMember;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
 import com.fastcampus.jober.domain.spacewallmember.domain.SpaceWallMember;
 import com.fastcampus.jober.global.constant.Auths;
 import com.fastcampus.jober.global.constant.Type;
 import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
-
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
 @Data
-public class SpaceWallPermission {
+public class SpaceWallPermission extends BaseTimeEntity {
 
     @Id
+    @Column(nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
     private Long id;
 
     //    @JsonIgnore
@@ -33,7 +30,8 @@ public class SpaceWallPermission {
     //    @JsonIgnore
     @OneToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "space_wall_member_id")
+    @JoinColumn(name = "space_wall_member_id", nullable = false)
+    @PrimaryKeyJoinColumn
     private SpaceWallMember spaceWallMember;
 
     //    @JsonIgnore
@@ -53,23 +51,8 @@ public class SpaceWallPermission {
     @Column
     private Long parentId; // 상위 페이지 ID
 
-    @Column(nullable = false)
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @Column
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() { this.updatedAt = LocalDateTime.now();  }
-
     public void setAuths(Auths auths) {
         this.auths = auths;
     }
+
 }
