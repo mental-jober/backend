@@ -33,7 +33,7 @@ public class SpaceWallPermission extends BaseTimeEntity {
     private Auths auths = Auths.VIEWER; // READ를 기본값으로 설정
 
     @Column
-    private Long parentId; // 상위 페이지 ID
+    private Long parentId;
 
     public void setAuths(Auths auths) {
         this.auths = auths;
