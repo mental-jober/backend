@@ -25,7 +25,7 @@ public class SpcaeWallContentHistory extends BaseTimeEntity {
     private Template template;
 
     @ManyToOne
-    @JoinColumn(name = "space_wall_history_id", nullable = false)
+    @JoinColumn(name = "space_wall_history_id")
     private SpaceWallHistory spaceWallHistory;
 
     @Column(nullable = false, length = 10)

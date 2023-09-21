@@ -21,7 +21,7 @@ public class SpaceWallContent extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "space_wall_id", nullable = false)
+    @JoinColumn(name = "space_wall_id")
     private SpaceWall spaceWall;
 
     @ManyToOne

@@ -24,15 +24,15 @@ public class SpaceWall extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "layout_id", nullable = false)
+    @JoinColumn(name = "layout_id")
     private SpaceWallLayout layout;
 
     @ManyToOne
-    @JoinColumn(name = "create_member_id", nullable = false)
+    @JoinColumn(name = "create_member_id")
     private Member createMember;
 
     @ManyToOne
-    @JoinColumn(name = "workspace_id", nullable = false)
+    @JoinColumn(name = "workspace_id")
     private Workspace workspace;
 
     @Column(length = 100, unique = true)
