@@ -9,5 +9,4 @@ import java.util.Optional;
 @Repository
 public interface SpaceWallRepository extends JpaRepository<SpaceWall, Long> {
 
-    Optional<SpaceWall> findByIdAndDeletedAtIsNull(Long id);
 }

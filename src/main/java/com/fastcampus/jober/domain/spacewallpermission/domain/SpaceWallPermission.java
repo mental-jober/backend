@@ -8,11 +8,13 @@ import com.fastcampus.jober.global.constant.Auths;
 import com.fastcampus.jober.global.constant.Type;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class SpaceWallPermission extends BaseTimeEntity {
 
     @Id

@@ -51,7 +51,6 @@ public class SpaceWallService {
 
         SpaceWall updatedSpaceWall = updateDto.toEntity();
         spaceWall.update(updatedSpaceWall);
-        spaceWall.updateUpdatedAt();
 
         return new SpaceWallResponse.ResponseDto(spaceWall);
     }
