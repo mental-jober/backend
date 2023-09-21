@@ -1,76 +1,51 @@
 package com.fastcampus.jober.domain.spacewall.service;
 
-import com.fastcampus.jober.domain.member.domain.Member;
-import com.fastcampus.jober.domain.member.repository.MemberRepository;
-import com.fastcampus.jober.domain.spacewall.domain.SpaceWallLayout;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWallTemp;
-import com.fastcampus.jober.domain.spacewall.domain.Workspace;
 import com.fastcampus.jober.domain.spacewall.dto.SpaceWallTempDTO;
-import com.fastcampus.jober.domain.spacewall.repository.SpaceWallLayoutRepository;
 import com.fastcampus.jober.domain.spacewall.repository.SpaceWallTempRepository;
-import com.fastcampus.jober.domain.spacewall.repository.WorkspaceRepository;
-import com.fastcampus.jober.global.auth.jwt.JwtTokenProvider;
+import com.fastcampus.jober.global.error.exception.SpaceWallBadRequestException;
+import com.fastcampus.jober.global.error.exception.SpaceWallNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class SpaceWallTempService {
 
     private final SpaceWallTempRepository spaceWallTempRepository;
-    private final MemberRepository memberRepository;
-    private final SpaceWallLayoutRepository spaceWallLayoutRepository;
-    private final WorkspaceRepository workspaceRepository;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
-    public SpaceWallTemp saveTemporarySpaceWall(String token, SpaceWallTempDTO.SaveDTO saveDTO) {
-        Long memberId = jwtTokenProvider.getMemberId(token);
+    public SpaceWallTempDTO.TempResponseDTO saveTemporary(SpaceWallTempDTO.TempSaveDTO tempSaveDto) {
+        if (tempSaveDto == null) {
+            throw new SpaceWallBadRequestException("TempDTO is wrong.");
+        }
 
-        Member member = memberRepository.findById(saveDTO.getCreateMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid memberId"));
-
-        SpaceWallLayout layout = spaceWallLayoutRepository.findById(saveDTO.getLayoutId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid layoutId"));
-
-        Workspace workspace = workspaceRepository.findById(saveDTO.getWorkspaceId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid workspaceId"));
-
-        SpaceWallTemp spaceWallTemp = SpaceWallTemp.builder()
-                .layout(layout)
-                .createMember(member)
-                .workspace(workspace)
-                .url(saveDTO.getUrl())
-                .title(saveDTO.getTitle())
-                .description(saveDTO.getDescription())
-                .profileImageUrl(saveDTO.getProfileImageUrl())
-                .backgroundImageUrl(saveDTO.getBackgroundImageUrl())
-                .pathIds(saveDTO.getPathIds())
-                .shareUrl(saveDTO.getShareUrl())
-                .shareExpiredAt(saveDTO.getShareExpiredAt())
-                .sequence(saveDTO.getSequence())
-                .build();
-
-        return spaceWallTempRepository.save(spaceWallTemp);
+        SpaceWallTemp spaceWallTemp = tempSaveDto.toEntity();
+        SpaceWallTemp savedSpaceWallTemp = spaceWallTempRepository.save(spaceWallTemp);
+        return new SpaceWallTempDTO.TempResponseDTO(savedSpaceWallTemp);
     }
 
     @Transactional(readOnly = true)
-    public Optional<SpaceWallTemp> getTemporarySpaceWall(String token) {
-        Long memberId = jwtTokenProvider.getMemberId(token);
-        return spaceWallTempRepository.findByCreateMember_Id(memberId);
+    public SpaceWallTempDTO.TempResponseDTO getTemporary(Long id) {
+        if (id == null) {
+            throw new SpaceWallBadRequestException("임시 공유페이지 ID는 null일 수 없습니다.");
+        }
+
+        SpaceWallTemp spaceWallTemp = spaceWallTempRepository.findById(id)
+            .orElseThrow(() -> new SpaceWallNotFoundException("ID가 있는 임시 공유페이지를 찾을 수 없습니다: " + id));
+        return new SpaceWallTempDTO.TempResponseDTO(spaceWallTemp);
     }
 
     @Transactional
-    public void deleteTemporarySpaceWall(String token) {
-        Long memberId = jwtTokenProvider.getMemberId(token);
-        spaceWallTempRepository.deleteByCreateMember_Id(memberId);
-
-        // 삭제 검증
-        if (spaceWallTempRepository.findByCreateMember_Id(memberId).isPresent()) {
-            throw new RuntimeException("삭제 실패: " + memberId);
+    public void deleteTemporary(Long id) {
+        if (id == null) {
+            throw new SpaceWallBadRequestException("임시 공유페이지 ID는 null일 수 없습니다.");
         }
+
+        SpaceWallTemp spaceWallTemp = spaceWallTempRepository.findById(id)
+            .orElseThrow(() -> new SpaceWallNotFoundException("ID가 있는 임시 공유페이지를 찾을 수 없습니다.: " + id));
+
+        spaceWallTempRepository.delete(spaceWallTemp);
     }
 }

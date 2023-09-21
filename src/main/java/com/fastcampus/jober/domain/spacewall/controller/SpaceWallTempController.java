@@ -1,10 +1,10 @@
 package com.fastcampus.jober.domain.spacewall.controller;
 
-import com.fastcampus.jober.domain.spacewall.dto.SpaceWallTempRequest;
-import com.fastcampus.jober.domain.spacewall.dto.SpaceWallTempResponse;
+import com.fastcampus.jober.domain.spacewall.dto.SpaceWallTempDTO;
 import com.fastcampus.jober.domain.spacewall.service.SpaceWallTempService;
-import com.fastcampus.jober.global.auth.jwt.JwtTokenProvider;
+import com.fastcampus.jober.global.utils.api.dto.ResponseDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,30 +15,24 @@ public class SpaceWallTempController {
 
     private final SpaceWallTempService spaceWallTempService;
 
-    @PostMapping("/save")
-    public ResponseEntity<?> saveTempSpaceWall(
-            @RequestHeader(JwtTokenProvider.HEADER) String authorization,
-            @RequestBody SpaceWallTempRequest.SaveDTO saveDTO) {
-        String token = authorization.split(" ")[1];  // Bearer 제거
-        spaceWallTempService.saveTemporarySpaceWall(token, saveDTO);
-        return ResponseEntity.ok().build();
+    @PostMapping
+    public ResponseEntity<ResponseDTO<SpaceWallTempDTO.TempResponseDTO>> saveTemporarySpaceWall(@RequestBody SpaceWallTempDTO.TempSaveDTO tempSaveDto) {
+        SpaceWallTempDTO.TempResponseDTO savedSpaceWallTempDto = spaceWallTempService.saveTemporary(tempSaveDto);
+        if (savedSpaceWallTempDto == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(new ResponseDTO<>(HttpStatus.CREATED, "임시 저장되었습니다.", savedSpaceWallTempDto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/listup")
-    public ResponseEntity<SpaceWallTempResponse.LoadDTO> listupTempSpaceWall(
-            @RequestHeader(JwtTokenProvider.HEADER) String authorization) {
-        String token = authorization.split(" ")[1];
-        return ResponseEntity.ok(spaceWallTempService.getTemporarySpaceWall(token));
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseDTO<SpaceWallTempDTO.TempResponseDTO>> getTemporarySpaceWall(@PathVariable Long id) {
+        SpaceWallTempDTO.TempResponseDTO foundSpaceWallTempDto = spaceWallTempService.getTemporary(id);
+        return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK, "완료되었습니다.", foundSpaceWallTempDto));
     }
 
-    // 삭제 로직도 일단 포함
-    /*
-    @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteTempSpaceWall(
-            @RequestHeader(JwtTokenProvider.HEADER) String authorization) {
-        String token = authorization.split(" ")[1];
-        spaceWallTempService.deleteTemporarySpaceWall(token);
-        return ResponseEntity.ok().build();
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseDTO<String>> deleteTemporarySpaceWall(@PathVariable Long id) {
+        spaceWallTempService.deleteTemporary(id);
+        return new ResponseEntity<>(new ResponseDTO<>(HttpStatus.OK, "임시 공유페이지 " + id + " 삭제되었습니다.", "Success"), HttpStatus.OK);
     }
-    */
 }
