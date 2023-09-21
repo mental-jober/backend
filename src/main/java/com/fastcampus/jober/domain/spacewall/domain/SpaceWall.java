@@ -57,7 +57,6 @@ public class SpaceWall extends BaseTimeEntity {
     }
 
     public void update(SpaceWall updatedSpaceWall) {
-//        if (updatedSpaceWall.getLayout() != null) this.layout = updatedSpaceWall.getLayout();
         if (updatedSpaceWall.getUrl() != null) this.url = updatedSpaceWall.getUrl();
         if (updatedSpaceWall.getTitle() != null) this.title = updatedSpaceWall.getTitle();
         if (updatedSpaceWall.getDescription() != null) this.description = updatedSpaceWall.getDescription();

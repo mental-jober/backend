@@ -27,17 +27,12 @@ public class SpaceWallRequest {
         private Integer sequence;
 
         public SpaceWall toEntity() {
-//            SpaceWallLayout layout = SpaceWallLayout.builder().id(layoutId).build();
             Member member = Member.builder().id(createMemberId).build();
-//            Workspace workspace = Workspace.builder().id(workspaceId).build();
 
             LocalDateTime shareExpiration = (shareExpiredAt != null) ?
                     LocalDateTime.ofInstant(shareExpiredAt.toInstant(), ZoneId.systemDefault()) : null;
 
             return SpaceWall.builder()
-//                    .layout(layout)
-//                    .createMember(member)
-//                    .workspace(workspace)
                     .url(url)
                     .title(title)
                     .description(description)
@@ -65,13 +60,11 @@ public class SpaceWallRequest {
         private Date shareExpiredAt;
 
         public SpaceWall toEntity() {
-//            SpaceWallLayout layout = SpaceWallLayout.builder().id(layoutId).build();
 
             LocalDateTime shareExpiration = (shareExpiredAt != null) ?
                     LocalDateTime.ofInstant(shareExpiredAt.toInstant(), ZoneId.systemDefault()) : null;
 
             return SpaceWall.builder()
-//                    .layout(layout)
                     .url(url)
                     .title(title)
                     .description(description)
