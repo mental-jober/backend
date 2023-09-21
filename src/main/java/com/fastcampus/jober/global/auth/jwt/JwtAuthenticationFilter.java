@@ -1,6 +1,7 @@
 package com.fastcampus.jober.global.auth.jwt;
 
 import com.fastcampus.jober.domain.member.domain.Member;
+import com.fastcampus.jober.global.auth.session.SpaceWallContextHolder;
 import com.fastcampus.jober.global.auth.session.MemberDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -53,7 +54,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             .id(id)
             .build();
 
-        MemberDetails memberDetails = new MemberDetails(member);
+        MemberDetails memberDetails = new MemberDetails(member, SpaceWallContextHolder.getSpaceWallId());
 
         UsernamePasswordAuthenticationToken authenticationToken =
             new UsernamePasswordAuthenticationToken(
