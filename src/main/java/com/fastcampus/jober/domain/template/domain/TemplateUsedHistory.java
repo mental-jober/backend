@@ -1,23 +1,18 @@
 package com.fastcampus.jober.domain.template.domain;
 
 import com.fastcampus.jober.domain.BaseTimeEntity;
-import com.fastcampus.jober.global.constant.TemplateCategory;
+import com.fastcampus.jober.domain.member.domain.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-public class TemplateType extends BaseTimeEntity {
+public class TemplateUsedHistory extends BaseTimeEntity {
 
     @Id
     @Column(nullable = false, unique = true)
@@ -28,8 +23,10 @@ public class TemplateType extends BaseTimeEntity {
     @JoinColumn(name = "template_id")
     private Template template;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", length = 20)
-    private TemplateCategory templateCategory;
-    
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    private LocalDateTime used_at;
+
 }
