@@ -66,5 +66,8 @@ public class SpaceWall extends BaseTimeEntity {
         if (updatedSpaceWall.getShareUrl() != null) this.shareUrl = updatedSpaceWall.getShareUrl();
         if (updatedSpaceWall.getShareExpiredAt() != null) this.shareExpiredAt = updatedSpaceWall.getShareExpiredAt();
     }
+    public void setSequence(int sequence) {
+        this.sequence = sequence;
+    }
 
 }
