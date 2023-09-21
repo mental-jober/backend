@@ -2,16 +2,14 @@ package com.fastcampus.jober.domain.member.controller;
 
 import com.fastcampus.jober.domain.member.dto.MemberRequest;
 import com.fastcampus.jober.domain.member.service.MemberService;
+import com.fastcampus.jober.domain.spacewallmember.dto.SpaceWallMemberRequest;
 import com.fastcampus.jober.global.auth.jwt.JwtTokenProvider;
 import com.fastcampus.jober.global.utils.api.dto.ResponseDTO;
 import jakarta.validation.Valid;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -57,11 +55,22 @@ public class MemberController {
      * @param authorization : 토큰 정보
      * @return : 로그아웃 메세지 반환
      */
-    @PostMapping("logout")
+    @PostMapping("/logout")
     public ResponseEntity<?> logout(
         @RequestHeader(JwtTokenProvider.HEADER) String authorization
     ) {
         memberService.logout(authorization.split(" ")[1]); // Bearer 떼냄.
         return ResponseEntity.ok(new ResponseDTO<>("로그아웃 하였습니다."));
+    }
+
+    /**
+     * 공동 작업자 '초대' 버튼을 누를 때
+     * Email이 Member에 존재하는지 확인합니다.
+     * @param request : email, auths
+     * @return : boolean
+     */
+    @GetMapping("/checkEmail")
+    public boolean isExistMemberByEmail(@RequestBody @Valid SpaceWallMemberRequest.AssignDTO request) {
+        return memberService.findEmail(request.getEmail());
     }
 }
