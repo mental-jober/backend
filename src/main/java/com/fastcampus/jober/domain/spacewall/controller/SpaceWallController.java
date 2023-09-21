@@ -38,10 +38,10 @@ public class SpaceWallController {
     public ResponseEntity<ResponseDTO<SpaceWallResponse.ResponseDto>> getSpaceWall(@PathVariable Long id) {
         SpaceWallResponse.ResponseDto foundSpaceWallDto = spaceWallService.findById(id);
 
-        SpaceWallPermission permission = permissionService.getPermissionForSpaceWall(foundSpaceWallDto.toEntity());
-        if (permission == null || (permission.getAuths() != Auths.VIEWER && permission.getAuths() != Auths.EDITOR && permission.getAuths() != Auths.OWNER)) {
-            throw new Exception403(ErrorCode.INVALID_ACCESS.getMessage());
-        }
+//        SpaceWallPermission permission = permissionService.getPermissionForSpaceWall(foundSpaceWallDto.toEntity());
+//        if (permission == null || (permission.getAuths() != Auths.VIEWER && permission.getAuths() != Auths.EDITOR && permission.getAuths() != Auths.OWNER)) {
+//            throw new Exception403(ErrorCode.INVALID_ACCESS.getMessage());
+//        }
 
         return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK, "완료되었습니다.", foundSpaceWallDto));
     }
