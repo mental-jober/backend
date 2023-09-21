@@ -2,7 +2,6 @@ package com.fastcampus.jober.domain.spacewallpermission.domain;
 
 import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.BaseTimeEntity;
-import com.fastcampus.jober.domain.spaceWallMember.domain.SpaceWallMember;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
 import com.fastcampus.jober.domain.spacewallmember.domain.SpaceWallMember;
 import com.fastcampus.jober.global.constant.Auths;
@@ -30,7 +29,7 @@ public class SpaceWallPermission extends BaseTimeEntity {
     //    @JsonIgnore
     @OneToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "space_wall_member_id", nullable = false)
+    @JoinColumn(name = "space_wall_member_id")
     @PrimaryKeyJoinColumn
     private SpaceWallMember spaceWallMember;
 

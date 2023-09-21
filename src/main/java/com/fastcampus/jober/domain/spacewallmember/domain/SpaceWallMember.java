@@ -27,13 +27,13 @@ public class SpaceWallMember extends BaseTimeEntity {
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "space_wall_id", nullable = false)
+    @JoinColumn(name = "space_wall_id")
     private SpaceWall spaceWall;
 
 

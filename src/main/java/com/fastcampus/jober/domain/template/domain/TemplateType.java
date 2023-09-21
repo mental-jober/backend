@@ -1,11 +1,9 @@
 package com.fastcampus.jober.domain.template.domain;
 
-<<<<<<< HEAD
 import com.fastcampus.jober.domain.BaseTimeEntity;
 import com.fastcampus.jober.global.constant.TemplateCategory;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
