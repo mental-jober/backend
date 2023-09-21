@@ -1,9 +1,7 @@
 package com.fastcampus.jober.domain.spacewall.domain;
 
-import com.fastcampus.jober.domain.member.domain.Member;
-import com.fastcampus.jober.domain.spacewalllayout.SpaceWallLayout;
-import com.fastcampus.jober.domain.workspace.Workspace;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,6 +9,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@AllArgsConstructor
+@Builder
 @Table(name = "space_wall_temp")
 public class SpaceWallTemp {
 
@@ -18,72 +18,44 @@ public class SpaceWallTemp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 임시 저장에서는 nullable 처리
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "layout_id", nullable = true)
-    private SpaceWallLayout layout;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "create_member_id", nullable = true)
-    private Member createMember;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "workspace_id", nullable = true)
-
-    private Workspace workspace;
-
+    @Column(nullable = true, length = 100)
     private String url;
+
+    @Column(nullable = true, length = 100)
     private String title;
+
+    @Column(nullable = true, length = 100)
     private String description;
-    @Column(name = "profile_image_url", nullable = true)
+
+    @Column(name = "profile_image_url", nullable = true, length = 200)
     private String profileImageUrl;
-    @Column(name = "background_image_url", nullable = true)
+
+    @Column(name = "background_image_url", nullable = true, length = 200)
     private String backgroundImageUrl;
-    @Column(name = "path_ids", nullable = true)
+
+    @Column(name = "path_ids", nullable = true, length = 100)
     private String pathIds;
-    @Column(name = "share_url", nullable = true)
+
+    @Column(name = "share_url", nullable = true, length = 100)
     private String shareUrl;
+
     @Column(name = "share_expired_at", nullable = true)
     private LocalDateTime shareExpiredAt;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
     @Column(nullable = true)
     private LocalDateTime updatedAt;
+
     @Column(nullable = true)
     private LocalDateTime deletedAt;
 
+    @Column(nullable = false)
     private int sequence;
 
-    // 임시 저장된 시간
-    @Column(nullable = false)
-    private LocalDateTime savedAt = LocalDateTime.now();
+    protected SpaceWallTemp() {
 
-    protected SpaceWallTemp() {}
-
-    @Builder
-    public SpaceWallTemp(SpaceWallLayout layout, Member createMember, Workspace workspace, String url, String title, String description,
-                         String profileImageUrl, String backgroundImageUrl, String pathIds, String shareUrl,
-                         LocalDateTime shareExpiredAt, int sequence) {
-        validateRequiredFields(layout, createMember, workspace, url, title, description);
-        this.layout = layout;
-        this.createMember = createMember;
-        this.workspace = workspace;
-        this.url = url;
-        this.title = title;
-        this.description = description;
-        this.profileImageUrl = profileImageUrl;
-        this.backgroundImageUrl = backgroundImageUrl;
-        this.pathIds = pathIds;
-        this.shareUrl = shareUrl;
-        this.shareExpiredAt = shareExpiredAt;
-        this.sequence = sequence;
-    }
-
-    private void validateRequiredFields(SpaceWallLayout layout, Member createMember, Workspace workspace, String url, String title, String description) {
-        if (layout == null || createMember == null || workspace == null || url == null || title == null || description == null) {
-            throw new IllegalArgumentException("");
-        }
     }
 
     @PrePersist

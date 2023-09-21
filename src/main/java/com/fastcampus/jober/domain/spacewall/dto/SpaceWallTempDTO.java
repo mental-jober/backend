@@ -1,12 +1,13 @@
 package com.fastcampus.jober.domain.spacewall.dto;
 
+import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWallTemp;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.fastcampus.jober.domain.workspace.Workspace;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 public class SpaceWallTempDTO {
 
@@ -14,7 +15,7 @@ public class SpaceWallTempDTO {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class SaveDTO {
+    public static class TempSaveDTO {
         private Long layoutId;
         private Long createMemberId;
         private Long workspaceId;
@@ -25,32 +26,35 @@ public class SpaceWallTempDTO {
         private String backgroundImageUrl;
         private String pathIds;
         private String shareUrl;
-        private LocalDateTime shareExpiredAt;
-        private int sequence;
+        private Date shareExpiredAt;
+        private Integer sequence;
 
         public SpaceWallTemp toEntity() {
+            Member member = Member.builder().id(createMemberId).build();
+            Workspace workspace = Workspace.builder().id(workspaceId).build();
+
+            LocalDateTime shareExpiration = (shareExpiredAt != null) ?
+                LocalDateTime.ofInstant(shareExpiredAt.toInstant(), ZoneId.systemDefault()) : null;
+
             return SpaceWallTemp.builder()
-                    .layout(new SpaceWallLayout(layoutId))
-                    .createMember(new Member(createMemberId))
-                    .workspace(new Workspace(workspaceId))
-                    .url(url)
-                    .title(title)
-                    .description(description)
-                    .profileImageUrl(profileImageUrl)
-                    .backgroundImageUrl(backgroundImageUrl)
-                    .pathIds(pathIds)
-                    .shareUrl(shareUrl)
-                    .shareExpiredAt(shareExpiredAt)
-                    .sequence(sequence)
-                    .build();
+                .url(url)
+                .title(title)
+                .description(description)
+                .profileImageUrl(profileImageUrl)
+                .backgroundImageUrl(backgroundImageUrl)
+                .pathIds(pathIds)
+                .shareUrl(shareUrl)
+                .shareExpiredAt(shareExpiration)
+                .sequence(sequence != null ? sequence : 0)
+                .build();
         }
     }
 
     @Getter
-    @Builder
+    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class LoadDTO {
+    public static class TempResponseDTO {
         private Long id;
         private Long layoutId;
         private Long createMemberId;
@@ -63,22 +67,23 @@ public class SpaceWallTempDTO {
         private String pathIds;
         private String shareUrl;
         private LocalDateTime shareExpiredAt;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
         private int sequence;
 
-        public LoadDTO(SpaceWallTemp spaceWallTemp) {
-            this.id = spaceWallTemp.getId();
-            this.layoutId = spaceWallTemp.getLayout().getId();
-            this.createMemberId = spaceWallTemp.getCreateMember().getId();
-            this.workspaceId = spaceWallTemp.getWorkspace().getId();
-            this.url = spaceWallTemp.getUrl();
-            this.title = spaceWallTemp.getTitle();
-            this.description = spaceWallTemp.getDescription();
-            this.profileImageUrl = spaceWallTemp.getProfileImageUrl();
-            this.backgroundImageUrl = spaceWallTemp.getBackgroundImageUrl();
-            this.pathIds = spaceWallTemp.getPathIds();
-            this.shareUrl = spaceWallTemp.getShareUrl();
-            this.shareExpiredAt = spaceWallTemp.getShareExpiredAt();
-            this.sequence = spaceWallTemp.getSequence();
+        public TempResponseDTO(SpaceWallTemp spaceWall) {
+            this.id = spaceWall.getId();
+            this.url = spaceWall.getUrl();
+            this.title = spaceWall.getTitle();
+            this.description = spaceWall.getDescription();
+            this.profileImageUrl = spaceWall.getProfileImageUrl();
+            this.backgroundImageUrl = spaceWall.getBackgroundImageUrl();
+            this.pathIds = spaceWall.getPathIds();
+            this.shareUrl = spaceWall.getShareUrl();
+            this.shareExpiredAt = spaceWall.getShareExpiredAt();
+            this.createdAt = spaceWall.getCreatedAt();
+            this.updatedAt = spaceWall.getUpdatedAt();
+            this.sequence = spaceWall.getSequence();
         }
     }
 }
