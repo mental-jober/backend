@@ -2,8 +2,6 @@ package com.fastcampus.jober.domain.spacewall.domain;
 
 import com.fastcampus.jober.domain.BaseTimeEntity;
 import com.fastcampus.jober.domain.member.domain.Member;
-import com.fastcampus.jober.domain.spacewalllayout.domain.SpaceWallLayout;
-import com.fastcampus.jober.domain.workspace.Workspace;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,16 +22,8 @@ public class SpaceWall extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "layout_id")
-    private SpaceWallLayout layout;
-
-    @ManyToOne
     @JoinColumn(name = "create_member_id")
     private Member createMember;
-
-    @ManyToOne
-    @JoinColumn(name = "workspace_id")
-    private Workspace workspace;
 
     @Column(length = 100, unique = true)
     private String url;

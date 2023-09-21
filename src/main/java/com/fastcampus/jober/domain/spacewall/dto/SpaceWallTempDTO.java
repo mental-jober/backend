@@ -2,7 +2,6 @@ package com.fastcampus.jober.domain.spacewall.dto;
 
 import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWallTemp;
-import com.fastcampus.jober.domain.workspace.Workspace;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -16,9 +15,7 @@ public class SpaceWallTempDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class TempSaveDTO {
-        private Long layoutId;
         private Long createMemberId;
-        private Long workspaceId;
         private String url;
         private String title;
         private String description;
@@ -31,7 +28,7 @@ public class SpaceWallTempDTO {
 
         public SpaceWallTemp toEntity() {
             Member member = Member.builder().id(createMemberId).build();
-            Workspace workspace = Workspace.builder().id(workspaceId).build();
+//            Workspace workspace = Workspace.builder().id(workspaceId).build();
 
             LocalDateTime shareExpiration = (shareExpiredAt != null) ?
                 LocalDateTime.ofInstant(shareExpiredAt.toInstant(), ZoneId.systemDefault()) : null;
@@ -56,9 +53,7 @@ public class SpaceWallTempDTO {
     @AllArgsConstructor
     public static class TempResponseDTO {
         private Long id;
-        private Long layoutId;
         private Long createMemberId;
-        private Long workspaceId;
         private String url;
         private String title;
         private String description;

@@ -2,9 +2,10 @@ package com.fastcampus.jober.domain.spacewall.dto;
 
 import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
-import com.fastcampus.jober.domain.spacewalllayout.domain.SpaceWallLayout;
-import com.fastcampus.jober.domain.workspace.Workspace;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -16,9 +17,7 @@ public class SpaceWallResponse {
     @AllArgsConstructor
     public static class ResponseDto {
         private Long id;
-        private Long layout_id;
         private Long create_member_id;
-        private Long workspace_id;
         private String url;
         private String title;
         private String description;
@@ -50,9 +49,9 @@ public class SpaceWallResponse {
         }
 
         public SpaceWall toEntity() {
-            SpaceWallLayout layout = SpaceWallLayout.builder().id(layout_id).build();
+//            SpaceWallLayout layout = SpaceWallLayout.builder().id(layout_id).build();
             Member member = Member.builder().id(create_member_id).build();
-            Workspace workspace = Workspace.builder().id(workspace_id).build();
+//            Workspace workspace = Workspace.builder().id(workspace_id).build();
 
             return SpaceWall.builder()
                     .id(id)
