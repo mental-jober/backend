@@ -2,7 +2,7 @@ package com.fastcampus.jober.domain.spacewall.dto;
 
 import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
-import com.fastcampus.jober.domain.spacewalllayout.SpaceWallLayout;
+import com.fastcampus.jober.domain.spacewalllayout.domain.SpaceWallLayout;
 import com.fastcampus.jober.domain.workspace.Workspace;
 import lombok.*;
 
@@ -67,8 +67,6 @@ public class SpaceWallResponse {
                     .pathIds(path_ids)
                     .shareUrl(share_url)
                     .shareExpiredAt(share_expired_at)
-                    .createdAt(created_at)
-                    .updatedAt(updated_at)
                     .sequence(sequence)
                     .build();
         }

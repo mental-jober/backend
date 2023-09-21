@@ -1,13 +1,21 @@
 package com.fastcampus.jober.domain.spacewalllayout.domain;
 
 import com.fastcampus.jober.domain.BaseTimeEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "space_wall_layout")
 public class SpaceWallLayout extends BaseTimeEntity {
 
     @Id
@@ -21,10 +29,11 @@ public class SpaceWallLayout extends BaseTimeEntity {
     @Column(length = 100, nullable = false)
     private String description;
 
-    @Column(length = 200)
-    private String thumnailImageUrl;
+    @Column(name = "thumnail_image_url", length = 200)
+    private String thumbnailImageUrl;
 
     @Column(length = 10, nullable = false)
     private String type;
 
 }
+

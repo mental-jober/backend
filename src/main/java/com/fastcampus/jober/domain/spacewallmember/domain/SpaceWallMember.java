@@ -15,6 +15,7 @@ import org.hibernate.annotations.OnDeleteAction;
         uniqueConstraints = {@UniqueConstraint(columnNames = {"space_wall_id", "member_id"})
 })
 @Data
+@EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
