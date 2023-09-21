@@ -32,9 +32,6 @@ public class SpaceWallResponse {
 
         public ResponseDto(SpaceWall spaceWall) {
             this.id = spaceWall.getId();
-//            this.layout_id = spaceWall.getLayout() != null ? spaceWall.getLayout().getId() : null;
-//            this.create_member_id = spaceWall.getCreateMember() != null ? spaceWall.getCreateMember().getId() : null;
-//            this.workspace_id = spaceWall.getWorkspace() != null ? spaceWall.getWorkspace().getId() : null;
             this.url = spaceWall.getUrl();
             this.title = spaceWall.getTitle();
             this.description = spaceWall.getDescription();
@@ -49,15 +46,10 @@ public class SpaceWallResponse {
         }
 
         public SpaceWall toEntity() {
-//            SpaceWallLayout layout = SpaceWallLayout.builder().id(layout_id).build();
             Member member = Member.builder().id(create_member_id).build();
-//            Workspace workspace = Workspace.builder().id(workspace_id).build();
 
             return SpaceWall.builder()
                     .id(id)
-//                    .layout(layout)
-//                    .createMember(member)
-//                    .workspace(workspace)
                     .url(url)
                     .title(title)
                     .description(description)
