@@ -24,6 +24,6 @@ public class MemberDetailsService implements UserDetailsService {
             () -> new Exception401(INVALID_AUTHENTICATION.getMessage())
         );
 
-        return new MemberDetails(member);
+        return new MemberDetails(member, SpaceWallContextHolder.getSpaceWallId());
     }
 }

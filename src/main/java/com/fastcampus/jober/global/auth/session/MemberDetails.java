@@ -1,25 +1,40 @@
 package com.fastcampus.jober.global.auth.session;
 
 import com.fastcampus.jober.domain.member.domain.Member;
-import java.util.Collection;
+import com.fastcampus.jober.domain.spacewallmember.domain.SpaceWallMember;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
 public class MemberDetails implements UserDetails {
 
     private final Member member;
+    private final Long spaceWallId;
 
-    // TODO - 권한 찾는 부분.
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        Collection<GrantedAuthority> collector = new ArrayList<>();
-//        collector.add(() -> member.getRole().name());
-//        return collector;
-        return null;
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        if (member.getSpaceWallMember() == null) return null;
+        if (this.spaceWallId == null) return null;
+
+        for (SpaceWallMember spaceWallMember : member.getSpaceWallMember()) {
+            if (this.spaceWallId == spaceWallMember.getSpaceWall().getId()) {
+                authorities.add(
+                        new SimpleGrantedAuthority(spaceWallMember.getSpaceWallPermissions().getAuths().name())
+                );
+                break;
+            }
+        }
+        return authorities;
     }
 
     @Override
