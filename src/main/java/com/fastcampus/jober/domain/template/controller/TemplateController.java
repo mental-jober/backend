@@ -23,13 +23,14 @@ public class TemplateController {
     private final TemplateService templateService;
 
     @GetMapping
-    public ResponseEntity<?> templateList(
+    public ResponseEntity<?> templateList(@AuthenticationPrincipal MemberDetails memberDetails,
         @RequestParam(required = false) String type,
         @RequestParam(required = false) String keyword,
         @RequestParam(required = false, defaultValue = "0") int page) {
         page = page == 0 ? 0 : page - 1;
 
-        Page<ListDto> templates = templateService.findTemplates(type, keyword, page, 10);
+        Page<ListDto> templates = templateService.findTemplates(memberDetails.getMember(), type,
+            keyword, page, 10);
 
         return ResponseEntity.ok(
             ApiUtil.result(HttpStatus.OK.value(), "정상적으로 처리되었습니다.", templates));
