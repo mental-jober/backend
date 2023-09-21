@@ -1,20 +1,11 @@
 package com.fastcampus.jober.domain.member.domain;
 
 import com.fastcampus.jober.domain.BaseTimeEntity;
+import com.fastcampus.jober.domain.spacewallmember.domain.SpaceWallMember;
+import jakarta.persistence.*;
+import lombok.*;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
+import java.util.List;
 
 @Entity
 @Table(name = "member")
@@ -29,6 +20,12 @@ public class Member extends BaseTimeEntity {
     @Column(nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /**
+     *  양방향 참조 테스트
+     */
+    @OneToMany(mappedBy = "member")
+    private List<SpaceWallMember> spaceWallMember;
 
     @Column(unique = true, nullable = false, length = 30)
     private String email;
