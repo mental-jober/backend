@@ -7,7 +7,6 @@ import com.fastcampus.jober.domain.template.domain.Template;
 import com.fastcampus.jober.domain.template.dto.TemplateResponseDto;
 import com.fastcampus.jober.domain.template.dto.TemplateResponseDto.ListDto;
 import com.fastcampus.jober.domain.template.repository.MyTemplateRepository;
-import com.fastcampus.jober.domain.template.repository.TemplateRepository;
 import com.fastcampus.jober.global.constant.ErrorCode;
 import com.fastcampus.jober.global.error.exception.MemberException;
 import com.fastcampus.jober.global.error.exception.MyTemplateException;
@@ -24,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class MyTemplateService {
 
     private final MyTemplateRepository myTemplateRepository;
-    private final TemplateRepository templateRepository;
     private final MemberRepository memberRepository;
 
     public Page<TemplateResponseDto.ListDto> findMyTemplates(int page, int size, Member member) {
