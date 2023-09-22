@@ -11,11 +11,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class TemplateType extends BaseTimeEntity {
 
@@ -31,5 +32,5 @@ public class TemplateType extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "type", length = 20)
     private TemplateCategory templateCategory;
-    
+
 }

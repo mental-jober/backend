@@ -13,7 +13,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -35,7 +35,7 @@ public class TemplateUsedHistory {
     @JoinColumn(name = "template_id")
     private Template template;
 
-    @CreationTimestamp
+    @CreatedDate
     private LocalDateTime usedAt;
 
     public void updateUsedAt() {

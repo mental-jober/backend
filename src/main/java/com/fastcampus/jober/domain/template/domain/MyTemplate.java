@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class MyTemplate extends BaseTimeEntity {
 
@@ -27,7 +28,7 @@ public class MyTemplate extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "temaplate_id", nullable = false)
+    @JoinColumn(name = "template_id", nullable = false)
     private Template template;
 
     @ManyToOne
