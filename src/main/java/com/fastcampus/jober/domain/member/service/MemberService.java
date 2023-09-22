@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final AuthenticationManager authenticationManager;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+//    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final MemberRepository memberRepository;
 
     @Transactional
@@ -37,9 +37,9 @@ public class MemberService {
         Member member = memberRepository.findByEmail(email).
             orElseThrow(() -> new Exception401(CHECK_ID.getMessage()));
 
-        if (!bCryptPasswordEncoder.matches(password, member.getPassword())) {
-            throw new Exception401(CHECK_PASSWORD.getMessage());
-        }
+//        if (!bCryptPasswordEncoder.matches(password, member.getPassword())) {
+//            throw new Exception401(CHECK_PASSWORD.getMessage());
+//        }
 
         Authentication authentication = authenticationManager
             .authenticate(new UsernamePasswordAuthenticationToken(email, password));
@@ -68,7 +68,7 @@ public class MemberService {
     @Transactional
     public JoinDTO join(MemberRequest.JoinDTO joinRequestDTO) {
 
-        joinRequestDTO.setPassword(bCryptPasswordEncoder.encode(joinRequestDTO.getPassword()));
+//        joinRequestDTO.setPassword(bCryptPasswordEncoder.encode(joinRequestDTO.getPassword()));
 
         Member userPS = memberRepository.save(joinRequestDTO.toEntity());
 
