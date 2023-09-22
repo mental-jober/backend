@@ -12,6 +12,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
+@Table(name = "space_wall_permission")
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class SpaceWallPermission extends BaseTimeEntity {
@@ -23,9 +24,9 @@ public class SpaceWallPermission extends BaseTimeEntity {
 
     //    @JsonIgnore
     @OneToOne
+//    @PrimaryKeyJoinColumn
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "space_wall_member_id")
-    @PrimaryKeyJoinColumn
+    @JoinColumn(name = "space_wall_member_id", nullable = false)
     private SpaceWallMember spaceWallMember;
 
     @Column(nullable = false)
