@@ -4,7 +4,9 @@ import com.fastcampus.jober.domain.BaseTimeEntity;
 import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
 import com.fastcampus.jober.domain.spacewallpermission.domain.SpaceWallPermission;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -27,6 +29,7 @@ public class SpaceWallMember extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonManagedReference
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "member_id")
@@ -42,5 +45,6 @@ public class SpaceWallMember extends BaseTimeEntity {
      *  양방향 참조 테스트
      */
     @OneToOne(mappedBy = "spaceWallMember")
+    @JsonBackReference
     private SpaceWallPermission spaceWallPermission;
 }

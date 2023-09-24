@@ -5,6 +5,7 @@ import com.fastcampus.jober.domain.spacewallmember.service.SpaceWallMemberServic
 import com.fastcampus.jober.global.utils.api.dto.ResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/spaces")
+@Slf4j
 public class SpaceWallMemberController {
 
     private final SpaceWallMemberService spaceWallMemberService;
