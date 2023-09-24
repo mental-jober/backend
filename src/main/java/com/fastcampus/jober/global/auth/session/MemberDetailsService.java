@@ -6,6 +6,7 @@ import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.member.repository.MemberRepository;
 import com.fastcampus.jober.global.error.exception.Exception401;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberDetailsService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
@@ -24,6 +26,6 @@ public class MemberDetailsService implements UserDetailsService {
             () -> new Exception401(INVALID_AUTHENTICATION.getMessage())
         );
 
-        return new MemberDetails(member, SpaceWallContextHolder.getSpaceWallId());
+        return new MemberDetails(member);
     }
 }

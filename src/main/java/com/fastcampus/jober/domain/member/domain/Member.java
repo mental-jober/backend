@@ -2,6 +2,7 @@ package com.fastcampus.jober.domain.member.domain;
 
 import com.fastcampus.jober.domain.BaseTimeEntity;
 import com.fastcampus.jober.domain.spacewallmember.domain.SpaceWallMember;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,9 +26,11 @@ public class Member extends BaseTimeEntity {
      *  양방향 참조 테스트
      */
     @OneToMany(mappedBy = "member")
+    @JsonBackReference
     private List<SpaceWallMember> spaceWallMember;
 
     @Column(unique = true, nullable = false, length = 30)
+    @JoinColumn(name = "email")
     private String email;
 
     @Column(nullable = false, length = 100)

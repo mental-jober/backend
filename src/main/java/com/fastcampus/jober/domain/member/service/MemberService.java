@@ -1,8 +1,5 @@
 package com.fastcampus.jober.domain.member.service;
 
-import static com.fastcampus.jober.global.constant.ErrorCode.CHECK_ID;
-import static com.fastcampus.jober.global.constant.ErrorCode.CHECK_PASSWORD;
-
 import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.member.dto.MemberRequest;
 import com.fastcampus.jober.domain.member.dto.MemberResponse.JoinDTO;
@@ -11,8 +8,6 @@ import com.fastcampus.jober.domain.member.repository.MemberRepository;
 import com.fastcampus.jober.global.auth.jwt.JwtTokenProvider;
 import com.fastcampus.jober.global.auth.session.MemberDetails;
 import com.fastcampus.jober.global.error.exception.Exception401;
-import java.util.HashMap;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +16,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.fastcampus.jober.global.constant.ErrorCode.CHECK_ID;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +33,6 @@ public class MemberService {
 
     @Transactional
     public Map<String, Object> login(String email, String password) {
-
         Member member = memberRepository.findByEmail(email).
             orElseThrow(() -> new Exception401(CHECK_ID.getMessage()));
 
@@ -43,10 +42,10 @@ public class MemberService {
 
         Authentication authentication = authenticationManager
             .authenticate(new UsernamePasswordAuthenticationToken(email, password));
-
         MemberDetails memberDetails = (MemberDetails) authentication.getPrincipal();
         Member loginUser = memberDetails.getMember();
 
+        // 리턴 정보
         MemberDTO responseMemberInfo = new MemberDTO(loginUser);
         responseMemberInfo.setId(loginUser.getId());
         responseMemberInfo.setUsername(loginUser.getUsername());
@@ -81,7 +80,6 @@ public class MemberService {
     }
 
     public boolean findEmail(String email) {
-
         return memberRepository.findByEmail(email).isPresent();
     }
 }
