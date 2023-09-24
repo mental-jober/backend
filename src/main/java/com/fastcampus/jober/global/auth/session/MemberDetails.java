@@ -1,39 +1,41 @@
 package com.fastcampus.jober.global.auth.session;
 
 import com.fastcampus.jober.domain.member.domain.Member;
-import com.fastcampus.jober.domain.spacewallmember.domain.SpaceWallMember;
+import com.fastcampus.jober.global.constant.Auths;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Getter
+@Slf4j
 @RequiredArgsConstructor
 public class MemberDetails implements UserDetails {
 
     private final Member member;
     private final Long spaceWallId;
+    private final Map<Long, Auths> longAuthsMap;
+
+    public MemberDetails(Member member) {
+        this.member = member;
+        this.spaceWallId = null;
+        this.longAuthsMap = new HashMap<>();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        if (member.getSpaceWallMember() == null) return null;
-        if (this.spaceWallId == null) return null;
-
-        for (SpaceWallMember spaceWallMember : member.getSpaceWallMember()) {
-            if (this.spaceWallId == spaceWallMember.getSpaceWall().getId()) {
-                authorities.add(
-                        new SimpleGrantedAuthority(spaceWallMember.getSpaceWallPermissions().getAuths().name())
-                );
-                break;
-            }
+        // spaceWallId 와 사용자 공유스페이스 id 비교해서 권한 추가 등록
+        if (longAuthsMap.get(spaceWallId) != null) {
+            authorities.add(new SimpleGrantedAuthority(longAuthsMap.get(spaceWallId).name()));
         }
+
         return authorities;
     }
 
