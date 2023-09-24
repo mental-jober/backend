@@ -1,8 +1,5 @@
 package com.fastcampus.jober.global.config;
 
-import static com.fastcampus.jober.global.constant.ErrorCode.INVALID_AUTHENTICATION;
-import static com.fastcampus.jober.global.constant.ErrorCode.INVALID_USER;
-
 import com.fastcampus.jober.global.auth.jwt.JwtAuthenticationFilter;
 import com.fastcampus.jober.global.error.exception.Exception401;
 import com.fastcampus.jober.global.error.exception.Exception403;
@@ -25,6 +22,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import static com.fastcampus.jober.global.constant.ErrorCode.INVALID_AUTHENTICATION;
+import static com.fastcampus.jober.global.constant.ErrorCode.INVALID_USER;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -60,7 +60,6 @@ public class SecurityConfig {
             AuthenticationManager authenticationManager = builder.getSharedObject(
                 AuthenticationManager.class);
             builder.addFilter(new JwtAuthenticationFilter(authenticationManager));
-
             super.configure(builder);
         }
     }
@@ -114,10 +113,10 @@ public class SecurityConfig {
                 authorize -> {
                     authorize
                             .requestMatchers(new AntPathRequestMatcher("/spaces/member/**"))
-                            .access("isAuthenticated() and hasAnyAuthority('EDITOR')")
+//                            .access("isAuthenticated()")
+                            .access("isAuthenticated() and hasAnyAuthority('EDITOR', 'OWNER')")
                             .anyRequest().permitAll();
                 });
-
         return http.build();
     }
 

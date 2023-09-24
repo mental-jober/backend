@@ -42,5 +42,5 @@ public class SpaceWallMember extends BaseTimeEntity {
      *  양방향 참조 테스트
      */
     @OneToOne(mappedBy = "spaceWallMember")
-    private SpaceWallPermission spaceWallPermissions;
+    private SpaceWallPermission spaceWallPermission;
 }
