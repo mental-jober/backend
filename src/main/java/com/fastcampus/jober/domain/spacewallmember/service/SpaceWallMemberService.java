@@ -7,6 +7,7 @@ import com.fastcampus.jober.domain.spacewallmember.dto.SpaceWallMemberRequest;
 import com.fastcampus.jober.domain.spacewallmember.dto.SpaceWallMemberResponse;
 import com.fastcampus.jober.domain.spacewallmember.repository.SpaceWallMemberRepository;
 import com.fastcampus.jober.domain.spacewallpermission.repository.SpaceWallPermissionRepository;
+import com.fastcampus.jober.global.constant.Auths;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.parameters.P;
@@ -50,7 +51,7 @@ public class SpaceWallMemberService {
         }
 
         // 요청 데이터와 DB에 저장된 데이터 사이즈 비교하고, 다를 경우 차이나는 공동 작업자 삭제
-        if (isEqualSizeOfSpaceWallMember(spaceWallId, requests.size())) {
+        if (!isEqualSizeOfSpaceWallMember(spaceWallId, requests.size())) {
             List<String> emails = findAllEmailsNotInRequest(spaceWallId, requests);
             removeAllSpaceWallMembers(spaceWallId, emails);
         }
@@ -75,9 +76,11 @@ public class SpaceWallMemberService {
     }
 
     public boolean isEqualSizeOfSpaceWallMember(Long spaceWallId, int size) {
+        int a = spaceWallMemberRepository.selectSizeOfSpaceWallMember(spaceWallId);
         return spaceWallMemberRepository.selectSizeOfSpaceWallMember(spaceWallId) == size;
     }
 
+    @Transactional
     public void removeAllSpaceWallMembers(Long spaceWallId, List<String> emails) {
         for (String email : emails) {
             spaceWallMemberRepository.deleteAllSpaceWallMemberByEmail(spaceWallId, email);
@@ -89,10 +92,12 @@ public class SpaceWallMemberService {
         List<SpaceWallMember> spaceWallMembers = spaceWallMemberRepository.selectAllSpaceWallMembers(spaceWallId);
         List<String> emails = new ArrayList<>();
 
+        // 권한 삭제 -> 공동작업자 멤버 삭제
         for (SpaceWallMember spaceWallMember : spaceWallMembers) { // DB데이터 리스트
             for (SpaceWallMemberRequest.AssignDTO request : requests) { // 요청데이터 리스트
-                String emailInDB = spaceWallMember.getMember().getEmail();
-                // 요청데이터 email과 DB데이터 email을 비교해서 같은 걸 찾으면 break; 같은 게 없다면 DB데이터 email을 리스트에 저장한다.
+                String emailInDB = spaceWallMember.getMember().getEmail(); // DB 공동작업자 이메일
+
+                if (spaceWallMember.getSpaceWallPermission().getAuths().equals(Auths.OWNER)) continue;
                 if (request.getEmail().equals(emailInDB)) continue;
                 emails.add(emailInDB);
             }
