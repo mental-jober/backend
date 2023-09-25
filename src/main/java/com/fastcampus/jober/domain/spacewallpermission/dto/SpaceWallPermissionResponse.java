@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class SpaceWallPermissionResponse {
     private Long id;
-    private Auths auths;       // READ / EDIT / DELETE
+    private Auths auths;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Long parentId;     // 상위 페이지 ID
+    private Long parentId;
 
     public SpaceWallPermissionResponse(SpaceWallPermission spaceWallPermission) {
         this.id = spaceWallPermission.getId();
