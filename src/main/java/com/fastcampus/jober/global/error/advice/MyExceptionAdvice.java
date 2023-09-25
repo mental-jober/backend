@@ -5,9 +5,8 @@ import com.fastcampus.jober.global.error.exception.Exception401;
 import com.fastcampus.jober.global.error.exception.Exception403;
 import com.fastcampus.jober.global.error.exception.Exception500;
 import com.fastcampus.jober.global.error.exception.ExceptionValid;
-import com.fastcampus.jober.global.util.ApiUtil;
-import com.fastcampus.jober.global.util.ApiUtil.ApiResponse;
 import com.fastcampus.jober.global.utils.api.ApiUtils;
+import com.fastcampus.jober.global.utils.api.dto.ResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -39,7 +38,8 @@ public class MyExceptionAdvice {
 
     @ExceptionHandler(DomainException.class)
     public ResponseEntity<?> globalExceptionHandler(DomainException e) {
-        ApiResponse response = ApiUtil.result(e.getCode(), e.getMessage(), null);
+
+        ResponseDTO<String> response = new ResponseDTO(e.getHttpStatus(), e.getMessage(), null);
 
         return new ResponseEntity<>(response, e.getHttpStatus());
     }
