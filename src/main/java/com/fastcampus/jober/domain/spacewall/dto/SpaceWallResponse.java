@@ -2,12 +2,11 @@ package com.fastcampus.jober.domain.spacewall.dto;
 
 import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 public class SpaceWallResponse {
 
@@ -16,6 +15,7 @@ public class SpaceWallResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ResponseDto {
+
         private Long id;
         private Long create_member_id;
         private String url;
@@ -49,17 +49,25 @@ public class SpaceWallResponse {
             Member member = Member.builder().id(create_member_id).build();
 
             return SpaceWall.builder()
-                    .id(id)
-                    .url(url)
-                    .title(title)
-                    .description(description)
-                    .profileImageUrl(profile_image_url)
-                    .backgroundImageUrl(background_image_url)
-                    .pathIds(path_ids)
-                    .shareUrl(share_url)
-                    .shareExpiredAt(share_expired_at)
-                    .sequence(sequence)
-                    .build();
+                .id(id)
+                .url(url)
+                .title(title)
+                .description(description)
+                .profileImageUrl(profile_image_url)
+                .backgroundImageUrl(background_image_url)
+                .pathIds(path_ids)
+                .shareUrl(share_url)
+                .shareExpiredAt(share_expired_at)
+                .sequence(sequence)
+                .build();
         }
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SessionDTO {
+
+        private boolean accessable;
     }
 }
