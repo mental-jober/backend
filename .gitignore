@@ -6,7 +6,6 @@ build/
 !**/src/test/**/build/
 
 ### INFO ###
-application-dev.yml
 
 ### STS ###
 .apt_generated
