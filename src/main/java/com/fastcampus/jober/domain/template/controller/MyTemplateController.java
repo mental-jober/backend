@@ -3,7 +3,7 @@ package com.fastcampus.jober.domain.template.controller;
 import com.fastcampus.jober.domain.template.dto.TemplateResponseDto.ListDto;
 import com.fastcampus.jober.domain.template.service.MyTemplateService;
 import com.fastcampus.jober.global.auth.session.MemberDetails;
-import com.fastcampus.jober.global.util.ApiUtil;
+import com.fastcampus.jober.global.utils.api.dto.ResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -31,8 +31,8 @@ public class MyTemplateController {
         Page<ListDto> myTemplates = myTemplateService.findMyTemplates(page, 10,
             memberDetails.getMember());
 
-        return ResponseEntity.ok(ApiUtil.result(HttpStatus.OK.value(), "정상적으로 처리되었습니다.",
-            myTemplates));
+        return ResponseEntity.ok(
+            new ResponseDTO<Page<ListDto>>(HttpStatus.OK, "정상적으로 처리되었습니다.", myTemplates));
     }
 
     @DeleteMapping("/favorite")
@@ -41,6 +41,7 @@ public class MyTemplateController {
         @RequestParam(name = "templateId") Long myTemplateId) {
         myTemplateService.removeMyTemplate(memberDetails.getMember().getId(), myTemplateId);
 
-        return ResponseEntity.ok(ApiUtil.result(HttpStatus.OK.value(), "정상적으로 처리되었습니다.", null));
+        return new ResponseEntity<>(new ResponseDTO<>(HttpStatus.OK, "정상적으로 처리되었습니다.", null),
+            HttpStatus.OK);
     }
 }
