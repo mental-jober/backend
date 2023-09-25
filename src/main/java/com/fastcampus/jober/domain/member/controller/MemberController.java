@@ -68,8 +68,8 @@ public class MemberController {
      * @param request email, auths
      * @return boolean
      */
-    @GetMapping("/checkEmail")
-    public boolean isExistMemberByEmail(@RequestBody @Valid SpaceWallMemberRequest.AssignDTO request) {
-        return memberService.findEmail(request.getEmail());
+    @GetMapping("/checkEmail/{email}")
+    public boolean isExistMemberByEmail(@PathVariable(name = "email") @Valid String request) {
+        return memberService.findEmail(request);
     }
 }
