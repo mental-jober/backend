@@ -15,7 +15,6 @@ public class SpaceWallRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreateDto {
-        private Long createMemberId;
         private String url;
         private String title;
         private String description;
@@ -26,13 +25,11 @@ public class SpaceWallRequest {
         private Date shareExpiredAt;
         private Integer sequence;
 
-        public SpaceWall toEntity() {
-            Member member = Member.builder().id(createMemberId).build();
-
-            LocalDateTime shareExpiration = (shareExpiredAt != null) ?
-                    LocalDateTime.ofInstant(shareExpiredAt.toInstant(), ZoneId.systemDefault()) : null;
+        public SpaceWall toEntityWithMember(Member member) {
+            LocalDateTime shareExpiration = convertDateToLocalDateTime(shareExpiredAt);
 
             return SpaceWall.builder()
+                    .createMember(member)
                     .url(url)
                     .title(title)
                     .description(description)
@@ -43,6 +40,10 @@ public class SpaceWallRequest {
                     .shareExpiredAt(shareExpiration)
                     .sequence(sequence != null ? sequence : 0)
                     .build();
+        }
+
+        private LocalDateTime convertDateToLocalDateTime(Date date) {
+            return (date != null) ? LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()) : null;
         }
     }
 
@@ -60,9 +61,7 @@ public class SpaceWallRequest {
         private Date shareExpiredAt;
 
         public SpaceWall toEntity() {
-
-            LocalDateTime shareExpiration = (shareExpiredAt != null) ?
-                    LocalDateTime.ofInstant(shareExpiredAt.toInstant(), ZoneId.systemDefault()) : null;
+            LocalDateTime shareExpiration = convertDateToLocalDateTime(shareExpiredAt);
 
             return SpaceWall.builder()
                     .url(url)
@@ -74,6 +73,10 @@ public class SpaceWallRequest {
                     .shareUrl(shareUrl)
                     .shareExpiredAt(shareExpiration)
                     .build();
+        }
+
+        private LocalDateTime convertDateToLocalDateTime(Date date) {
+            return (date != null) ? LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()) : null;
         }
     }
 }

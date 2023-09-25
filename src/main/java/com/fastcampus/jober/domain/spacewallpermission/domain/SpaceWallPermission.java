@@ -21,17 +21,14 @@ public class SpaceWallPermission extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //    @JsonIgnore
     @OneToOne
-//    @PrimaryKeyJoinColumn
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonManagedReference
-    @JoinColumn(name = "space_wall_member_id", nullable = false)
+    @JoinColumn(name = "space_wall_member_id")
     private SpaceWallMember spaceWallMember;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private Auths auths = Auths.VIEWER; // READ를 기본값으로 설정
+    private Auths auths = Auths.VIEWER;
 
     @Column
     private Long parentId;

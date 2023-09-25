@@ -32,6 +32,7 @@ public class SpaceWallResponse {
 
         public ResponseDto(SpaceWall spaceWall) {
             this.id = spaceWall.getId();
+            this.create_member_id = spaceWall.getCreateMember().getId();
             this.url = spaceWall.getUrl();
             this.title = spaceWall.getTitle();
             this.description = spaceWall.getDescription();
