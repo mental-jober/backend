@@ -35,27 +35,30 @@ public class SpaceWallController {
             @PathVariable Long id) {
         SpaceWallResponse.ResponseDto foundSpaceWallDto = spaceWallService.findById(id);
 
-//        SpaceWallPermission permission = permissionService.getPermissionForSpaceWall(foundSpaceWallDto.toEntity());
-//        if (permission == null || (permission.getAuths() != Auths.VIEWER && permission.getAuths() != Auths.EDITOR && permission.getAuths() != Auths.OWNER)) {
-//            throw new Exception403(ErrorCode.INVALID_ACCESS.getMessage());
-//        }
-
         return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK, "완료되었습니다.", foundSpaceWallDto));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDTO<SpaceWallResponse.ResponseDto>> updateSpaceWall(
-            @PathVariable Long id, @RequestBody SpaceWallRequest.UpdateDto updateDto,
+            @PathVariable Long id,
+            @RequestBody SpaceWallRequest.UpdateDto updateDto,
+            @AuthenticationPrincipal MemberDetails memberDetails,
             HttpSession httpSession) {
-        SpaceWallResponse.ResponseDto updatedSpaceWallDto = spaceWallService.update(id, updateDto,
-                httpSession);
+
+        SpaceWallResponse.ResponseDto updatedSpaceWallDto = spaceWallService.update(id, updateDto, memberDetails, httpSession);
+
         return new ResponseEntity<>(
                 new ResponseDTO<>(HttpStatus.OK, "수정되었습니다.", updatedSpaceWallDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseDTO<String>> deleteSpaceWall(@PathVariable Long id) {
-        spaceWallService.delete(id);
+    public ResponseEntity<ResponseDTO<String>> deleteSpaceWall(
+            @PathVariable Long id,
+            @AuthenticationPrincipal MemberDetails memberDetails,
+            HttpSession httpSession) {
+
+        spaceWallService.delete(id, memberDetails, httpSession);
+
         return new ResponseEntity<>(
                 new ResponseDTO<>(HttpStatus.OK, "공유페이지 " + id + " 삭제되었습니다.", "Success"),
                 HttpStatus.OK);

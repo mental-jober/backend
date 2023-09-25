@@ -52,7 +52,7 @@ public class SpaceWallService {
 
     @Transactional
     public SpaceWallResponse.ResponseDto update(Long id, SpaceWallRequest.UpdateDto updateDto,
-                                                HttpSession httpSession) {
+                                                MemberDetails memberDetails, HttpSession httpSession) {
         if (id == null || updateDto == null) {
             throw new SpaceWallBadRequestException("업데이트할 매개 변수가 잘못되었습니다.");
         }
@@ -60,22 +60,36 @@ public class SpaceWallService {
         SpaceWall spaceWall = spaceWallRepository.findById(id)
                 .orElseThrow(() -> new SpaceWallNotFoundException("ID가 있는 공유페이지을 찾을 수 없습니다: " + id));
 
+        // 로그인한 사용자와 SpaceWall의 생성자를 비교하여 권한 검사
+        if (!spaceWall.getCreateMember().getId().equals(memberDetails.getMember().getId())) {
+            throw new SpaceWallBadRequestException("수정 권한이 없습니다.");
+        }
+
         SpaceWall updatedSpaceWall = updateDto.toEntity();
         spaceWall.update(updatedSpaceWall);
 
+        // 수정 후 세션에서 편집 상태 제거
         removeEditSession(id, httpSession);
 
         return new SpaceWallResponse.ResponseDto(spaceWall);
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void delete(Long id, MemberDetails memberDetails, HttpSession httpSession) {
         if (id == null) {
             throw new SpaceWallBadRequestException("공유페이지 ID는 null일 수 없습니다.");
         }
 
         SpaceWall spaceWall = spaceWallRepository.findById(id)
                 .orElseThrow(() -> new SpaceWallNotFoundException("ID가 있는 공유페이지을 찾을 수 없습니다.: " + id));
+
+        // 로그인한 사용자와 SpaceWall의 생성자를 비교하여 권한 검사
+        if (!spaceWall.getCreateMember().getId().equals(memberDetails.getMember().getId())) {
+            throw new SpaceWallBadRequestException("삭제 권한이 없습니다.");
+        }
+
+        // 삭제 전 세션에서 편집 상태 제거
+        removeEditSession(id, httpSession);
 
         if ("1".equals(spaceWall.getPathIds())) {
             throw new SpaceWallBadRequestException("최상단의 공유페이지는 삭제할 수 없습니다.");

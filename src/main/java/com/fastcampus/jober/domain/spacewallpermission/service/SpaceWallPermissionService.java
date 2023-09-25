@@ -6,6 +6,7 @@ import com.fastcampus.jober.domain.spacewallpermission.domain.SpaceWallPermissio
 import com.fastcampus.jober.domain.spacewallpermission.dto.SpaceWallPermissionRequest;
 import com.fastcampus.jober.domain.spacewallpermission.dto.SpaceWallPermissionResponse;
 import com.fastcampus.jober.domain.spacewallpermission.repository.SpaceWallPermissionRepository;
+import com.fastcampus.jober.global.auth.session.MemberDetails;
 import com.fastcampus.jober.global.constant.Auths;
 import com.fastcampus.jober.global.error.exception.InvalidTargetSequenceException;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,11 @@ public class SpaceWallPermissionService {
     private final SpaceWallRepository spaceWallRepository;
 
     @Transactional
-    public SpaceWallPermissionResponse updatePermission(Long id, SpaceWallPermissionRequest requestDto) {
+    public SpaceWallPermissionResponse updatePermission(Long id, SpaceWallPermissionRequest requestDto, MemberDetails memberDetails) {
+        if (memberDetails == null || !memberDetails.getMember().getId().equals(requestDto.getMemberId())) {
+            throw new IllegalArgumentException("접근 권한이 없습니다.");
+        }
+
         SpaceWallPermission spaceWallPermission = spaceWallPermissionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 공유페이스 권한 ID입니다."));
 
@@ -33,7 +38,11 @@ public class SpaceWallPermissionService {
     }
 
     @Transactional
-    public SpaceWallPermissionResponse moveSpaceWallPermission(Long id, Long targetSequence) {
+    public SpaceWallPermissionResponse moveSpaceWallPermission(Long id, Long targetSequence, MemberDetails memberDetails) {
+        if (memberDetails == null) {
+            throw new IllegalArgumentException("접근 권한이 없습니다.");
+        }
+
         SpaceWall currentSpaceWall = spaceWallRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 공유페이스 ID입니다."));
 
@@ -57,7 +66,6 @@ public class SpaceWallPermissionService {
                 spaceWallRepository.save(spaceWall);
             }
         } else {
-            // Same position, no movement
             throw new IllegalArgumentException("이동할 필요가 없습니다.");
         }
 
@@ -69,7 +77,6 @@ public class SpaceWallPermissionService {
 
         return new SpaceWallPermissionResponse(spaceWallPermission);
     }
-
 
     @Transactional
     public void assignPermissionToSpaceWall(Auths auth, SpaceWall spaceWall) {
