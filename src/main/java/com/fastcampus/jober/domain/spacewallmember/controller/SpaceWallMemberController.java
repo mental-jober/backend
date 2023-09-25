@@ -29,7 +29,7 @@ public class SpaceWallMemberController {
      * @param requests 공유멤버로 등록하려는 멤버 정보
      * @return 확인 메세지
      */
-    @PostMapping("/member/{spaceWallId}")
+    @PostMapping("/{spaceWallId}/member")
     public ResponseEntity<?> spaceWallMemberAdd(
             @PathVariable Long spaceWallId,
             @Valid @RequestBody List<SpaceWallMemberRequest.AssignDTO> requests
@@ -44,7 +44,7 @@ public class SpaceWallMemberController {
      * @param spaceWallId 공유스페이스 id
      * @return 공유스페이스 공동 작업자 정보
      */
-    @GetMapping("/member/{spaceWallId}")
+    @GetMapping("/{spaceWallId}/member")
     public ResponseEntity<?> spaceWallMemberList(@PathVariable Long spaceWallId) {
 
         return ResponseEntity.ok(
