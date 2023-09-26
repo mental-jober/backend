@@ -21,6 +21,13 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 100
+  data:
+    redis:
+      host: ${REDIS.HOSTNAME}
+      port: ${REDIS.PORT}
+      password: ${REDIS.PASSWORD}
+  session:
+    store-type: redis
 
 my-env:
   jwt:
