@@ -7,8 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Getter
 @AllArgsConstructor
@@ -43,11 +41,8 @@ public class SpaceWall extends BaseTimeEntity {
     @Column(name = "path_ids", length = 100)
     private String pathIds;
 
-    @Column(name = "share_url", length = 100)
-    private String shareUrl;
-
-    @Column(name = "share_expired_at")
-    private LocalDateTime shareExpiredAt;
+    @Column(nullable = false)
+    private boolean authorized;
 
     @Column(nullable = false)
     private int sequence;
@@ -63,11 +58,10 @@ public class SpaceWall extends BaseTimeEntity {
         if (updatedSpaceWall.getProfileImageUrl() != null) this.profileImageUrl = updatedSpaceWall.getProfileImageUrl();
         if (updatedSpaceWall.getBackgroundImageUrl() != null) this.backgroundImageUrl = updatedSpaceWall.getBackgroundImageUrl();
         if (updatedSpaceWall.getPathIds() != null) this.pathIds = updatedSpaceWall.getPathIds();
-        if (updatedSpaceWall.getShareUrl() != null) this.shareUrl = updatedSpaceWall.getShareUrl();
-        if (updatedSpaceWall.getShareExpiredAt() != null) this.shareExpiredAt = updatedSpaceWall.getShareExpiredAt();
+        this.authorized = updatedSpaceWall.isAuthorized();
     }
+
     public void setSequence(int sequence) {
         this.sequence = sequence;
     }
-
 }
