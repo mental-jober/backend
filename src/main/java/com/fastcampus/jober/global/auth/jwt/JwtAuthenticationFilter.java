@@ -16,8 +16,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import java.io.IOException;
 
-import static com.fastcampus.jober.global.constant.ErrorCode.EXPIRED_JWT_TOKEN;
-
 @Slf4j
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
@@ -46,8 +44,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
         String jwt = prefixJwt.replace(JwtTokenProvider.TOKEN_PREFIX, "");
 
-        if (JwtTokenProvider.isExpired(jwt)) {
-            log.error(EXPIRED_JWT_TOKEN.getMessage());
+        if (JwtTokenProvider.validateToken(jwt)) {
             chain.doFilter(request, response);
         }
 
@@ -58,7 +55,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         Long parsedId = null;
         if (request.getRequestURI().split("/")[1].equals("spaces"))
             // localhost:8080[0]/spaces[1]/{space_wall_id}[2] parsing
-            parsedId = Long.parseLong(request.getRequestURI().split("/")[2]);
+            parsedId = Long.parseLong(request.getRequestURI().split("/")[3]);
 
         MemberDetails memberDetails = new MemberDetails(
                 member,
