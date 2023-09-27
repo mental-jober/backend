@@ -5,6 +5,7 @@ import static com.fastcampus.jober.global.constant.ErrorCode.INVALID_AUTHENTICAT
 import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.member.repository.MemberRepository;
 import com.fastcampus.jober.global.error.exception.Exception401;
+import com.fastcampus.jober.global.error.exception.MemberException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +24,7 @@ public class MemberDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         Member member = memberRepository.findByEmail(email).orElseThrow(
-            () -> new Exception401(INVALID_AUTHENTICATION.getMessage())
+            () -> new MemberException(INVALID_AUTHENTICATION)
         );
 
         return new MemberDetails(member);

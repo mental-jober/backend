@@ -2,6 +2,7 @@ package com.fastcampus.jober.global.auth.jwt;
 
 import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.global.auth.session.MemberDetails;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +15,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import java.io.IOException;
+
+import static com.fastcampus.jober.global.constant.ErrorCode.EXPIRED_JWT_TOKEN;
 
 @Slf4j
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
@@ -32,7 +35,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         HttpServletRequest request,
         HttpServletResponse response,
         FilterChain chain
-    ) throws IOException, ServletException {
+    ) throws IOException, ServletException, ExpiredJwtException {
 
         String prefixJwt = request.getHeader(JwtTokenProvider.HEADER);
 
@@ -44,7 +47,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         String jwt = prefixJwt.replace(JwtTokenProvider.TOKEN_PREFIX, "");
 
         if (JwtTokenProvider.isExpired(jwt)) {
-            log.error("토큰이 만료되었습니다.");
+            log.error(EXPIRED_JWT_TOKEN.getMessage());
             chain.doFilter(request, response);
         }
 
