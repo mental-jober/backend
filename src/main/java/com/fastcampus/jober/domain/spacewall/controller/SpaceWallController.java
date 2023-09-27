@@ -30,7 +30,7 @@ public class SpaceWallController {
     private final SpaceWallService spaceWallService;
     private final SpaceWallPermissionService permissionService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/view/{id}")
     public ResponseEntity<ResponseDTO<SpaceWallResponse.ResponseDto>> getSpaceWall(
             @PathVariable Long id) {
         SpaceWallResponse.ResponseDto foundSpaceWallDto = spaceWallService.findById(id);
@@ -38,7 +38,7 @@ public class SpaceWallController {
         return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK, "완료되었습니다.", foundSpaceWallDto));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/edit/{id}")
     public ResponseEntity<ResponseDTO<SpaceWallResponse.ResponseDto>> updateSpaceWall(
             @PathVariable Long id,
             @RequestBody SpaceWallRequest.UpdateDto updateDto,
@@ -51,7 +51,7 @@ public class SpaceWallController {
                 new ResponseDTO<>(HttpStatus.OK, "수정되었습니다.", updatedSpaceWallDto), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/del/{id}")
     public ResponseEntity<ResponseDTO<String>> deleteSpaceWall(
             @PathVariable Long id,
             @AuthenticationPrincipal MemberDetails memberDetails,
