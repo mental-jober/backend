@@ -1,6 +1,7 @@
 package com.fastcampus.jober.domain.member.domain;
 
 import com.fastcampus.jober.domain.BaseTimeEntity;
+import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
 import com.fastcampus.jober.domain.spacewallmember.domain.SpaceWallMember;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -22,12 +23,13 @@ public class Member extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     *  양방향 참조 테스트
-     */
     @OneToMany(mappedBy = "member")
     @JsonBackReference
     private List<SpaceWallMember> spaceWallMember;
+
+    @OneToMany(mappedBy = "createMember")
+    @JsonBackReference
+    private List<SpaceWall> spaceWalls ;
 
     @Column(unique = true, nullable = false, length = 30)
     @JoinColumn(name = "email")

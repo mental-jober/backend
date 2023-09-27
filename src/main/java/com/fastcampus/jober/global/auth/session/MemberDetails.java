@@ -30,11 +30,11 @@ public class MemberDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         List<GrantedAuthority> authorities = new ArrayList<>();
-
-        // spaceWallId 와 사용자 공유스페이스 id 비교해서 권한 추가 등록
+        // spaceWallId 와 사용자 공유스페이스 id 비교해서 권한 등록
         if (longAuthsMap.get(spaceWallId) != null) {
             authorities.add(new SimpleGrantedAuthority(longAuthsMap.get(spaceWallId).name()));
         }
+
 
         return authorities;
     }

@@ -1,7 +1,7 @@
 package com.fastcampus.jober.global.auth.jwt;
 
 import com.fastcampus.jober.domain.member.domain.Member;
-import com.fastcampus.jober.domain.spacewallmember.domain.SpaceWallMember;
+import com.fastcampus.jober.domain.member.dto.MemberResponse;
 import com.fastcampus.jober.global.constant.Auths;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -9,12 +9,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.*;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
@@ -49,15 +48,16 @@ public class JwtTokenProvider {
 
     public static boolean isExpired(String token) {
         return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token)
-            .getBody().getExpiration().before(new Date());
+                .getBody().getExpiration().before(new Date());
     }
 
-    public static String create(Member member) {
-        List<SpaceWallMember> spaceWallMemberList = member.getSpaceWallMember();
+    public static String create(Member member, List<MemberResponse.PermissionMappedDTO> permissionDTOs) {
+
         Map<Long, Auths> spaceWallMemberInfos = new HashMap<>();
-        for (SpaceWallMember spaceWallMember : spaceWallMemberList) {
-            spaceWallMemberInfos.put(spaceWallMember.getId(), spaceWallMember.getSpaceWallPermission().getAuths());
+        for (MemberResponse.PermissionMappedDTO permissionMappedDTO : permissionDTOs) {
+            spaceWallMemberInfos.put(permissionMappedDTO.getSpaceWallId(), permissionMappedDTO.getAuths());
         }
+
         Claims claims = Jwts.claims();
         claims.put("id", member.getId());
         claims.put("email", member.getEmail());

@@ -29,22 +29,20 @@ public class SpaceWallMember extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonManagedReference
     @ManyToOne
+    @JsonBackReference
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "member_id")
     private Member member;
 
     @JsonIgnore
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "space_wall_id")
     private SpaceWall spaceWall;
 
-    /**
-     *  양방향 참조 테스트
-     */
     @OneToOne(mappedBy = "spaceWallMember")
-    @JsonBackReference
+    @JsonManagedReference
     private SpaceWallPermission spaceWallPermission;
 }

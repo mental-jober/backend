@@ -2,10 +2,18 @@ package com.fastcampus.jober.domain.spacewall.domain;
 
 import com.fastcampus.jober.domain.BaseTimeEntity;
 import com.fastcampus.jober.domain.member.domain.Member;
+import com.fastcampus.jober.domain.spacewallmember.domain.SpaceWallMember;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,7 +27,14 @@ public class SpaceWall extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToMany(mappedBy = "spaceWall")
+    @JsonManagedReference
+    private List<SpaceWallMember> spaceWallMember;
+
+    @JsonIgnore
+    @JsonBackReference
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "create_member_id")
     private Member createMember;
 

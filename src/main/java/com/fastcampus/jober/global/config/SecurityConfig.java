@@ -112,8 +112,9 @@ public class SecurityConfig {
         http.authorizeRequests(
                 authorize -> {
                     authorize
-                            .requestMatchers(new AntPathRequestMatcher("/spaces/member/**"))
-//                            .access("isAuthenticated()")
+                            .requestMatchers(new AntPathRequestMatcher("/checkEmail/**"))
+                            .access("isAuthenticated() and hasAnyAuthority('EDITOR', 'OWNER')")
+                            .requestMatchers(new AntPathRequestMatcher("/spaces/**"))
                             .access("isAuthenticated() and hasAnyAuthority('EDITOR', 'OWNER')")
                             .anyRequest().permitAll();
                 });
