@@ -1,10 +1,13 @@
 package com.fastcampus.jober.domain.spacewallhistory.dto;
 
+import com.fastcampus.jober.domain.componenthistory.dto.ComponentHistoryResponse;
 import com.fastcampus.jober.domain.spacewallhistory.domain.SpaceWallHistory;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class SpaceWallHistoryResponse {
 
@@ -26,7 +29,7 @@ public class SpaceWallHistoryResponse {
 
         public SpaceWallHistoryResponseDTO(SpaceWallHistory spaceWallHistory) {
             this.id = spaceWallHistory.getId();
-            this.spaceWallId = spaceWallHistory.getSpaceWall().getId();
+            this.spaceWallId = spaceWallHistory.getSpaceWallId();
             this.createMemberId = spaceWallHistory.getCreateMemberId();
             this.url = spaceWallHistory.getUrl();
             this.title = spaceWallHistory.getTitle();
@@ -37,6 +40,7 @@ public class SpaceWallHistoryResponse {
             this.authorized = spaceWallHistory.isAuthorized();
             this.sequence = spaceWallHistory.getSequence();
         }
-
     }
+
+
 }
