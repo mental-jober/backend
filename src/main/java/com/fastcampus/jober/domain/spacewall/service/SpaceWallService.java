@@ -125,4 +125,10 @@ public class SpaceWallService {
     private void removeEditSession(Long spaceWallId, HttpSession httpSession) {
         httpSession.removeAttribute("spaces/" + spaceWallId);
     }
+
+
+    @Transactional(readOnly = true)
+    public boolean checkSpaceWallIdExists(Long id) {
+        return spaceWallRepository.existsSpaceWallById(id);
+    }
 }

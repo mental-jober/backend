@@ -20,9 +20,12 @@ public enum ErrorCode {
     TEMPLATE_NOT_FOUND(HttpStatus.BAD_REQUEST, "템플릿 정보를 찾을 수 없습니다."),
     TEMPLATE_TYPE_NOT_FOUND(HttpStatus.BAD_REQUEST, "템플릿 분류를 확인해주세요."),
     PAGE_BAD_REQUEST(HttpStatus.BAD_REQUEST, "페이지 번호는 0보다 작을 수 없습니다."),
-    MYTEMPLATE_NOT_FOUND(HttpStatus.BAD_REQUEST, "내 템플릿 정보를 찾을 수 없습니다."),
-    MYTEMPLATE_MEMBER_NOT_MATCHED(HttpStatus.BAD_REQUEST, "본인의 템플릿만 해제가 가능합니다."),
-    MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "사용자 정보를 찾을 수 없습니다.");
+    MY_TEMPLATE_NOT_FOUND(HttpStatus.BAD_REQUEST, "내 템플릿 정보를 찾을 수 없습니다."),
+    MY_TEMPLATE_MEMBER_NOT_MATCHED(HttpStatus.BAD_REQUEST, "본인의 템플릿만 해제가 가능합니다."),
+    MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "사용자 정보를 찾을 수 없습니다."),
+    EXPIRED_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 만료 되었습니다."),
+    DUPLICATED_EMAIL(HttpStatus.BAD_REQUEST, "중복된 이메일입니다.");
+
 
     private final HttpStatus httpStatus;
     private final String message;
