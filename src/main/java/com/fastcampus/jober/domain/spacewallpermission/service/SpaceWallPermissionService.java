@@ -46,6 +46,10 @@ public class SpaceWallPermissionService {
         SpaceWall currentSpaceWall = spaceWallRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 공유페이스 ID입니다."));
 
+        if (!currentSpaceWall.getCreateMember().getId().equals(memberDetails.getMember().getId())) {
+            throw new IllegalArgumentException("이 페이지를 이동시킬 권한이 없습니다.");
+        }
+
         if (targetSequence == null || targetSequence < 1 || targetSequence > spaceWallRepository.count()) {
             throw new InvalidTargetSequenceException("잘못된 타겟 순서입니다. 입력 값: " + targetSequence);
         }
