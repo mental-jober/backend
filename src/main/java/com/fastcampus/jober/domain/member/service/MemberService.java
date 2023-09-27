@@ -8,6 +8,7 @@ import com.fastcampus.jober.domain.member.repository.MemberRepository;
 import com.fastcampus.jober.global.auth.jwt.JwtTokenProvider;
 import com.fastcampus.jober.global.auth.session.MemberDetails;
 import com.fastcampus.jober.global.error.exception.Exception401;
+import com.fastcampus.jober.global.error.exception.MemberException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,7 +35,7 @@ public class MemberService {
     @Transactional
     public Map<String, Object> login(String email, String password) {
         Member member = memberRepository.findByEmail(email).
-            orElseThrow(() -> new Exception401(CHECK_ID.getMessage()));
+            orElseThrow(() -> new MemberException(CHECK_ID));
 
 //        if (!bCryptPasswordEncoder.matches(password, member.getPassword())) {
 //            throw new Exception401(CHECK_PASSWORD.getMessage());
@@ -45,15 +46,9 @@ public class MemberService {
         MemberDetails memberDetails = (MemberDetails) authentication.getPrincipal();
         Member loginUser = memberDetails.getMember();
 
-        // 리턴 정보
-        MemberDTO responseMemberInfo = new MemberDTO(loginUser);
-        responseMemberInfo.setId(loginUser.getId());
-        responseMemberInfo.setUsername(loginUser.getUsername());
-        responseMemberInfo.setEmail(loginUser.getEmail());
-
         Map<String, Object> response = new HashMap<>();
-        response.put("token", JwtTokenProvider.create(loginUser));
-        response.put("memberInfo", responseMemberInfo);
+        response.put("token", JwtTokenProvider.create(loginUser, memberRepository.findAuthsByEmail(email)));
+        response.put("memberInfo", new MemberDTO(loginUser));
 
         return response;
     }
@@ -79,7 +74,8 @@ public class MemberService {
 
     }
 
-    public boolean findEmail(String email) {
-        return memberRepository.findByEmail(email).isPresent();
+    @Transactional(readOnly = true)
+    public boolean checkEmailDuplication(String email) {
+        return memberRepository.existsMemberByEmail(email);
     }
 }

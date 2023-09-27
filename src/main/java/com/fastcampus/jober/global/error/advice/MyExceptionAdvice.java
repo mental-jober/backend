@@ -1,12 +1,10 @@
 package com.fastcampus.jober.global.error.advice;
 
-import com.fastcampus.jober.global.error.exception.DomainException;
-import com.fastcampus.jober.global.error.exception.Exception401;
-import com.fastcampus.jober.global.error.exception.Exception403;
-import com.fastcampus.jober.global.error.exception.Exception500;
-import com.fastcampus.jober.global.error.exception.ExceptionValid;
+import com.fastcampus.jober.global.constant.ErrorCode;
+import com.fastcampus.jober.global.error.exception.*;
 import com.fastcampus.jober.global.utils.api.ApiUtils;
 import com.fastcampus.jober.global.utils.api.dto.ResponseDTO;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -63,5 +61,10 @@ public class MyExceptionAdvice {
             );
         log.error(e.getMessage(), e);
         return new ResponseEntity<>(apiResult, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<?> expiredJwtException(ExpiredJwtException e) {
+        return new ResponseEntity<>(new TokenException(ErrorCode.EXPIRED_JWT_TOKEN), HttpStatus.BAD_REQUEST);
     }
 }

@@ -10,4 +10,6 @@ import java.util.Optional;
 @Repository
 public interface SpaceWallRepository extends JpaRepository<SpaceWall, Long> {
     List<SpaceWall> findBySequenceBetween(int start, int end);
+
+    boolean existsSpaceWallById(Long id);
 }
