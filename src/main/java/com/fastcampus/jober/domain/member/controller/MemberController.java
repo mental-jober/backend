@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+import static com.fastcampus.jober.domain.member.dto.MemberResponse.JoinDTO;
 import static com.fastcampus.jober.global.constant.ErrorCode.DUPLICATED_EMAIL;
 
 @RestController
@@ -29,7 +30,7 @@ public class MemberController {
      * @return 사용자 정보 반환
      */
     @PostMapping("/join")
-    public ResponseEntity<?> join(
+    public ResponseEntity<ResponseDTO<JoinDTO>> join(
         @Valid @RequestBody MemberRequest.JoinDTO joinRequestDTO
     ) {
         if (memberService.checkEmailDuplication(joinRequestDTO.getEmail()))
@@ -45,7 +46,7 @@ public class MemberController {
      * @return Header(토큰), Body(사용자 정보) 반환
      */
     @PostMapping("/login")
-    public ResponseEntity<?> login(
+    public ResponseEntity<ResponseDTO<Object>> login(
         @RequestBody @Valid MemberRequest.LoginDTO loginRequestDTO
     ) {
         Map<String, Object> response = memberService.login(loginRequestDTO.getEmail(), loginRequestDTO.getPassword());
@@ -60,8 +61,8 @@ public class MemberController {
      * @param authorization 토큰
      * @return 메세지 반환
      */
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout(
+    @PostMapping("/api-logout")
+    public ResponseEntity<ResponseDTO<String>> logout(
         @RequestHeader(JwtTokenProvider.HEADER) String authorization
     ) {
         memberService.logout(authorization.split(" ")[1]); // Bearer 떼냄.
@@ -76,5 +77,15 @@ public class MemberController {
     @GetMapping("/checkEmail/{email}")
     public boolean isExistMemberByEmail(@PathVariable(name = "email") @Email String request) {
         return memberService.checkEmailDuplication(request);
+    }
+
+    /**
+     * 토큰 검사
+     * @param authorization
+     * @return 이상이 없는 경우 false
+     */
+    @GetMapping("/checkToken")
+    public boolean isOKToken(@RequestHeader(JwtTokenProvider.HEADER) String authorization) {
+        return JwtTokenProvider.validateToken(authorization.split(" ")[1]);
     }
 }
