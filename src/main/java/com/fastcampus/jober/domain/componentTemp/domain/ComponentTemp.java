@@ -1,7 +1,7 @@
-package com.fastcampus.jober.domain.component.domain;
+package com.fastcampus.jober.domain.componentTemp.domain;
 
 import com.fastcampus.jober.domain.BaseTimeEntity;
-import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
+import com.fastcampus.jober.domain.spacewall.domain.SpaceWallTemp;
 import com.fastcampus.jober.domain.template.domain.Template;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,12 +16,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Component extends BaseTimeEntity {
+public class ComponentTemp extends BaseTimeEntity {
 
     @Id
     @Column(nullable = false, unique = true)
@@ -29,16 +30,19 @@ public class Component extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "space_wall_id")
-    private SpaceWall spaceWall;
+    @JoinColumn(name = "space_wall_temp_id")
+    private SpaceWallTemp spaceWallTemp;
 
     @ManyToOne
     @JoinColumn(name = "template_id")
     private Template template;
 
     @ManyToOne
-    @JoinColumn(name = "child_space_wall_id")
-    private SpaceWall childSpaceWall;
+    @JoinColumn(name = "child_space_wall_temp_id")
+    private SpaceWallTemp childSpaceWallTemp;
+
+    // 본래의 컴포넌트가 있는지 체크하기 위함
+    private Long componentId;
 
     @Column(nullable = false, length = 10)
     private String type;
@@ -56,4 +60,22 @@ public class Component extends BaseTimeEntity {
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int sequence;
 
+    private boolean deleted;
+
+    @Override
+    public String toString() {
+        return "ComponentTemp{" +
+            "id=" + id +
+            ", spaceWallTemp=" + spaceWallTemp +
+            ", template=" + template +
+            ", childSpaceWallTemp=" + childSpaceWallTemp +
+            ", componentId=" + componentId +
+            ", type='" + type + '\'' +
+            ", visible=" + visible +
+            ", title='" + title + '\'' +
+            ", content='" + content + '\'' +
+            ", sequence=" + sequence +
+            ", deleted=" + deleted +
+            '}';
+    }
 }
