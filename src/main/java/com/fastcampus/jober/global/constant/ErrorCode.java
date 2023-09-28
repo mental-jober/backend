@@ -29,7 +29,9 @@ public enum ErrorCode {
     DUPLICATED_EMAIL(HttpStatus.UNAUTHORIZED, "중복된 이메일입니다."),
     INVALID_SIGNATURE(HttpStatus.UNAUTHORIZED, "잘못된 서명입니다."),
     MALFORMED_TOKEN(HttpStatus.UNAUTHORIZED, "잘못된 토큰입니다."),
-    UNKNOWN_TOKEN_ERROR(HttpStatus.UNAUTHORIZED, "알 수 없는 토큰 에러가 발생했습니다.")
+    UNKNOWN_TOKEN_ERROR(HttpStatus.UNAUTHORIZED, "알 수 없는 토큰 에러가 발생했습니다."),
+    SPACEWALL_NOT_FOUND(HttpStatus.BAD_REQUEST, "공유페이지를 찾을 수 없습니다.")
+
     ;
 
     private final HttpStatus httpStatus;
