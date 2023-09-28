@@ -18,7 +18,7 @@ public class SpaceWallPermissionController {
 
     private final SpaceWallPermissionService spaceWallPermissionService;
 
-    @PutMapping("/{id}/authority")
+    @PutMapping("authority/{id}")
     public ResponseEntity<ResponseDTO<SpaceWallPermissionResponse>> updatePermission(
             @PathVariable Long id,
             @RequestBody SpaceWallPermissionRequest requestDto,
@@ -28,7 +28,7 @@ public class SpaceWallPermissionController {
         return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK, "권한을 수정하였습니다.", response));
     }
 
-    @PutMapping("/{id}/move")
+    @PutMapping("move/{id}")
     public ResponseEntity<ResponseDTO<SpaceWallPermissionResponse>> moveSpaceWallPermission(
             @PathVariable Long id,
             @RequestBody SpaceWallPermissionRequest requestDto,
