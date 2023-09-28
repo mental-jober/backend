@@ -1,12 +1,15 @@
 package com.fastcampus.jober.domain.spacewallhistory.controller;
 
 import com.fastcampus.jober.domain.spacewall.service.SpaceWallService;
+import com.fastcampus.jober.domain.spacewallhistory.dto.SpaceWallHistoryResponse;
 import com.fastcampus.jober.domain.spacewallhistory.service.SpaceWallHistoryService;
 import com.fastcampus.jober.global.error.exception.SpaceWallNotFoundException;
 import com.fastcampus.jober.global.utils.api.dto.ResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.fastcampus.jober.domain.spacewallhistory.dto.HistoryWrapper.HistoryRequestDTOWrapper;
 import static com.fastcampus.jober.domain.spacewallhistory.dto.HistoryWrapper.HistoryResponseDTOWrapper;
@@ -19,6 +22,7 @@ public class SpaceWallHistoryController {
 
     private final SpaceWallHistoryService spaceWallHistoryService;
     private final SpaceWallService spaceWallService;
+
 
     @PostMapping("/history/{spaceWallId}")
     public ResponseEntity<ResponseDTO<HistoryResponseDTOWrapper>> historyAdd(
@@ -33,5 +37,32 @@ public class SpaceWallHistoryController {
                         spaceWallHistoryService.addSpaceWallHistory(historyRequest),
                         "히스토리에 저장됩니다."
                 ));
+    }
+    @GetMapping("/history/{memberId}")
+    public ResponseEntity<ResponseDTO<List<SpaceWallHistoryResponse.SpaceWallHistoryResponseDTO>>> getRecentHistories(
+            @PathVariable Long memberId) {
+
+
+        List<SpaceWallHistoryResponse.SpaceWallHistoryResponseDTO> histories = spaceWallHistoryService.findRecentHistoryByMemberId(memberId);
+
+        if (histories.isEmpty()) {
+            return ResponseEntity.ok(new ResponseDTO<>(histories, "히스토리가 없습니다."));
+        }
+
+        return ResponseEntity.ok(new ResponseDTO<>(histories, "히스토리 조회 성공"));
+    }
+
+    @GetMapping("/history/{memberId}/{historyId}")
+    public ResponseEntity<ResponseDTO<SpaceWallHistoryResponse.SpaceWallHistoryResponseDTO>> getHistory(
+            @PathVariable Long memberId,
+            @PathVariable Long historyId) {
+
+
+        if (!spaceWallHistoryService.checkHistoryIdExists(historyId)) {
+            throw new SpaceWallNotFoundException("히스토리를 찾을 수 없습니다.");
+        }
+
+        SpaceWallHistoryResponse.SpaceWallHistoryResponseDTO history = spaceWallHistoryService.findHistoryByMemberIdAndHistoryId(memberId, historyId);
+        return ResponseEntity.ok(new ResponseDTO<>(history, "히스토리 조회 성공"));
     }
 }
