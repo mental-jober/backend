@@ -27,11 +27,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class SpaceWallController {
 
     private final SpaceWallService spaceWallService;
-    private final SpaceWallPermissionService permissionService;
 
     @GetMapping("/view/{id}")
     public ResponseEntity<ResponseDTO<SpaceWallResponse.ResponseDto>> getSpaceWall(
-        @PathVariable Long id) {
+            @PathVariable Long id) {
         SpaceWallResponse.ResponseDto foundSpaceWallDto = spaceWallService.findById(id);
 
         return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK, "완료되었습니다.", foundSpaceWallDto));
@@ -39,39 +38,33 @@ public class SpaceWallController {
 
     @PutMapping("/edit/{id}")
     public ResponseEntity<ResponseDTO<SpaceWallResponse.ResponseDto>> updateSpaceWall(
-        @PathVariable Long id,
-        @RequestBody SpaceWallRequest.UpdateDto updateDto,
-        @AuthenticationPrincipal MemberDetails memberDetails,
-        HttpSession httpSession) {
+            @PathVariable Long id,
+            @RequestBody SpaceWallRequest.UpdateDto updateDto,
+            @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        SpaceWallResponse.ResponseDto updatedSpaceWallDto = spaceWallService.update(id, updateDto,
-            memberDetails, httpSession);
+        SpaceWallResponse.ResponseDto updatedSpaceWallDto = spaceWallService.update(id, updateDto, memberDetails);
 
-        return new ResponseEntity<>(
-            new ResponseDTO<>(HttpStatus.OK, "수정되었습니다.", updatedSpaceWallDto), HttpStatus.OK);
+        return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK, "수정되었습니다.", updatedSpaceWallDto));
     }
 
     @DeleteMapping("/del/{id}")
     public ResponseEntity<ResponseDTO<String>> deleteSpaceWall(
-        @PathVariable Long id,
-        @AuthenticationPrincipal MemberDetails memberDetails,
-        HttpSession httpSession) {
+            @PathVariable Long id,
+            @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        spaceWallService.delete(id, memberDetails, httpSession);
+        spaceWallService.delete(id, memberDetails);
 
-        return new ResponseEntity<>(
-            new ResponseDTO<>(HttpStatus.OK, "공유페이지 " + id + " 삭제되었습니다.", "Success"),
-            HttpStatus.OK);
+        return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK, "공유페이지 " + id + " 삭제되었습니다.", "Success"));
     }
 
     @PostMapping("/check/{id}")
     public ResponseEntity<?> checkEditMode(@PathVariable Long id, HttpSession session,
-        @AuthenticationPrincipal
-        MemberDetails memberDetails) {
+                                           @AuthenticationPrincipal
+                                           MemberDetails memberDetails) {
         SessionDTO sessionDTO = spaceWallService.checkEditSession(memberDetails.getMember().getId(),
-            id, session);
+                id, session);
 
         return new ResponseEntity<>(new ResponseDTO<>(HttpStatus.OK, "정상적으로 처리되었습니다.", sessionDTO),
-            HttpStatus.OK);
+                HttpStatus.OK);
     }
 }
