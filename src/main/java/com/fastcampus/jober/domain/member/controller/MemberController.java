@@ -82,7 +82,7 @@ public class MemberController {
     /**
      * 토큰 검사
      * @param authorization
-     * @return 이상이 없는 경우 false
+     * @return 이상이 없는 경우 true
      */
     @GetMapping("/checkToken")
     public boolean isOKToken(@RequestHeader(JwtTokenProvider.HEADER) String authorization) {

@@ -52,7 +52,7 @@ public class JwtTokenProvider {
     public static boolean validateToken(String token) {
         try {
             Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
-            return false;
+            return true;
         } catch (SignatureException e) {
             log.info(INVALID_SIGNATURE.getMessage(), e);
             throw new TokenException(INVALID_SIGNATURE);

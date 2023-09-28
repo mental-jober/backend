@@ -44,7 +44,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
         String jwt = prefixJwt.replace(JwtTokenProvider.TOKEN_PREFIX, "");
 
-        if (JwtTokenProvider.validateToken(jwt)) {
+        if (!JwtTokenProvider.validateToken(jwt)) {
             chain.doFilter(request, response);
         }
 

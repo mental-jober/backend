@@ -22,11 +22,13 @@ public class MemberResponse {
         private String email;
         private String username;
         private List<PermissionDTO> permissionDTOs;
+        private Long spaceWallId;
 
         public MemberDTO(Member member) {
             this.id = member.getId();
             this.email = member.getEmail();
             this.username = member.getUsername();
+            this.spaceWallId = member.getSpaceWalls().get(0).getId();
             List<PermissionDTO> permissions = new ArrayList<>();
             for (SpaceWallMember spaceWallMember : member.getSpaceWallMember()) {
                 PermissionDTO permissionDTO =
@@ -34,6 +36,7 @@ public class MemberResponse {
                 permissions.add(permissionDTO);
             }
             this.permissionDTOs = permissions;
+
         }
     }
 
