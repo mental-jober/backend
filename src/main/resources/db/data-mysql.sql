@@ -26,23 +26,23 @@ INSERT INTO space_wall_permission (space_wall_member_id, auths, created_at) VALU
 
 -- 임의의 공유스페이스 1에 공동작업자 등록 --
 INSERT INTO space_wall_member (member_id, space_wall_id, created_at) VALUES (2, 1, now()); -- EDITOR 2
-INSERT INTO space_wall_permission (space_wall_member_id, auths, created_at) VALUES (2, 'EDITOR', now());
+INSERT INTO space_wall_permission (space_wall_member_id, auths, created_at) VALUES (5, 'EDITOR', now());
 
 INSERT INTO space_wall_member (member_id, space_wall_id, created_at) VALUES (3, 1, now()); -- VIEWER 3
-INSERT INTO space_wall_permission (space_wall_member_id, auths, created_at) VALUES (3, 'VIEWER', now());
+INSERT INTO space_wall_permission (space_wall_member_id, auths, created_at) VALUES (6, 'VIEWER', now());
 
 INSERT INTO space_wall_member (member_id, space_wall_id, created_at) VALUES (4, 1, now()); -- VIEWER 4
-INSERT INTO space_wall_permission (space_wall_member_id, auths, created_at) VALUES (4, 'VIEWER', now());
+INSERT INTO space_wall_permission (space_wall_member_id, auths, created_at) VALUES (7, 'VIEWER', now());
 
 -- 임의의 공유스페이스 2에 공동작업자 등록 --
 INSERT INTO space_wall_member (member_id, space_wall_id, created_at) VALUES (1, 2, now()); -- EDITOR 1
-INSERT INTO space_wall_permission (space_wall_member_id, auths, created_at) VALUES (5, 'EDITOR', now());
+INSERT INTO space_wall_permission (space_wall_member_id, auths, created_at) VALUES (8, 'EDITOR', now());
 
 INSERT INTO space_wall_member (member_id, space_wall_id, created_at) VALUES (3, 2, now()); -- VIEWER 3
-INSERT INTO space_wall_permission (space_wall_member_id, auths, created_at) VALUES (6, 'VIEWER', now());
+INSERT INTO space_wall_permission (space_wall_member_id, auths, created_at) VALUES (9, 'VIEWER', now());
 
 INSERT INTO space_wall_member (member_id, space_wall_id, created_at) VALUES (4, 2, now()); -- VIEWER 4
-INSERT INTO space_wall_permission (space_wall_member_id, auths, created_at) VALUES (7, 'VIEWER', now());
+INSERT INTO space_wall_permission (space_wall_member_id, auths, created_at) VALUES (10, 'VIEWER', now());
 
 -- Template 1 ~ 5
 INSERT INTO template(title, description, hashtag, created_at)
