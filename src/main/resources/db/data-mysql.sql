@@ -228,30 +228,28 @@ INSERT INTO template_type(template_id, type, created_at) values (35, 'CONTRACT',
 INSERT INTO template_type(template_id, type, created_at) values (35, 'LAW', now());
 
 -- Component (space_wall_id = 1) --
-INSERT INTO component (space_wall_id, template_id, type, visible, content, sequence, created_at)
-VALUES (1, null, 'text', true, '텍스트 타입 입니다. <br>', 1, now());
-INSERT INTO component (space_wall_id, template_id, type, visible, content, sequence, created_at)
-VALUES (1, null, 'line', true, '구분선 타입 입니다.', 2, now());
-INSERT INTO component (space_wall_id, template_id, type, visible, content, sequence, created_at)
-VALUES (1, 1, 'template', true, '템플릿 타입 입니다.', 3, now());
-INSERT INTO component (space_wall_id, template_id, type, visible, content, sequence, created_at)
-VALUES (1, null, 'page', true, '페이지 타입 입니다', 4, now());
-INSERT INTO component (space_wall_id, template_id, type, visible, content, sequence, created_at)
-VALUES (1, null, 'page', false, '페이지 타입 입니다', 5, now());
-INSERT INTO component (space_wall_id, template_id, type, visible, content, sequence, created_at)
-VALUES (1, null, 'link', true, '링크 타입 입니다.', 6, now());
+INSERT INTO component (space_wall_id, template_id, child_space_wall_id, type, visible, title, content, sequence, created_at)
+VALUES (1, null, null, 'text', true, '텍스트 타입 타이틀 입니다.', '텍스트 타입 내용입니다.', 1, now());
+INSERT INTO component (space_wall_id, template_id, child_space_wall_id, type, visible, title, content, sequence, created_at)
+VALUES (1, null, null, 'line', true, null, null, 2, now());
+INSERT INTO component (space_wall_id, template_id, child_space_wall_id, type, visible, title, content, sequence, created_at)
+VALUES (1, 1, null, 'template', true, '템플릿 타입 타이틀 입니다.', '템플릿 타입 내용입니다.', 3, now());
+INSERT INTO component (space_wall_id, template_id, child_space_wall_id, type, visible, title, content, sequence, created_at)
+VALUES (1, null, 3, 'page', true, null, null, 4, now());
+INSERT INTO component (space_wall_id, template_id, child_space_wall_id, type, visible, title, content, sequence, created_at)
+VALUES (1, null, null, 'link', true, '링크 타입 타이틀 입니다.', '링크타입 내용입니다', 5, now());
 
 -- Component (space_wall_id = 2) --
-INSERT INTO component (space_wall_id, template_id, type, visible, content, sequence, created_at)
-VALUES (2, null, 'text', true, '텍스트 타입 입니다. <br>', 1, now());
-INSERT INTO component (space_wall_id, template_id, type, visible, content, sequence, created_at)
-VALUES (2, null, 'line', true, '구분선 타입 입니다.', 2, now());
-INSERT INTO component (space_wall_id, template_id, type, visible, content, sequence, created_at)
-VALUES (2, 2, 'template', true, '템플릿2 타입 입니다.', 3, now());
-INSERT INTO component (space_wall_id, template_id, type, visible, content, sequence, created_at)
-VALUES (2, null, 'page', true, '페이지 타입 입니다', 4, now());
-INSERT INTO component (space_wall_id, template_id, type, visible, content, sequence, created_at)
-VALUES (2, null, 'link', true, '링크 타입 입니다.', 5, now());
+INSERT INTO component (space_wall_id, template_id, child_space_wall_id, type, visible, title, content, sequence, created_at)
+VALUES (2, null, null, 'text', true, '텍스트 타입 타이틀 입니다.', '텍스트 타입 내용입니다.', 1, now());
+INSERT INTO component (space_wall_id, template_id, child_space_wall_id, type, visible, title, content, sequence, created_at)
+VALUES (2, null, null, 'line', true, null, null, 2, now());
+INSERT INTO component (space_wall_id, template_id, child_space_wall_id, type, visible, title, content, sequence, created_at)
+VALUES (2, 2, null, 'template', true, '템플릿2 타입 타이틀 입니다.', '템플릿 타입 내용입니다.', 3, now());
+INSERT INTO component (space_wall_id, template_id, child_space_wall_id, type, visible, title, content, sequence, created_at)
+VALUES (2, null, null, 'page', true, null, null, 4, now());
+INSERT INTO component (space_wall_id, template_id, child_space_wall_id, type, visible, title, content, sequence, created_at)
+VALUES (2, null, null, 'link', true, '링크 타입 타이틀 입니다.', '링크타입 내용입니다', 5, now());
 
 -- MyTemplate
 INSERT INTO my_template(template_id, member_id, created_at) values (1, 1, now());
@@ -284,3 +282,29 @@ INSERT INTO space_wall_temp (space_wall_id, url, title, description, profile_ima
 VALUES (2, 'https://url-22.com', 'Title 22 임시', 'Description 22 임시', 'https://profile-image-22.com', 'https://bg-image-22.com', 'https://share-url-22.com', DATE_ADD(NOW(), INTERVAL 5 DAY), 2, NOW());
 INSERT INTO space_wall_temp (space_wall_id, url, title, description, profile_image_url, background_image_url, share_url, share_expired_at, sequence, created_at)
 VALUES (3, 'https://url-33.com', 'Title 33 임시', 'Description 33 임시', 'https://profile-image-33.com', 'https://bg-image-33.com', 'https://share-url-33.com', DATE_ADD(NOW(), INTERVAL 3 DAY), 3, NOW());
+INSERT INTO space_wall_temp (space_wall_id, url, title, description, profile_image_url, background_image_url, share_url, share_expired_at, sequence, created_at)
+VALUES (4, 'https://url-44.com', 'Title 44 임시', 'Description 44 임시', 'https://profile-image-44.com', 'https://bg-image-44.com', 'https://share-url-44.com', DATEADD('DAY', 3, CURRENT_TIMESTAMP), 3, CURRENT_TIMESTAMP);
+
+-- ComponentTemp (space_wall_temp_id = 1) --
+INSERT INTO component_temp (space_wall_temp_id, template_id, child_space_wall_temp_id, component_id, type, visible, title, content, sequence, deleted, created_at)
+VALUES (1, null, null, 1, 'text', true, '텍스트 타입 타이틀 입니다.', '텍스트 타입 내용입니다.', 1, false, now());
+INSERT INTO component_temp (space_wall_temp_id, template_id, child_space_wall_temp_id, component_id, type, visible, title, content, sequence, deleted, created_at)
+VALUES (1, null, null, 2, 'line', true, null, null, 2, false, now());
+INSERT INTO component_temp (space_wall_temp_id, template_id, child_space_wall_temp_id, component_id, type, visible, title, content, sequence, deleted, created_at)
+VALUES (1, 1, null, 3, 'template', true, '템플릿 타입 타이틀 입니다.', '템플릿 타입 내용입니다.', 3, false, now());
+INSERT INTO component_temp (space_wall_temp_id, template_id, child_space_wall_temp_id, component_id, type, visible, title, content, sequence, deleted, created_at)
+VALUES (1, null, 3, 4, 'page', true, null, null, 4, false, now());
+INSERT INTO component_temp (space_wall_temp_id, template_id, child_space_wall_temp_id, component_id, type, visible, title, content, sequence, deleted, created_at)
+VALUES (1, null, null, 5, 'link', true, '링크 타입 타이틀 입니다.', '링크타입 내용입니다', 5, false, now());
+
+-- ComponentTemp (space_wall_temp_id = 2) --
+INSERT INTO component_temp (space_wall_temp_id, template_id, child_space_wall_temp_id, component_id, type, visible, title, content, sequence, deleted, created_at)
+VALUES (2, null, null, 6, 'text', true, '텍스트 타입 타이틀 입니다.', '텍스트 타입 내용입니다.', 1, false, now());
+INSERT INTO component_temp (space_wall_temp_id, template_id, child_space_wall_temp_id, component_id, type, visible, title, content, sequence, deleted, created_at)
+VALUES (2, null, null, 7, 'line', true, null, null, 2, false, now());
+INSERT INTO component_temp (space_wall_temp_id, template_id, child_space_wall_temp_id, component_id, type, visible, title, content, sequence, deleted, created_at)
+VALUES (2, 2, null, 8, 'template', true, '템플릿2 타입 타이틀 입니다.', '템플릿 타입 내용입니다.', 3, false, now());
+INSERT INTO component_temp (space_wall_temp_id, template_id, child_space_wall_temp_id, component_id, type, visible, title, content, sequence, deleted, created_at)
+VALUES (2, null, 4, 9, 'page', true, null, null, 4, false, now());
+INSERT INTO component_temp (space_wall_temp_id, template_id, child_space_wall_temp_id, component_id, type, visible, title, content, sequence, deleted, created_at)
+VALUES (2, null, null, 10, 'link', true, '링크 타입 타이틀 입니다.', '링크타입 내용입니다', 5, false, now());
