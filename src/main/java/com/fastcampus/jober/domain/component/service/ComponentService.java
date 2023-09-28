@@ -29,6 +29,7 @@ public class ComponentService {
 
     /**
      * 공유페이지 조회시 컴포넌트 리스트를 반환
+     * todo builder들 dto에 클래스화 시키기.
      * @param spaceWall
      * @return List<ComponentResponse.ComponentResponseDTO>
      *
