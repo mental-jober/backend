@@ -16,16 +16,16 @@ public class ComponentResponse {
     @AllArgsConstructor
     public static class ComponentResponseDTO{
         private Long id;
-        private Long space_wall_id;
-        private Long template_id;
-        private Long child_space_wall_id;
+        private Long spaceWallId;
+        private Long templateId;
+        private Long childSpaceWallId;
         private String type;
         private boolean visible;
         private String title;
         private String content;
         private int sequence;
-        private LocalDateTime created_at;
-        private LocalDateTime updated_at;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
 
     }
 

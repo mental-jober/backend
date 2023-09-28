@@ -43,43 +43,43 @@ public class ComponentService {
             if (component.getType().equals("page")) {
                 responseDTOList.add(ComponentResponse.ComponentResponseDTO.builder()
                     .id(component.getId())
-                    .space_wall_id(component.getSpaceWall().getId())
-                    .child_space_wall_id(component.getChildSpaceWall().getId())
+                    .spaceWallId(component.getSpaceWall().getId())
+                    .childSpaceWallId(component.getChildSpaceWall().getId())
                     .type(component.getType())
                     .visible(component.isVisible())
                     .title(component.getChildSpaceWall().getTitle())
                     .content(component.getChildSpaceWall().getDescription())
                     .sequence(component.getSequence())
-                    .created_at(component.getCreatedAt())
-                    .updated_at(component.getUpdatedAt())
+                    .createdAt(component.getCreatedAt())
+                    .updatedAt(component.getUpdatedAt())
                     .build());
 
             }
             else if (component.getType().equals("template")) {
                 responseDTOList.add(ComponentResponse.ComponentResponseDTO.builder()
                     .id(component.getId())
-                    .space_wall_id(component.getSpaceWall().getId())
-                    .template_id(component.getTemplate().getId())
+                    .spaceWallId(component.getSpaceWall().getId())
+                    .templateId(component.getTemplate().getId())
                     .type(component.getType())
                     .visible(component.isVisible())
                     .title(component.getTemplate().getTitle())
                     .content(component.getTemplate().getDescription())
                     .sequence(component.getSequence())
-                    .created_at(component.getCreatedAt())
-                    .updated_at(component.getUpdatedAt())
+                    .createdAt(component.getCreatedAt())
+                    .updatedAt(component.getUpdatedAt())
                     .build());
             }
             else {
                 responseDTOList.add(ComponentResponse.ComponentResponseDTO.builder()
                     .id(component.getId())
-                    .space_wall_id(component.getSpaceWall().getId())
+                    .spaceWallId(component.getSpaceWall().getId())
                     .type(component.getType())
                     .visible(component.isVisible())
                     .title(component.getTitle())
                     .content(component.getContent())
                     .sequence(component.getSequence())
-                    .created_at(component.getCreatedAt())
-                    .updated_at(component.getUpdatedAt())
+                    .createdAt(component.getCreatedAt())
+                    .updatedAt(component.getUpdatedAt())
                     .build());
             }
         }
