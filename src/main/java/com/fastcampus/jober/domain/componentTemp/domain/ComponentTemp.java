@@ -62,20 +62,4 @@ public class ComponentTemp extends BaseTimeEntity {
 
     private boolean deleted;
 
-    @Override
-    public String toString() {
-        return "ComponentTemp{" +
-            "id=" + id +
-            ", spaceWallTemp=" + spaceWallTemp +
-            ", template=" + template +
-            ", childSpaceWallTemp=" + childSpaceWallTemp +
-            ", componentId=" + componentId +
-            ", type='" + type + '\'' +
-            ", visible=" + visible +
-            ", title='" + title + '\'' +
-            ", content='" + content + '\'' +
-            ", sequence=" + sequence +
-            ", deleted=" + deleted +
-            '}';
-    }
 }
