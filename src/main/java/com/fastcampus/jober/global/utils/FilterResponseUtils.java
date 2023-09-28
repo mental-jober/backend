@@ -25,7 +25,7 @@ public class FilterResponseUtils {
         ObjectMapper om = new ObjectMapper();
 //        String responseBody = om.writeValueAsString(e.body());
         String responseBody = om.writeValueAsString(responseDto);
-        httpServletResponse.getWriter().println(responseBody);
+        httpServletResponse.getOutputStream().write(responseBody.getBytes());
     }
 
     public static void forbidden(
@@ -43,7 +43,8 @@ public class FilterResponseUtils {
         ObjectMapper om = new ObjectMapper();
 //        String responseBody = om.writeValueAsString(e.body());
         String responseBody = om.writeValueAsString(responseDto);
-        httpServletResponse.getWriter().println(responseBody);
+//        httpServletResponse.getWriter().println(responseBody);
+        httpServletResponse.getOutputStream().write(responseBody.getBytes());
 
     }
 }

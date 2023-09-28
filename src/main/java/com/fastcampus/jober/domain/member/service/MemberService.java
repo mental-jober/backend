@@ -55,7 +55,6 @@ public class MemberService {
 
     @Transactional
     public void logout(String token) {
-
         JwtTokenProvider.delete(token);
     }
 

@@ -1,8 +1,6 @@
 package com.fastcampus.jober.domain.componenthistory.domain;
 
 import com.fastcampus.jober.domain.BaseTimeEntity;
-import com.fastcampus.jober.domain.spacewallhistory.domain.SpaceWallHistory;
-import com.fastcampus.jober.domain.template.domain.Template;
 import com.fastcampus.jober.global.constant.Type;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,13 +18,9 @@ public class ComponentHistory extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "temaplate_id")
-    private Template template;
+    private Long templateId;
 
-    @ManyToOne
-    @JoinColumn(name = "space_wall_history_id")
-    private SpaceWallHistory spaceWallHistory;
+    private Long spaceWallHistoryId;
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)

@@ -1,10 +1,8 @@
 package com.fastcampus.jober.global.error.advice;
 
-import com.fastcampus.jober.global.constant.ErrorCode;
 import com.fastcampus.jober.global.error.exception.*;
 import com.fastcampus.jober.global.utils.api.ApiUtils;
 import com.fastcampus.jober.global.utils.api.dto.ResponseDTO;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -37,7 +35,7 @@ public class MyExceptionAdvice {
     @ExceptionHandler(DomainException.class)
     public ResponseEntity<?> globalExceptionHandler(DomainException e) {
 
-        ResponseDTO<String> response = new ResponseDTO(e.getHttpStatus(), e.getMessage(), null);
+        ResponseDTO<String> response = new ResponseDTO<>(e.getHttpStatus(), e.getMessage(), null);
 
         return new ResponseEntity<>(response, e.getHttpStatus());
     }
@@ -51,20 +49,23 @@ public class MyExceptionAdvice {
         return new ResponseEntity<>(ev.body(), ev.status());
     }
 
+    @ExceptionHandler(TokenException.class)
+    public ResponseEntity<ResponseDTO<String>> tokenError(TokenException e) {
+
+        ResponseDTO<String> response = new ResponseDTO<>(e.getHttpStatus(), e.getMessage(), null);
+
+        return new ResponseEntity<>(response, e.getHttpStatus());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> unknownServerError(Exception e) {
 
         ApiUtils.ApiResult<?> apiResult =
-            ApiUtils.error(
-                e.getMessage(),
-                HttpStatus.INTERNAL_SERVER_ERROR
-            );
+                ApiUtils.error(
+                        e.getMessage(),
+                        HttpStatus.INTERNAL_SERVER_ERROR
+                );
         log.error(e.getMessage(), e);
         return new ResponseEntity<>(apiResult, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler(ExpiredJwtException.class)
-    public ResponseEntity<?> expiredJwtException(ExpiredJwtException e) {
-        return new ResponseEntity<>(new TokenException(ErrorCode.EXPIRED_JWT_TOKEN), HttpStatus.BAD_REQUEST);
     }
 }

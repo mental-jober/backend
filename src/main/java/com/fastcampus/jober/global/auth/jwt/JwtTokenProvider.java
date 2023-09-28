@@ -3,22 +3,25 @@ package com.fastcampus.jober.global.auth.jwt;
 import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.member.dto.MemberResponse;
 import com.fastcampus.jober.global.constant.Auths;
+import com.fastcampus.jober.global.error.exception.TokenException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.*;
 
+import static com.fastcampus.jober.global.constant.ErrorCode.*;
+
 @Component
+@Slf4j
 public class JwtTokenProvider {
 
-    public static final Long EXP = 1000L * 60 * 60 * 24; // 24시간
+    public static final Long EXP = 1000L * 60 * 60; // 1시간
     public static final String TOKEN_PREFIX = "Bearer "; // 스페이스 필요함
     public static final String HEADER = "Authorization";
     public static String SECRET;
@@ -44,6 +47,31 @@ public class JwtTokenProvider {
     public static String getEmailFromToken(String token) {
         return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token)
             .getBody().get("email", String.class);
+    }
+
+    public static boolean validateToken(String token) {
+        try {
+            Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
+            return true;
+        } catch (SignatureException e) {
+            log.info(INVALID_SIGNATURE.getMessage(), e);
+            throw new TokenException(INVALID_SIGNATURE);
+        } catch (ExpiredJwtException e) {
+            log.info(EXPIRED_JWT_TOKEN.getMessage(), e);
+            throw new TokenException(EXPIRED_JWT_TOKEN);
+        } catch (UnsupportedJwtException e) {
+            log.info(UNSUPPORTED_JWT.getMessage(), e);
+            throw new TokenException(UNSUPPORTED_JWT);
+        } catch (IllegalArgumentException e) {
+            log.info(ILLEGAL_ARGUMENT.getMessage(), e);
+            throw new TokenException(ILLEGAL_ARGUMENT);
+        } catch (MalformedJwtException e) {
+            log.error(MALFORMED_TOKEN.getMessage(), e);
+            throw new TokenException(MALFORMED_TOKEN);
+        } catch (Exception e) {
+            log.error(UNKNOWN_TOKEN_ERROR.getMessage(), e);
+            throw new TokenException(UNKNOWN_TOKEN_ERROR);
+        }
     }
 
     public static boolean isExpired(String token) {
@@ -99,8 +127,8 @@ public class JwtTokenProvider {
         Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
         claims.setExpiration(new Date(0));
         Jwts.builder()
-            .setClaims(claims)
-            .signWith(SignatureAlgorithm.HS256, SECRET)
-            .compact();
+                .setClaims(claims)
+                .signWith(SignatureAlgorithm.HS256, SECRET)
+                .compact();
     }
 }

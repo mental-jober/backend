@@ -4,29 +4,22 @@ import com.fastcampus.jober.domain.componenthistory.domain.ComponentHistory;
 import com.fastcampus.jober.domain.spacewallhistory.domain.SpaceWallHistory;
 import com.fastcampus.jober.domain.template.domain.Template;
 import com.fastcampus.jober.global.constant.Type;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Getter;
+import lombok.Setter;
 
 public class ComponentHistoryRequest {
 
-    public static class ComponentHistorySaveDTO {
+    @Getter
+    @Setter
+    public static class ComponentHistoryRequestDTO {
 
-        private Template template;
-        private SpaceWallHistory spaceWallHistory;
+        private Long templateId;
+        private Long spaceWallHistoryId;
         private Type type;
         private boolean visible;
         private String content;
         private int sequence;
         private Long spaceWallId;
-
-        public ComponentHistory toEntity() {
-            return ComponentHistory.builder()
-                    .template(template)
-                    .spaceWallHistory(spaceWallHistory)
-                    .type(type)
-                    .visible(visible)
-                    .content(content)
-                    .sequence(sequence)
-                    .spaceWallId(spaceWallId)
-                    .build();
-        }
     }
 }

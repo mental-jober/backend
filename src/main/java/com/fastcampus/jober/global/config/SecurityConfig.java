@@ -6,18 +6,20 @@ import com.fastcampus.jober.global.error.exception.Exception403;
 import com.fastcampus.jober.global.utils.FilterResponseUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -27,10 +29,16 @@ import static com.fastcampus.jober.global.constant.ErrorCode.INVALID_AUTHENTICAT
 import static com.fastcampus.jober.global.constant.ErrorCode.INVALID_USER;
 
 @Slf4j
-@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    @Autowired
+    private JsonLogoutSuccessHandler jsonLogoutSuccessHandler;
+
+    @Autowired
+    private CustomLogoutHandler logoutHandler;
 
 //    @Bean
 //    BCryptPasswordEncoder passwordEncoder() {
@@ -57,8 +65,7 @@ public class SecurityConfig {
         @Override
         public void configure(HttpSecurity builder) throws Exception {
 
-            AuthenticationManager authenticationManager = builder.getSharedObject(
-                AuthenticationManager.class);
+            AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
             builder.addFilter(new JwtAuthenticationFilter(authenticationManager));
             super.configure(builder);
         }
@@ -86,7 +93,9 @@ public class SecurityConfig {
         http.httpBasic(AbstractHttpConfigurer::disable);
 
         // 6-1. 로그아웃 url 지정 및 로그아웃 후 리다이렉트 url 지정
-        http.logout(c -> c.logoutUrl("/logout").logoutSuccessUrl("/login"));
+//        http.logout(c -> c.logoutUrl("/logout").addLogoutHandler(logoutHandler)
+//                .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
+//        );
 
         // 7. 커스텀 필터 적용 (시큐리티 필터 교환)
         http.apply(new CustomSecurityFilterManager());
@@ -105,7 +114,10 @@ public class SecurityConfig {
         http.exceptionHandling(
                 c -> c.accessDeniedHandler((request, response, accessDeniedException) -> {
                     log.warn("권한이 없는 사용자가 자원에 접근하려 합니다 : " + accessDeniedException.getMessage());
-                    FilterResponseUtils.forbidden(response, new Exception403(INVALID_USER.getMessage()));
+                    FilterResponseUtils.forbidden(
+                            response,
+                            new Exception403(INVALID_USER.getMessage())
+                    );
                 }));
 
         // 11. 인증, 권한 필터 설정
@@ -114,7 +126,7 @@ public class SecurityConfig {
                     authorize
                             .requestMatchers(new AntPathRequestMatcher("/checkEmail/**"))
                             .access("isAuthenticated() and hasAnyAuthority('EDITOR', 'OWNER')")
-                            .requestMatchers(new AntPathRequestMatcher("/spaces/**"))
+                            .requestMatchers(new AntPathRequestMatcher("/spaces/member/**"))
                             .access("isAuthenticated() and hasAnyAuthority('EDITOR', 'OWNER')")
                             .anyRequest().permitAll();
                 });

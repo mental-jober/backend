@@ -2,11 +2,14 @@ package com.fastcampus.jober.domain.spacewallhistory.domain;
 
 import com.fastcampus.jober.domain.BaseTimeEntity;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.LocalDateTime;
-
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "space_wall_history")
 @Data
@@ -20,9 +23,14 @@ public class SpaceWallHistory extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "space_wall_id")
-    private SpaceWall spaceWall;
+//    @ManyToOne
+//    @JsonIgnore
+//    @JsonBackReference
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @JoinColumn(name = "space_wall_id")
+//    private SpaceWall spaceWall;
+
+    private Long spaceWallId;
 
     @Column(length = 100)
     private String url;

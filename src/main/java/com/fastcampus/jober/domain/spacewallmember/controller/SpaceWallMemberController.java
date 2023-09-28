@@ -2,7 +2,9 @@ package com.fastcampus.jober.domain.spacewallmember.controller;
 
 import com.fastcampus.jober.domain.spacewall.service.SpaceWallService;
 import com.fastcampus.jober.domain.spacewallmember.dto.SpaceWallMemberRequest;
+import com.fastcampus.jober.domain.spacewallmember.dto.SpaceWallMemberResponse;
 import com.fastcampus.jober.domain.spacewallmember.service.SpaceWallMemberService;
+import com.fastcampus.jober.global.auth.jwt.JwtTokenProvider;
 import com.fastcampus.jober.global.error.exception.SpaceWallNotFoundException;
 import com.fastcampus.jober.global.utils.api.dto.ResponseDTO;
 import jakarta.validation.Valid;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.fastcampus.jober.domain.spacewallmember.dto.SpaceWallMemberResponse.*;
 import static com.fastcampus.jober.global.constant.ErrorCode.INVALID_REQUEST;
 
 @RestController
@@ -33,8 +36,8 @@ public class SpaceWallMemberController {
      * @param requests 공동작업자로 등록하려는 멤버 정보 (String email, Auths auths)
      * @return 확인 메세지
      */
-    @PostMapping("/{spaceWallId}/member")
-    public ResponseEntity<?> spaceWallMemberAdd(
+    @PostMapping("/member/{spaceWallId}")
+    public ResponseEntity<ResponseDTO<String>> spaceWallMemberAdd(
             @PathVariable Long spaceWallId,
             @Valid @RequestBody List<SpaceWallMemberRequest.AssignDTO> requests
     ) {
@@ -51,8 +54,8 @@ public class SpaceWallMemberController {
      * @param spaceWallId 공유스페이스 id
      * @return 공유스페이스 공동작업자 정보
      */
-    @GetMapping("/{spaceWallId}/member")
-    public ResponseEntity<?> spaceWallMemberList(@PathVariable Long spaceWallId) {
+    @GetMapping("/member/{spaceWallId}")
+    public ResponseEntity<ResponseDTO<List<SpaceWallMemberDTO>>> spaceWallMemberList(@PathVariable Long spaceWallId) {
         if (!spaceWallService.checkSpaceWallIdExists(spaceWallId))
             throw new SpaceWallNotFoundException(INVALID_REQUEST.getMessage());
 

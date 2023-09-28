@@ -22,8 +22,8 @@ public class ComponentHistoryResponse {
 
         public ComponentHistoryResponseDTO(ComponentHistory componentHistory) {
             this.id = componentHistory.getId();
-            this.templateId = componentHistory.getTemplate().getId();
-            this.spaceWallHistoryId = componentHistory.getSpaceWallHistory().getId();
+            this.templateId = componentHistory.getTemplateId();
+            this.spaceWallHistoryId = componentHistory.getSpaceWallHistoryId();
             this.type = componentHistory.getType();
             this.spaceWallId = componentHistory.getSpaceWallId();
             this.visible = componentHistory.isVisible();

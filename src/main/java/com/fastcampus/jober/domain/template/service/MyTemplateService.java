@@ -51,10 +51,10 @@ public class MyTemplateService {
             .orElseThrow(() -> new MemberException(ErrorCode.MEMBER_NOT_FOUND));
 
         MyTemplate myTemplate = myTemplateRepository.findById(myTemplateId)
-            .orElseThrow(() -> new MyTemplateException(ErrorCode.MYTEMPLATE_NOT_FOUND));
+            .orElseThrow(() -> new MyTemplateException(ErrorCode.MY_TEMPLATE_NOT_FOUND));
 
         if (!myTemplate.getMember().equals(member)) {
-            throw new MemberException(ErrorCode.MYTEMPLATE_MEMBER_NOT_MATCHED);
+            throw new MemberException(ErrorCode.MY_TEMPLATE_MEMBER_NOT_MATCHED);
         }
 
         myTemplateRepository.delete(myTemplate);
