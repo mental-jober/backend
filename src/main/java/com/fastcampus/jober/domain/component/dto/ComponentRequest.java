@@ -12,13 +12,14 @@ public class ComponentRequest {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class RequestDTO {
+    public static class ComponentRequestDTO {
         private Long id;
         private Long spaceWallId;
         private Long templateId;
         private Long childSpaceWallId;
         private String type;
         private boolean visible;
+        private String title;
         private String content;
         private int sequence;
         private LocalDateTime createdAt;

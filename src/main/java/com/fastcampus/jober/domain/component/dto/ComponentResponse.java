@@ -21,27 +21,12 @@ public class ComponentResponse {
         private Long child_space_wall_id;
         private String type;
         private boolean visible;
+        private String title;
         private String content;
         private int sequence;
         private LocalDateTime created_at;
         private LocalDateTime updated_at;
 
-
-        @Override
-        public String toString() {
-            return "ResponseDTO{" +
-                "id=" + id +
-                ", space_wall_id=" + space_wall_id +
-                ", template_id=" + template_id +
-                ", child_space_wall_id=" + child_space_wall_id +
-                ", type='" + type + '\'' +
-                ", visible=" + visible +
-                ", content='" + content + '\'' +
-                ", sequence=" + sequence +
-                ", created_at=" + created_at +
-                ", updated_at=" + updated_at +
-                '}';
-        }
     }
 
 }
