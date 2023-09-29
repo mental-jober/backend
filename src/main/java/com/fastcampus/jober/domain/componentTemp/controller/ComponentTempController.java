@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -64,6 +65,20 @@ public class ComponentTempController {
         );
     }
 
+    @GetMapping("/{componentTempId}")
+    public ResponseEntity<ResponseDTO<ComponentTempResponseDTO>> componentTempDetails(
+        @PathVariable("componentTempId") Long componentTempId){
 
+        if (!componentTempService.checkComponentTempExists(componentTempId)) {
+            throw new ComponentTempException(ErrorCode.INVALID_COMPONENTTEMPID);
+        }
 
+        ComponentTempResponseDTO componentTempResponseDTO = componentTempService.findComponentTemp(
+            componentTempId);
+
+        return new ResponseEntity<>(
+            new ResponseDTO<>(HttpStatus.OK, "임시 컴포넌트가 조회 되었습니다.", componentTempResponseDTO),
+            HttpStatus.OK
+        );
+    }
 }

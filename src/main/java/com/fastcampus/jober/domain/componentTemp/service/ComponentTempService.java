@@ -97,4 +97,15 @@ public class ComponentTempService {
         return componentTempRepository.existsComponentTempById(id);
     }
 
+    @Transactional
+    public ComponentTempResponseDTO findComponentTemp(Long componentTempId) {
+        ComponentTemp componentTemp = componentTempRepository.findById(componentTempId).get();
+
+        //페이지, 템플릿 타입인 경우 예외처리 추가하기
+
+        return ComponentTempResponseDTO.toDTO(componentTemp);
+
+
+    }
+
 }
