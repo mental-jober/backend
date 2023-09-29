@@ -2,14 +2,21 @@ package com.fastcampus.jober.domain.componentTemp.controller;
 
 import com.fastcampus.jober.domain.componentTemp.dto.ComponentTempRequest;
 import com.fastcampus.jober.domain.componentTemp.dto.ComponentTempResponse;
+import com.fastcampus.jober.domain.componentTemp.dto.ComponentTempResponse.ComponentTempResponseDTO;
 import com.fastcampus.jober.domain.componentTemp.service.ComponentTempService;
+import com.fastcampus.jober.global.constant.ErrorCode;
+import com.fastcampus.jober.global.error.exception.ComponentTempException;
 import com.fastcampus.jober.global.utils.api.dto.ResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -23,6 +30,7 @@ public class ComponentTempController {
     /**
      * 임시 컴포넌트의 생성
      * todo 예외처리, 트랜잭션 관리
+     *
      * @param addDTO
      * @return ComponentTempResponseDTO
      */
@@ -38,5 +46,24 @@ public class ComponentTempController {
             HttpStatus.CREATED
         );
     }
+
+    @PutMapping("/{componentTempId}")
+    public ResponseEntity<ResponseDTO<ComponentTempResponseDTO>> componentTempModify(
+        @PathVariable("componentTempId") Long componentTempId,
+        @RequestBody ComponentTempRequest.ComponentTempRequestDTO modifyDTO) {
+
+        if (!componentTempService.checkComponentTempExists(componentTempId)) {
+            throw new ComponentTempException(ErrorCode.INVALID_COMPONENTTEMPID);
+        }
+        ComponentTempResponseDTO componentTempResponseDTO = componentTempService.modifyComponentTemp(
+            modifyDTO);
+
+        return new ResponseEntity<>(
+            new ResponseDTO<>(HttpStatus.OK, "임시 컴포넌트가 수정 되었습니다.", componentTempResponseDTO),
+            HttpStatus.OK
+        );
+    }
+
+
 
 }

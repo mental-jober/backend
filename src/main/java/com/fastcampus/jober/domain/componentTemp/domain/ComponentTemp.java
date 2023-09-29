@@ -62,4 +62,40 @@ public class ComponentTemp extends BaseTimeEntity {
 
     private boolean deleted;
 
+    public void setTemplate(Template template) {
+        this.template = template;
+    }
+
+    public void setChildSpaceWallTemp(
+        SpaceWallTemp childSpaceWallTemp) {
+        this.childSpaceWallTemp = childSpaceWallTemp;
+    }
+
+    public void setComponentId(Long componentId) {
+        this.componentId = componentId;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setSequence(int sequence) {
+        this.sequence = sequence;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 }

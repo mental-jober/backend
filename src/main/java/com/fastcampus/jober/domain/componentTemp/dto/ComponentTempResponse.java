@@ -45,6 +45,40 @@ public class ComponentTempResponse {
                 .updatedAt(componentTemp.getUpdatedAt())
                 .build();
         }
+
+        public static ComponentTempResponseDTO toDTOPageType(ComponentTemp componentTemp) {
+            return ComponentTempResponseDTO.builder()
+                .id(componentTemp.getId())
+                .spaceWallTempId(componentTemp.getSpaceWallTemp().getId())
+                .childSpaceWallTempId(componentTemp.getChildSpaceWallTemp().getId())
+                .type(componentTemp.getType())
+                .componentId(componentTemp.getComponentId())
+                .visible(componentTemp.isVisible())
+                .title(componentTemp.getChildSpaceWallTemp().getTitle())
+                .content(componentTemp.getChildSpaceWallTemp().getDescription())
+                .sequence(componentTemp.getSequence())
+                .deleted(componentTemp.isDeleted())
+                .createdAt(componentTemp.getCreatedAt())
+                .updatedAt(componentTemp.getUpdatedAt())
+                .build();
+        }
+
+        public static ComponentTempResponseDTO toDTOTemplateType(ComponentTemp componentTemp) {
+            return ComponentTempResponseDTO.builder()
+                .id(componentTemp.getId())
+                .spaceWallTempId(componentTemp.getSpaceWallTemp().getId())
+                .templateId(componentTemp.getTemplate().getId())
+                .type(componentTemp.getType())
+                .componentId(componentTemp.getComponentId())
+                .visible(componentTemp.isVisible())
+                .title(componentTemp.getTemplate().getTitle())
+                .content(componentTemp.getTemplate().getDescription())
+                .sequence(componentTemp.getSequence())
+                .deleted(componentTemp.isDeleted())
+                .createdAt(componentTemp.getCreatedAt())
+                .updatedAt(componentTemp.getUpdatedAt())
+                .build();
+        }
     }
 
 
