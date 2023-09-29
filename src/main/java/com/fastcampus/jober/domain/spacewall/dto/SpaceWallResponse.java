@@ -1,8 +1,11 @@
 package com.fastcampus.jober.domain.spacewall.dto;
 
+import com.fastcampus.jober.domain.component.dto.ComponentResponse;
 import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,7 +32,8 @@ public class SpaceWallResponse {
         private LocalDateTime updated_at;
         private int sequence;
 
-        public ResponseDto(SpaceWall spaceWall) {
+        private List<ComponentResponse.ComponentResponseDTO> componentList;
+        public ResponseDto(SpaceWall spaceWall, List<ComponentResponse.ComponentResponseDTO> componentList) {
             this.id = spaceWall.getId();
             this.create_member_id = spaceWall.getCreateMember().getId();
             this.url = spaceWall.getUrl();
@@ -42,6 +46,7 @@ public class SpaceWallResponse {
             this.created_at = spaceWall.getCreatedAt();
             this.updated_at = spaceWall.getUpdatedAt();
             this.sequence = spaceWall.getSequence();
+            this.componentList = componentList;
         }
 
         public SpaceWall toEntity() {

@@ -1,5 +1,7 @@
 package com.fastcampus.jober.domain.spacewall.service;
 
+import com.fastcampus.jober.domain.component.dto.ComponentResponse;
+import com.fastcampus.jober.domain.component.service.ComponentService;
 import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.member.repository.MemberRepository;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
@@ -17,6 +19,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class SpaceWallService {
@@ -24,6 +28,7 @@ public class SpaceWallService {
     private final SpaceWallRepository spaceWallRepository;
     private final StringRedisTemplate redisTemplate;
     private final MemberRepository memberRepository;
+    private final ComponentService componentService;
 
     @Transactional
     public SpaceWallResponse.ResponseDto create(SpaceWallRequest.CreateDto createDto,
@@ -38,7 +43,7 @@ public class SpaceWallService {
 
         SpaceWall spaceWall = createDto.toEntityWithMember(currentMember);
         SpaceWall savedSpaceWall = spaceWallRepository.save(spaceWall);
-        return new SpaceWallResponse.ResponseDto(savedSpaceWall);
+        return new SpaceWallResponse.ResponseDto(savedSpaceWall, null);
     }
 
     @Transactional(readOnly = true)
@@ -48,8 +53,11 @@ public class SpaceWallService {
         }
 
         SpaceWall spaceWall = spaceWallRepository.findById(id)
-            .orElseThrow(() -> new SpaceWallNotFoundException("ID가 있는 공유페이지을 찾을 수 없습니다: " + id));
-        return new SpaceWallResponse.ResponseDto(spaceWall);
+                .orElseThrow(() -> new SpaceWallNotFoundException("ID가 있는 공유페이지을 찾을 수 없습니다: " + id));
+
+        List<ComponentResponse.ComponentResponseDTO> componentList = componentService.findComponentListByspaceWallId(spaceWall);
+
+        return new SpaceWallResponse.ResponseDto(spaceWall, componentList);
     }
 
     @Transactional
@@ -65,7 +73,7 @@ public class SpaceWallService {
         SpaceWall updatedSpaceWall = updateDto.toEntity();
         spaceWall.update(updatedSpaceWall);
 
-        return new SpaceWallResponse.ResponseDto(spaceWall);
+        return new SpaceWallResponse.ResponseDto(spaceWall, null);
     }
 
     @Transactional
