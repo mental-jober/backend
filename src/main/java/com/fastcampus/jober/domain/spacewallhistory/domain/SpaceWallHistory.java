@@ -1,13 +1,8 @@
 package com.fastcampus.jober.domain.spacewallhistory.domain;
 
 import com.fastcampus.jober.domain.BaseTimeEntity;
-import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity

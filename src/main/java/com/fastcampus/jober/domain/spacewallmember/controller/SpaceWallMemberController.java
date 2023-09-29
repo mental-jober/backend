@@ -2,9 +2,7 @@ package com.fastcampus.jober.domain.spacewallmember.controller;
 
 import com.fastcampus.jober.domain.spacewall.service.SpaceWallService;
 import com.fastcampus.jober.domain.spacewallmember.dto.SpaceWallMemberRequest;
-import com.fastcampus.jober.domain.spacewallmember.dto.SpaceWallMemberResponse;
 import com.fastcampus.jober.domain.spacewallmember.service.SpaceWallMemberService;
-import com.fastcampus.jober.global.auth.jwt.JwtTokenProvider;
 import com.fastcampus.jober.global.error.exception.SpaceWallNotFoundException;
 import com.fastcampus.jober.global.utils.api.dto.ResponseDTO;
 import jakarta.validation.Valid;
@@ -15,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.fastcampus.jober.domain.spacewallmember.dto.SpaceWallMemberResponse.*;
+import static com.fastcampus.jober.domain.spacewallmember.dto.SpaceWallMemberResponse.SpaceWallMemberDTO;
 import static com.fastcampus.jober.global.constant.ErrorCode.INVALID_REQUEST;
 
 @RestController

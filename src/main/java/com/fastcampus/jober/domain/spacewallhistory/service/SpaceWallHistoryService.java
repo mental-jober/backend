@@ -33,6 +33,7 @@ public class SpaceWallHistoryService {
     private final ComponentHistoryRepository componentHistoryRepository;
     private final MemberRepository memberRepository;
 
+    @Transactional
     public HistoryResponseDTOWrapper addSpaceWallHistory(HistoryRequestDTOWrapper requestDTO) {
 
         SpaceWallHistoryRequestDTO spaceWallHistoryRequest = requestDTO.getSpaceWallHistoryRequestDTO();

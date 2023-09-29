@@ -1,13 +1,8 @@
 package com.fastcampus.jober.domain.spacewallhistory.dto;
 
-import com.fastcampus.jober.domain.componenthistory.dto.ComponentHistoryResponse;
 import com.fastcampus.jober.domain.spacewallhistory.domain.SpaceWallHistory;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 public class SpaceWallHistoryResponse {
 

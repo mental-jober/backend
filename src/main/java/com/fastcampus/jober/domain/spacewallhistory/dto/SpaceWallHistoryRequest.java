@@ -1,16 +1,7 @@
 package com.fastcampus.jober.domain.spacewallhistory.dto;
 
-import com.fastcampus.jober.domain.componenthistory.dto.ComponentHistoryRequest;
-import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
-import com.fastcampus.jober.domain.spacewallhistory.domain.SpaceWallHistory;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
-
-import static com.fastcampus.jober.domain.componenthistory.dto.ComponentHistoryRequest.*;
 
 public class SpaceWallHistoryRequest {
 
