@@ -88,5 +88,4 @@ public class SpaceWallPermissionService {
         permission.setAuths(auth);
         spaceWallPermissionRepository.save(permission);
     }
-
 }

@@ -23,7 +23,12 @@ public class SpaceWallHistoryController {
     private final SpaceWallHistoryService spaceWallHistoryService;
     private final SpaceWallService spaceWallService;
 
-
+    /**
+     * 공유스페이스 및 컴포넌트 히스토리를 저장합니다.
+     * @param historyRequest HistoryRequestDTOWrapper
+     * @param spaceWallId 공유스페이스id
+     * @return 히스토리에 저장된 데이터
+     */
     @PostMapping("/history/{spaceWallId}")
     public ResponseEntity<ResponseDTO<HistoryResponseDTOWrapper>> historyAdd(
             @RequestBody HistoryRequestDTOWrapper historyRequest,

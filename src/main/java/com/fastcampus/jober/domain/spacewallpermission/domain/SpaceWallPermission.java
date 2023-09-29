@@ -3,7 +3,6 @@ package com.fastcampus.jober.domain.spacewallpermission.domain;
 import com.fastcampus.jober.domain.BaseTimeEntity;
 import com.fastcampus.jober.domain.spacewallmember.domain.SpaceWallMember;
 import com.fastcampus.jober.global.constant.Auths;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
