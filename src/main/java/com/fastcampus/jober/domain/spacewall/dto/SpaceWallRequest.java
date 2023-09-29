@@ -2,7 +2,12 @@ package com.fastcampus.jober.domain.spacewall.dto;
 
 import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
-import lombok.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public class SpaceWallRequest {
 
@@ -11,6 +16,7 @@ public class SpaceWallRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreateDto {
+
         private String url;
         private String title;
         private String description;
@@ -22,16 +28,16 @@ public class SpaceWallRequest {
 
         public SpaceWall toEntityWithMember(Member member) {
             return SpaceWall.builder()
-                    .createMember(member)
-                    .url(url)
-                    .title(title)
-                    .description(description)
-                    .profileImageUrl(profileImageUrl)
-                    .backgroundImageUrl(backgroundImageUrl)
-                    .pathIds(pathIds)
-                    .authorized(authorized)
-                    .sequence(sequence != null ? sequence : 0)
-                    .build();
+                .createMember(member)
+                .url(url)
+                .title(title)
+                .description(description)
+                .profileImageUrl(profileImageUrl)
+                .backgroundImageUrl(backgroundImageUrl)
+                .pathIds(pathIds)
+                .authorized(authorized)
+                .sequence(sequence != null ? sequence : 0)
+                .build();
         }
     }
 
@@ -39,6 +45,7 @@ public class SpaceWallRequest {
     @Setter
     @NoArgsConstructor
     public static class UpdateDto {
+
         private String url;
         private String title;
         private String description;
@@ -49,14 +56,23 @@ public class SpaceWallRequest {
 
         public SpaceWall toEntity() {
             return SpaceWall.builder()
-                    .url(url)
-                    .title(title)
-                    .description(description)
-                    .profileImageUrl(profileImageUrl)
-                    .backgroundImageUrl(backgroundImageUrl)
-                    .pathIds(pathIds)
-                    .authorized(authorized)
-                    .build();
+                .url(url)
+                .title(title)
+                .description(description)
+                .profileImageUrl(profileImageUrl)
+                .backgroundImageUrl(backgroundImageUrl)
+                .pathIds(pathIds)
+                .authorized(authorized)
+                .build();
         }
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UrlUpdateDto {
+
+        @NotBlank(message = "URL은 빈 값이거나 공백이 들어갈 수 없습니다.")
+        private String updateUrl;
     }
 }
