@@ -12,9 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 import static com.fastcampus.jober.domain.member.dto.MemberResponse.JoinDTO;
+import static com.fastcampus.jober.domain.member.dto.MemberResponse.MySpaceWallDTO;
 import static com.fastcampus.jober.global.constant.ErrorCode.DUPLICATED_EMAIL;
 
 @RestController
@@ -36,8 +38,8 @@ public class MemberController {
         if (memberService.checkEmailDuplication(joinRequestDTO.getEmail()))
             throw new MemberException(DUPLICATED_EMAIL);
 
-        return ResponseEntity.ok(
-            new ResponseDTO<>(memberService.join(joinRequestDTO), "회원가입에 성공했습니다."));
+        return ResponseEntity
+                .ok(new ResponseDTO<>(memberService.join(joinRequestDTO), "회원가입에 성공했습니다."));
     }
 
     /**
@@ -51,9 +53,10 @@ public class MemberController {
     ) {
         Map<String, Object> response = memberService.login(loginRequestDTO.getEmail(), loginRequestDTO.getPassword());
 
-        return ResponseEntity.ok()
-            .header(JwtTokenProvider.HEADER, (String) response.get("token"))
-            .body(new ResponseDTO<>(response.get("memberInfo"), "로그인에 성공했습니다."));
+        return ResponseEntity
+                .ok()
+                .header(JwtTokenProvider.HEADER, (String) response.get("token"))
+                .body(new ResponseDTO<>(response.get("memberInfo"), "로그인에 성공했습니다."));
     }
 
     /**
@@ -66,7 +69,8 @@ public class MemberController {
         @RequestHeader(JwtTokenProvider.HEADER) String authorization
     ) {
         memberService.logout(authorization.split(" ")[1]); // Bearer 떼냄.
-        return ResponseEntity.ok(new ResponseDTO<>("로그아웃 하였습니다."));
+        return ResponseEntity
+                .ok(new ResponseDTO<>("로그아웃 하였습니다."));
     }
 
     /**
@@ -74,7 +78,7 @@ public class MemberController {
      * @param request String email
      * @return boolean
      */
-    @GetMapping("/checkEmail/{email}")
+    @GetMapping("/check-email/{email}")
     public boolean isExistMemberByEmail(@PathVariable(name = "email") @Email String request) {
         return memberService.checkEmailDuplication(request);
     }
@@ -84,8 +88,26 @@ public class MemberController {
      * @param authorization
      * @return 이상이 없는 경우 true
      */
-    @GetMapping("/checkToken")
+    @GetMapping("/check-token")
     public boolean isOKToken(@RequestHeader(JwtTokenProvider.HEADER) String authorization) {
         return JwtTokenProvider.validateToken(authorization.split(" ")[1]);
+    }
+
+    /**
+     * 사용자가 공동작업자로 속한 공유스페이스 목록 중 최상위 depth의 것을 조회합니다.
+     * @param authorization 토큰
+     * @return 공유스페이스 목록
+     */
+    @GetMapping("/my-spaces")
+    public ResponseEntity<ResponseDTO<List<MySpaceWallDTO>>> mySpacesList(
+            @RequestHeader(JwtTokenProvider.HEADER) String authorization
+    ) {
+        Long memberId = JwtTokenProvider.getMemberIdFromToken(authorization.split(" ")[1]);
+
+        return ResponseEntity
+                .ok(new ResponseDTO<>(
+                        memberService.findMySpaceWalls(memberId),
+                        "사용자가 공동 작업자로 속한 공유스페이스 목록을 조회합니다.")
+                );
     }
 }
