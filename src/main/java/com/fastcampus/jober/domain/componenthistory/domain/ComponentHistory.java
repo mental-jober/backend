@@ -22,12 +22,17 @@ public class ComponentHistory extends BaseTimeEntity {
 
     private Long spaceWallHistoryId;
 
+    private Long childSpaceWallId;
+
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private Type type;
 
     @Column(nullable = false)
     private boolean visible;
+
+    @Column(length = 100)
+    private String title;
 
     @Column(length = 1000)
     private String content;

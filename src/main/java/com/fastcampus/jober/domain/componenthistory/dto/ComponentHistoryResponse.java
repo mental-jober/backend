@@ -14,9 +14,11 @@ public class ComponentHistoryResponse {
         private Long id;
         private Long templateId;
         private Long spaceWallHistoryId;
+        private Long childSpaceWallId;
         private Type type;
         private Long spaceWallId;
         private boolean visible;
+        private String title;
         private String content;
         private int sequence;
 
@@ -24,9 +26,11 @@ public class ComponentHistoryResponse {
             this.id = componentHistory.getId();
             this.templateId = componentHistory.getTemplateId();
             this.spaceWallHistoryId = componentHistory.getSpaceWallHistoryId();
+            this.childSpaceWallId = componentHistory.getChildSpaceWallId();
             this.type = componentHistory.getType();
             this.spaceWallId = componentHistory.getSpaceWallId();
             this.visible = componentHistory.isVisible();
+            this.title = componentHistory.getTitle();
             this.content = componentHistory.getContent();
             this.sequence = componentHistory.getSequence();
         }

@@ -23,13 +23,6 @@ public class SpaceWallHistory extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @ManyToOne
-//    @JsonIgnore
-//    @JsonBackReference
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    @JoinColumn(name = "space_wall_id")
-//    private SpaceWall spaceWall;
-
     private Long spaceWallId;
 
     @Column(length = 100)
