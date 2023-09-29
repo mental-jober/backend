@@ -10,6 +10,7 @@ import com.fastcampus.jober.domain.componentTemp.repository.ComponentTempReposit
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWallTemp;
 import com.fastcampus.jober.domain.spacewall.repository.SpaceWallRepository;
 import com.fastcampus.jober.domain.spacewall.repository.SpaceWallTempRepository;
+import com.fastcampus.jober.domain.template.domain.Template;
 import com.fastcampus.jober.domain.template.repository.TemplateRepository;
 import com.fastcampus.jober.global.constant.ErrorCode;
 import com.fastcampus.jober.global.error.exception.ComponentTempException;
@@ -26,12 +27,13 @@ public class ComponentTempService {
 
     private final ComponentTempRepository componentTempRepository;
     private final SpaceWallTempRepository spaceWallTempRepository;
+    private final TemplateRepository templateRepository;
 
     @Transactional
     public ComponentTempResponseDTO addComponentTemp(
         ComponentTempRequest.ComponentTempRequestDTO requestDTO) {
         if (requestDTO == null) {
-            throw new ComponentTempException(ErrorCode.SPACEWALLTEMP_NOT_FOUND);
+            throw new ComponentTempException(ErrorCode.DTO_NOT_EXISTS);
         }
         String type = requestDTO.getType();
         if (!(type.equals("text") || type.equals("line") || type.equals("link") || type.equals(
@@ -42,6 +44,8 @@ public class ComponentTempService {
 
 
         SpaceWallTemp spaceWallTemp = spaceWallTempRepository.findById(requestDTO.getSpaceWallTempId()).get(); // 예외처리
+
+
 
         ComponentTemp componentTemp = ComponentTemp.builder()
             .spaceWallTemp(spaceWallTemp)
@@ -56,6 +60,41 @@ public class ComponentTempService {
         ComponentTempResponseDTO componentTempResponseDTO = ComponentTempResponseDTO.toDTO(addedcomponentTemp);
 
         return componentTempResponseDTO;
+    }
+
+    @Transactional
+    public ComponentTempResponseDTO modifyComponentTemp(
+        ComponentTempRequest.ComponentTempRequestDTO requestDTO) {
+        if (requestDTO == null) {
+            throw new ComponentTempException(ErrorCode.DTO_NOT_EXISTS);
+        }
+
+        ComponentTemp componentTemp = componentTempRepository.findById(requestDTO.getId()).get();
+
+
+        String type = requestDTO.getType();
+        if (type.equals("page")) {
+            SpaceWallTemp childSpaceWallTemp = spaceWallTempRepository.findById(
+                requestDTO.getChildSpaceWallTempId()).get();
+
+            componentTemp.setChildSpaceWallTemp(childSpaceWallTemp);
+            return ComponentTempResponseDTO.toDTOPageType(componentTemp);
+        } else if (type.equals("template")) {
+            Template template = templateRepository.findById(requestDTO.getTemplateId()).get();
+
+            componentTemp.setTemplate(template);
+            return ComponentTempResponseDTO.toDTOTemplateType(componentTemp);
+        } else {
+            componentTemp.setTitle(requestDTO.getTitle());
+            componentTemp.setContent(requestDTO.getContent());
+            return ComponentTempResponseDTO.toDTO(componentTemp);
+        }
+
+    }
+
+    @Transactional(readOnly = true)
+    public boolean checkComponentTempExists(Long id) {
+        return componentTempRepository.existsComponentTempById(id);
     }
 
 }

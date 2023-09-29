@@ -31,8 +31,10 @@ public enum ErrorCode {
     MALFORMED_TOKEN(HttpStatus.UNAUTHORIZED, "잘못된 토큰입니다."),
     UNKNOWN_TOKEN_ERROR(HttpStatus.UNAUTHORIZED, "알 수 없는 토큰 에러가 발생했습니다."),
     SPACEWALL_NOT_FOUND(HttpStatus.BAD_REQUEST, "공유페이지를 찾을 수 없습니다."),
-    SPACEWALLTEMP_NOT_FOUND(HttpStatus.BAD_REQUEST, "임시 공유페이지를 찾을 수 없습니다."),
-    INVALID_COMPONENT_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 type입니다")
+    COMPONENTTEMP_NOT_FOUND(HttpStatus.BAD_REQUEST, "임시 컴포넌트를 찾을 수 없습니다."),
+    INVALID_COMPONENT_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 type입니다"),
+    INVALID_COMPONENTTEMPID(HttpStatus.BAD_REQUEST, "유효하지 않은 componentTempId입니다"),
+    DTO_NOT_EXISTS(HttpStatus.BAD_REQUEST, "dto가 넘어오지 않았습니다.")
 
     ;
 
