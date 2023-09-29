@@ -124,7 +124,9 @@ public class SecurityConfig {
         http.authorizeRequests(
                 authorize -> {
                     authorize
-                            .requestMatchers(new AntPathRequestMatcher("/checkEmail/**"))
+                            .requestMatchers(new AntPathRequestMatcher("/my-spaces"), new AntPathRequestMatcher("/check-token"))
+                            .access("isAuthenticated()")
+                            .requestMatchers(new AntPathRequestMatcher("/check-email/**"))
                             .access("isAuthenticated() and hasAnyAuthority('EDITOR', 'OWNER')")
                             .requestMatchers(new AntPathRequestMatcher("/spaces/member/**"))
                             .access("isAuthenticated() and hasAnyAuthority('EDITOR', 'OWNER')")
