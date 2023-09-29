@@ -4,6 +4,7 @@ import com.fastcampus.jober.domain.member.domain.Member;
 import com.fastcampus.jober.domain.member.repository.MemberRepository;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
 import com.fastcampus.jober.domain.spacewall.dto.SpaceWallRequest;
+import com.fastcampus.jober.domain.spacewall.dto.SpaceWallRequest.UrlUpdateDto;
 import com.fastcampus.jober.domain.spacewall.dto.SpaceWallResponse;
 import com.fastcampus.jober.domain.spacewall.dto.SpaceWallResponse.SessionDTO;
 import com.fastcampus.jober.domain.spacewall.repository.SpaceWallRepository;
@@ -25,14 +26,15 @@ public class SpaceWallService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public SpaceWallResponse.ResponseDto create(SpaceWallRequest.CreateDto createDto, MemberDetails memberDetails) {
+    public SpaceWallResponse.ResponseDto create(SpaceWallRequest.CreateDto createDto,
+        MemberDetails memberDetails) {
         if (createDto == null) {
             throw new SpaceWallBadRequestException("생성된 DTO가 잘못되었습니다.");
         }
 
         Long currentMemberId = memberDetails.getMember().getId();
         Member currentMember = memberRepository.findById(currentMemberId)
-                .orElseThrow(() -> new RuntimeException("ID가 있는 회원을 찾을 수 없습니다.: " + currentMemberId));
+            .orElseThrow(() -> new RuntimeException("ID가 있는 회원을 찾을 수 없습니다.: " + currentMemberId));
 
         SpaceWall spaceWall = createDto.toEntityWithMember(currentMember);
         SpaceWall savedSpaceWall = spaceWallRepository.save(spaceWall);
@@ -46,18 +48,19 @@ public class SpaceWallService {
         }
 
         SpaceWall spaceWall = spaceWallRepository.findById(id)
-                .orElseThrow(() -> new SpaceWallNotFoundException("ID가 있는 공유페이지을 찾을 수 없습니다: " + id));
+            .orElseThrow(() -> new SpaceWallNotFoundException("ID가 있는 공유페이지을 찾을 수 없습니다: " + id));
         return new SpaceWallResponse.ResponseDto(spaceWall);
     }
 
     @Transactional
-    public SpaceWallResponse.ResponseDto update(Long id, SpaceWallRequest.UpdateDto updateDto, MemberDetails memberDetails) {
+    public SpaceWallResponse.ResponseDto update(Long id, SpaceWallRequest.UpdateDto updateDto,
+        MemberDetails memberDetails) {
         if (id == null || updateDto == null) {
             throw new SpaceWallBadRequestException("업데이트할 매개 변수가 잘못되었습니다.");
         }
 
         SpaceWall spaceWall = spaceWallRepository.findById(id)
-                .orElseThrow(() -> new SpaceWallNotFoundException("ID가 있는 공유페이지을 찾을 수 없습니다: " + id));
+            .orElseThrow(() -> new SpaceWallNotFoundException("ID가 있는 공유페이지을 찾을 수 없습니다: " + id));
 
         SpaceWall updatedSpaceWall = updateDto.toEntity();
         spaceWall.update(updatedSpaceWall);
@@ -72,7 +75,7 @@ public class SpaceWallService {
         }
 
         SpaceWall spaceWall = spaceWallRepository.findById(id)
-                .orElseThrow(() -> new SpaceWallNotFoundException("ID가 있는 공유페이지을 찾을 수 없습니다.: " + id));
+            .orElseThrow(() -> new SpaceWallNotFoundException("ID가 있는 공유페이지을 찾을 수 없습니다.: " + id));
 
         if ("1".equals(spaceWall.getPathIds())) {
             throw new SpaceWallBadRequestException("최상단의 공유페이지는 삭제할 수 없습니다.");
@@ -82,7 +85,7 @@ public class SpaceWallService {
     }
 
     public SpaceWallResponse.SessionDTO checkEditSession(Long memberId, Long spaceWallId,
-                                                         HttpSession httpSession) {
+        HttpSession httpSession) {
         boolean accessable = isNotExistSession(spaceWallId, httpSession);
 
         if (accessable) {
@@ -117,5 +120,25 @@ public class SpaceWallService {
     @Transactional(readOnly = true)
     public boolean checkSpaceWallIdExists(Long id) {
         return spaceWallRepository.existsSpaceWallById(id);
+    }
+
+    @Transactional
+    public String modifyUrl(UrlUpdateDto urlUpdateDto, Long id) {
+        SpaceWall spaceWall = spaceWallRepository.findById(id)
+            .orElseThrow(() -> new SpaceWallNotFoundException("공유스페이스를 찾을 수 없습니다."));
+
+        String updateUrl = urlUpdateDto.getUpdateUrl();
+
+        if (isExistUrl(updateUrl)) {
+            throw new SpaceWallBadRequestException("해당 url은 이미 사용중입니다.");
+        }
+
+        spaceWall.updateUrl(updateUrl);
+
+        return updateUrl;
+    }
+
+    private boolean isExistUrl(String url) {
+        return spaceWallRepository.existsByUrl(url);
     }
 }

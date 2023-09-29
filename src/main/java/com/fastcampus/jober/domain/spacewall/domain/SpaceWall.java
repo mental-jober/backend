@@ -6,14 +6,21 @@ import com.fastcampus.jober.domain.spacewallmember.domain.SpaceWallMember;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import java.util.List;
 
 @Entity
 @Getter
@@ -67,16 +74,33 @@ public class SpaceWall extends BaseTimeEntity {
     }
 
     public void update(SpaceWall updatedSpaceWall) {
-        if (updatedSpaceWall.getUrl() != null) this.url = updatedSpaceWall.getUrl();
-        if (updatedSpaceWall.getTitle() != null) this.title = updatedSpaceWall.getTitle();
-        if (updatedSpaceWall.getDescription() != null) this.description = updatedSpaceWall.getDescription();
-        if (updatedSpaceWall.getProfileImageUrl() != null) this.profileImageUrl = updatedSpaceWall.getProfileImageUrl();
-        if (updatedSpaceWall.getBackgroundImageUrl() != null) this.backgroundImageUrl = updatedSpaceWall.getBackgroundImageUrl();
-        if (updatedSpaceWall.getPathIds() != null) this.pathIds = updatedSpaceWall.getPathIds();
+        if (updatedSpaceWall.getUrl() != null) {
+            this.url = updatedSpaceWall.getUrl();
+        }
+        if (updatedSpaceWall.getTitle() != null) {
+            this.title = updatedSpaceWall.getTitle();
+        }
+        if (updatedSpaceWall.getDescription() != null) {
+            this.description = updatedSpaceWall.getDescription();
+        }
+        if (updatedSpaceWall.getProfileImageUrl() != null) {
+            this.profileImageUrl = updatedSpaceWall.getProfileImageUrl();
+        }
+        if (updatedSpaceWall.getBackgroundImageUrl() != null) {
+            this.backgroundImageUrl = updatedSpaceWall.getBackgroundImageUrl();
+        }
+        if (updatedSpaceWall.getPathIds() != null) {
+            this.pathIds = updatedSpaceWall.getPathIds();
+        }
         this.authorized = updatedSpaceWall.isAuthorized();
     }
 
     public void setSequence(int sequence) {
         this.sequence = sequence;
+
+    }
+
+    public void updateUrl(String url) {
+        this.url = url;
     }
 }
