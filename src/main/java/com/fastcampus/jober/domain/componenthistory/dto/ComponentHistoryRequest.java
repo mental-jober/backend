@@ -16,8 +16,10 @@ public class ComponentHistoryRequest {
 
         private Long templateId;
         private Long spaceWallHistoryId;
+        private Long childSpaceWallId;
         private Type type;
         private boolean visible;
+        private String title;
         private String content;
         private int sequence;
         private Long spaceWallId;
