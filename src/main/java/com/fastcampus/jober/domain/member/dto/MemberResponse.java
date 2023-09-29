@@ -6,9 +6,7 @@ import com.fastcampus.jober.global.constant.Auths;
 import lombok.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MemberResponse {
 
@@ -74,5 +72,15 @@ public class MemberResponse {
             this.email = member.getEmail();
             this.username = member.getUsername();
         }
+    }
+
+    @Getter
+    @Setter
+    @RequiredArgsConstructor
+    @AllArgsConstructor
+    public static class MySpaceWallDTO {
+        Long spaceWallId;
+        String title;
+        Auths auths;
     }
 }

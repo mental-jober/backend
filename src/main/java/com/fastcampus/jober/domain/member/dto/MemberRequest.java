@@ -4,11 +4,7 @@ import com.fastcampus.jober.domain.member.domain.Member;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 public class MemberRequest {
 
@@ -54,10 +50,6 @@ public class MemberRequest {
             message = "한글/영문 1~20자 이내로 작성해주세요"
         )
         private String username;
-
-        public void setPassword(String password) { // password 인코딩용
-            this.password = password;
-        }
 
         public Member toEntity() {
             return Member.builder()
