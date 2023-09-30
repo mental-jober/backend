@@ -38,7 +38,8 @@ public class SpaceWallHistoryService {
     @Transactional
     public HistoryResponseDTOWrapper addSpaceWallHistory(HistoryRequestDTOWrapper requestDTO) {
 
-        MemberDetails memberDetails = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MemberDetails memberDetails =
+                (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long currentMemberId = memberDetails.getMemberId();
         SpaceWallHistoryRequestDTO spaceWallHistoryRequest = requestDTO.getSpaceWallHistoryRequestDTO();
 
@@ -82,7 +83,8 @@ public class SpaceWallHistoryService {
     }
     @Transactional(readOnly = true)
     public List<SpaceWallHistoryResponseDTO> findRecentHistoryByMemberId(Long memberId) {
-        List<SpaceWallHistory> histories = spaceWallHistoryRepository.findTop5ByCreateMemberIdOrderByCreatedAtDesc(memberId);
+        List<SpaceWallHistory> histories =
+                spaceWallHistoryRepository.findTop5ByCreateMemberIdOrderByCreatedAtDesc(memberId);
         List<SpaceWallHistoryResponseDTO> response = new ArrayList<>();
 
         for (SpaceWallHistory history : histories) {

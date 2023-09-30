@@ -2,6 +2,7 @@ package com.fastcampus.jober.domain.spacewallhistory.dto;
 
 import com.fastcampus.jober.domain.componenthistory.dto.ComponentHistoryRequest;
 import com.fastcampus.jober.domain.componenthistory.dto.ComponentHistoryResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,8 +18,8 @@ public class HistoryWrapper {
     @AllArgsConstructor
     public static class HistoryRequestDTOWrapper {
 
-        SpaceWallHistoryRequest.SpaceWallHistoryRequestDTO spaceWallHistoryRequestDTO;
-        List<ComponentHistoryRequest.ComponentHistoryRequestDTO> componentHistoryRequestDTOs;
+        @Valid SpaceWallHistoryRequest.SpaceWallHistoryRequestDTO spaceWallHistoryRequestDTO;
+        @Valid List<ComponentHistoryRequest.ComponentHistoryRequestDTO> componentHistoryRequestDTOs;
     }
 
     @Setter
@@ -30,5 +31,4 @@ public class HistoryWrapper {
         SpaceWallHistoryResponse.SpaceWallHistoryResponseDTO spaceWallHistoryResponseDTO;
         List<ComponentHistoryResponse.ComponentHistoryResponseDTO> componentHistoryResponseDTOs;
     }
-
 }
