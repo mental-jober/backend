@@ -9,10 +9,12 @@ import com.fastcampus.jober.domain.spacewallhistory.domain.SpaceWallHistory;
 import com.fastcampus.jober.domain.spacewallhistory.dto.HistoryWrapper;
 import com.fastcampus.jober.domain.spacewallhistory.dto.SpaceWallHistoryRequest;
 import com.fastcampus.jober.domain.spacewallhistory.repository.SpaceWallHistoryRepository;
+import com.fastcampus.jober.global.auth.session.MemberDetails;
 import com.fastcampus.jober.global.error.exception.SpaceWallBadRequestException;
 import com.fastcampus.jober.global.error.exception.SpaceWallNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +38,8 @@ public class SpaceWallHistoryService {
     @Transactional
     public HistoryResponseDTOWrapper addSpaceWallHistory(HistoryRequestDTOWrapper requestDTO) {
 
+        MemberDetails memberDetails = (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long currentMemberId = memberDetails.getMemberId();
         SpaceWallHistoryRequestDTO spaceWallHistoryRequest = requestDTO.getSpaceWallHistoryRequestDTO();
 
         SpaceWallHistory spaceWallHistory = SpaceWallHistory.builder()
@@ -48,6 +52,7 @@ public class SpaceWallHistoryService {
                 .pathIds(spaceWallHistoryRequest.getPathIds())
                 .authorized(spaceWallHistoryRequest.isAuthorized())
                 .sequence(spaceWallHistoryRequest.getSequence())
+                .createMemberId(currentMemberId)
                 .build();
 
         SpaceWallHistoryResponseDTO spaceWallHistoryResponse =
