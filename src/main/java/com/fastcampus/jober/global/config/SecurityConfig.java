@@ -1,8 +1,10 @@
 package com.fastcampus.jober.global.config;
 
 import com.fastcampus.jober.global.auth.jwt.JwtAuthenticationFilter;
+import com.fastcampus.jober.global.auth.jwt.JwtExceptionFilter;
 import com.fastcampus.jober.global.error.exception.Exception401;
 import com.fastcampus.jober.global.error.exception.Exception403;
+import com.fastcampus.jober.global.error.exception.TokenException;
 import com.fastcampus.jober.global.utils.FilterResponseUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +21,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -39,6 +40,8 @@ public class SecurityConfig {
 
     @Autowired
     private CustomLogoutHandler logoutHandler;
+
+    private final JwtExceptionFilter jwtExceptionFilter;
 
 //    @Bean
 //    BCryptPasswordEncoder passwordEncoder() {
@@ -74,6 +77,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
+        // 0. 필터 차원에서 토큰 예외처리 하기 위함
+        http.addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class);
+
         // 1. CSRF 해제
         http.csrf(AbstractHttpConfigurer::disable);
 
@@ -104,9 +110,10 @@ public class SecurityConfig {
         http.exceptionHandling(
                 c -> c.authenticationEntryPoint((request, response, authException) -> {
                     log.warn("인증되지 않은 사용자가 자원에 접근하려 합니다 : " + authException.getMessage());
-                    FilterResponseUtils.unAuthorized(
+                    FilterResponseUtils.setErrorResponse(
+                            INVALID_AUTHENTICATION.getHttpStatus(),
                             response,
-                            new Exception401(INVALID_AUTHENTICATION.getMessage())
+                            new TokenException(INVALID_AUTHENTICATION)
                     );
                 }));
 
@@ -114,9 +121,10 @@ public class SecurityConfig {
         http.exceptionHandling(
                 c -> c.accessDeniedHandler((request, response, accessDeniedException) -> {
                     log.warn("권한이 없는 사용자가 자원에 접근하려 합니다 : " + accessDeniedException.getMessage());
-                    FilterResponseUtils.forbidden(
+                    FilterResponseUtils.setErrorResponse(
+                            INVALID_USER.getHttpStatus(),
                             response,
-                            new Exception403(INVALID_USER.getMessage())
+                            new TokenException(INVALID_USER)
                     );
                 }));
 
@@ -124,10 +132,12 @@ public class SecurityConfig {
         http.authorizeRequests(
                 authorize -> {
                     authorize
-                            .requestMatchers(new AntPathRequestMatcher("/my-spaces"), new AntPathRequestMatcher("/check-token"))
+                            .requestMatchers(
+                                    new AntPathRequestMatcher("/my-spaces"),
+                                    new AntPathRequestMatcher("/check-token"),
+                                    new AntPathRequestMatcher("/check-email/**")
+                            )
                             .access("isAuthenticated()")
-                            .requestMatchers(new AntPathRequestMatcher("/check-email/**"))
-                            .access("isAuthenticated() and hasAnyAuthority('EDITOR', 'OWNER')")
                             .requestMatchers(new AntPathRequestMatcher("/spaces/member/**"))
                             .access("isAuthenticated() and hasAnyAuthority('EDITOR', 'OWNER')")
                             .anyRequest().permitAll();
