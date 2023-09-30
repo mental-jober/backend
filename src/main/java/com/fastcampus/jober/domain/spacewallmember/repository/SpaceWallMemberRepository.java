@@ -1,5 +1,6 @@
 package com.fastcampus.jober.domain.spacewallmember.repository;
 
+import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
 import com.fastcampus.jober.domain.spacewallmember.domain.SpaceWallMember;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -7,8 +8,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SpaceWallMemberRepository extends JpaRepository<SpaceWallMember, Long> {
+
+    Optional<SpaceWallMember> findBySpaceWall(SpaceWall spaceWall);
     @Query("SELECT swm FROM SpaceWallMember swm WHERE swm.spaceWall.id = :spaceWallId AND swm.member.id = :memberId")
     SpaceWallMember selectSpaceWallMember(@Param("spaceWallId") Long spaceWallId, @Param("memberId") Long memberId);
 

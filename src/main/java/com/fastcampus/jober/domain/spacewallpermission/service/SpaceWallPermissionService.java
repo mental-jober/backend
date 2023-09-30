@@ -2,6 +2,8 @@ package com.fastcampus.jober.domain.spacewallpermission.service;
 
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
 import com.fastcampus.jober.domain.spacewall.repository.SpaceWallRepository;
+import com.fastcampus.jober.domain.spacewallmember.domain.SpaceWallMember;
+import com.fastcampus.jober.domain.spacewallmember.repository.SpaceWallMemberRepository;
 import com.fastcampus.jober.domain.spacewallpermission.domain.SpaceWallPermission;
 import com.fastcampus.jober.domain.spacewallpermission.dto.SpaceWallPermissionRequest;
 import com.fastcampus.jober.domain.spacewallpermission.dto.SpaceWallPermissionResponse;
@@ -20,6 +22,7 @@ import java.util.List;
 public class SpaceWallPermissionService {
 
     private final SpaceWallPermissionRepository spaceWallPermissionRepository;
+    private final SpaceWallMemberRepository spaceWallMemberRepository;
     private final SpaceWallRepository spaceWallRepository;
 
     @Transactional
@@ -84,7 +87,16 @@ public class SpaceWallPermissionService {
 
     @Transactional
     public void assignPermissionToSpaceWall(Auths auth, SpaceWall spaceWall) {
+        SpaceWallMember spaceWallMember = spaceWallMemberRepository
+                .findBySpaceWall(spaceWall)
+                .orElseGet(() -> {
+                    SpaceWallMember newMember = new SpaceWallMember();
+                    newMember.setSpaceWall(spaceWall);
+                    return spaceWallMemberRepository.save(newMember);
+                });
+
         SpaceWallPermission permission = new SpaceWallPermission();
+        permission.setSpaceWallMember(spaceWallMember);
         permission.setAuths(auth);
         spaceWallPermissionRepository.save(permission);
     }
