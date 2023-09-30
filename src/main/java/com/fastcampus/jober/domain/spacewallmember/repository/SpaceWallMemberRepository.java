@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface SpaceWallMemberRepository extends JpaRepository<SpaceWallMember, Long> {
 
-    Optional<SpaceWallMember> findBySpaceWall(SpaceWall spaceWall);
+    Optional<SpaceWallMember> findBySpaceWallId(Long spaceWallId);
     @Query("SELECT swm FROM SpaceWallMember swm WHERE swm.spaceWall.id = :spaceWallId AND swm.member.id = :memberId")
     SpaceWallMember selectSpaceWallMember(@Param("spaceWallId") Long spaceWallId, @Param("memberId") Long memberId);
 

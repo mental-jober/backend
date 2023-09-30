@@ -86,13 +86,16 @@ public class SpaceWallPermissionService {
     }
 
     @Transactional
-    public void assignPermissionToSpaceWall(Auths auth, SpaceWall spaceWall) {
+    public void assignPermissionToSpaceWall(Auths auth, Long spaceWallId) {
+        SpaceWall spaceWall = spaceWallRepository.findById(spaceWallId)
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 공유페이스 ID입니다."));
+
         SpaceWallMember spaceWallMember = spaceWallMemberRepository
-                .findBySpaceWall(spaceWall)
+                .findBySpaceWallId(spaceWallId)
                 .orElseGet(() -> {
                     SpaceWallMember newMember = new SpaceWallMember();
                     newMember.setSpaceWall(spaceWall);
-                    return spaceWallMemberRepository.save(newMember);
+                    return spaceWallMemberRepository.saveAndFlush(newMember);
                 });
 
         SpaceWallPermission permission = new SpaceWallPermission();
