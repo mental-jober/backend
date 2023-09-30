@@ -1,5 +1,7 @@
 package com.fastcampus.jober.domain.spacewallpermission.service;
 
+import com.fastcampus.jober.domain.member.domain.Member;
+import com.fastcampus.jober.domain.member.repository.MemberRepository;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
 import com.fastcampus.jober.domain.spacewall.repository.SpaceWallRepository;
 import com.fastcampus.jober.domain.spacewallmember.domain.SpaceWallMember;
@@ -24,6 +26,7 @@ public class SpaceWallPermissionService {
     private final SpaceWallPermissionRepository spaceWallPermissionRepository;
     private final SpaceWallMemberRepository spaceWallMemberRepository;
     private final SpaceWallRepository spaceWallRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public SpaceWallPermissionResponse updatePermission(Long id, SpaceWallPermissionRequest requestDto, MemberDetails memberDetails) {
@@ -86,15 +89,19 @@ public class SpaceWallPermissionService {
     }
 
     @Transactional
-    public void assignPermissionToSpaceWall(Auths auth, Long spaceWallId) {
+    public void assignPermissionToSpaceWall(Auths auth, Long spaceWallId, Long memberId) {
         SpaceWall spaceWall = spaceWallRepository.findById(spaceWallId)
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 공유페이스 ID입니다."));
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 회원 ID입니다."));
 
         SpaceWallMember spaceWallMember = spaceWallMemberRepository
                 .findBySpaceWallId(spaceWallId)
                 .orElseGet(() -> {
                     SpaceWallMember newMember = new SpaceWallMember();
                     newMember.setSpaceWall(spaceWall);
+                    newMember.setMember(member);
                     return spaceWallMemberRepository.saveAndFlush(newMember);
                 });
 

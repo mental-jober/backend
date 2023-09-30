@@ -35,8 +35,9 @@ public class SpaceWallCreationController {
             return ResponseEntity.badRequest().body(null);
         }
 
-        permissionService.assignPermissionToSpaceWall(Auths.OWNER, createdSpaceWallDto.getId());
+        permissionService.assignPermissionToSpaceWall(Auths.OWNER, createdSpaceWallDto.getId(), memberDetails.getMember().getId());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDTO<>(HttpStatus.CREATED, "공유페이지가 생성되었습니다.", createdSpaceWallDto));
     }
+
 }
