@@ -1,7 +1,6 @@
 package com.fastcampus.jober.global.auth.jwt;
 
 import com.fastcampus.jober.domain.member.domain.Member;
-import com.fastcampus.jober.domain.member.dto.MemberResponse;
 import com.fastcampus.jober.global.constant.Auths;
 import com.fastcampus.jober.global.error.exception.TokenException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -12,9 +11,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+
 import java.io.IOException;
 import java.util.*;
 
+import static com.fastcampus.jober.domain.member.dto.MemberResponse.PermissionMappedDTO;
 import static com.fastcampus.jober.global.constant.ErrorCode.*;
 
 @Component
@@ -54,22 +57,18 @@ public class JwtTokenProvider {
             Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
             return true;
         } catch (SignatureException e) {
-            log.info(INVALID_SIGNATURE.getMessage(), e);
             throw new TokenException(INVALID_SIGNATURE);
         } catch (ExpiredJwtException e) {
-            log.info(EXPIRED_JWT_TOKEN.getMessage(), e);
             throw new TokenException(EXPIRED_JWT_TOKEN);
         } catch (UnsupportedJwtException e) {
-            log.info(UNSUPPORTED_JWT.getMessage(), e);
             throw new TokenException(UNSUPPORTED_JWT);
         } catch (IllegalArgumentException e) {
-            log.info(ILLEGAL_ARGUMENT.getMessage(), e);
             throw new TokenException(ILLEGAL_ARGUMENT);
         } catch (MalformedJwtException e) {
-            log.error(MALFORMED_TOKEN.getMessage(), e);
             throw new TokenException(MALFORMED_TOKEN);
+        } catch (BadCredentialsException | AuthenticationCredentialsNotFoundException e) {
+            throw new TokenException(NOT_FOUNT_JWT);
         } catch (Exception e) {
-            log.error(UNKNOWN_TOKEN_ERROR.getMessage(), e);
             throw new TokenException(UNKNOWN_TOKEN_ERROR);
         }
     }
@@ -79,10 +78,10 @@ public class JwtTokenProvider {
                 .getBody().getExpiration().before(new Date());
     }
 
-    public static String create(Member member, List<MemberResponse.PermissionMappedDTO> permissionDTOs) {
+    public static String create(Member member, List<PermissionMappedDTO> permissionDTOs) {
 
         Map<Long, Auths> spaceWallMemberInfos = new HashMap<>();
-        for (MemberResponse.PermissionMappedDTO permissionMappedDTO : permissionDTOs) {
+        for (PermissionMappedDTO permissionMappedDTO : permissionDTOs) {
             spaceWallMemberInfos.put(permissionMappedDTO.getSpaceWallId(), permissionMappedDTO.getAuths());
         }
 
