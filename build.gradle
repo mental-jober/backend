@@ -49,6 +49,12 @@ dependencies {
     //Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.session:spring-session-data-redis'
+
+    //AnnotationProcessor
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    //Azure blob storage
+    implementation 'com.azure:azure-storage-blob:12.24.0'
 }
 
 tasks.named('test') {
