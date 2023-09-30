@@ -5,6 +5,7 @@ import com.fastcampus.jober.domain.spacewallhistory.dto.SpaceWallHistoryResponse
 import com.fastcampus.jober.domain.spacewallhistory.service.SpaceWallHistoryService;
 import com.fastcampus.jober.global.error.exception.SpaceWallNotFoundException;
 import com.fastcampus.jober.global.utils.api.dto.ResponseDTO;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

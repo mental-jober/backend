@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -83,11 +84,16 @@ public class MemberService {
 
     // 이 메서드의 목적은 사용자가 공동작업자로 속해있는 공유스페이스 목록을 조회하되,
     // 만약 공유스페이스 셋에 속한 경우 그중 가장 상위의 공유스페이스 목록을 조회함.
-    public List<MySpaceWallDTO> findMySpaceWalls(Long memberId) {
+    @Transactional
+    public List<MySpaceWallDTO> findMySpaceWalls() {
+
+        MemberDetails memberDetails =
+                (MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long currentMemberId = memberDetails.getMemberId();
 
         List<MySpaceWallDTO> mySpaceWallsDTOs = new ArrayList<>();
         List<Long> spaceWallIdList = new ArrayList<>();
-        for (SpaceWallMember spaceWallMember : memberRepository.selectMySpaceWallsById(memberId)) {
+        for (SpaceWallMember spaceWallMember : memberRepository.selectMySpaceWallsById(currentMemberId)) {
             SpaceWall mySpaceWall = spaceWallMember.getSpaceWall();
             MySpaceWallDTO mySpaceWallsDTO = null;
             if (mySpaceWall.getPathIds().length() == 1) { // 'path_ids'가 최상위 공유스페이스인 경우

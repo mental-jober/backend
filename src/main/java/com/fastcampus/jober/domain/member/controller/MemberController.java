@@ -4,6 +4,7 @@ import com.fastcampus.jober.domain.member.dto.MemberRequest;
 import com.fastcampus.jober.domain.member.service.MemberService;
 import com.fastcampus.jober.global.auth.jwt.JwtTokenProvider;
 import com.fastcampus.jober.global.error.exception.MemberException;
+import com.fastcampus.jober.global.error.exception.TokenException;
 import com.fastcampus.jober.global.utils.api.dto.ResponseDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -18,6 +19,7 @@ import java.util.Map;
 import static com.fastcampus.jober.domain.member.dto.MemberResponse.JoinDTO;
 import static com.fastcampus.jober.domain.member.dto.MemberResponse.MySpaceWallDTO;
 import static com.fastcampus.jober.global.constant.ErrorCode.DUPLICATED_EMAIL;
+import static com.fastcampus.jober.global.constant.ErrorCode.NOT_FOUNT_JWT;
 
 @RestController
 @RequiredArgsConstructor
@@ -79,7 +81,9 @@ public class MemberController {
      * @return boolean
      */
     @GetMapping("/check-email/{email}")
-    public boolean isExistMemberByEmail(@PathVariable(name = "email") @Email String request) {
+    public boolean isExistMemberByEmail(
+            @Email @PathVariable(name = "email") String request
+    ) {
         return memberService.checkEmailDuplication(request);
     }
 
@@ -89,24 +93,21 @@ public class MemberController {
      * @return 이상이 없는 경우 true
      */
     @GetMapping("/check-token")
-    public boolean isOKToken(@RequestHeader(JwtTokenProvider.HEADER) String authorization) {
+    public boolean isOKToken(
+            @RequestHeader(JwtTokenProvider.HEADER) String authorization
+    ) {
         return JwtTokenProvider.validateToken(authorization.split(" ")[1]);
     }
 
     /**
      * 사용자가 공동작업자로 속한 공유스페이스 목록 중 최상위 depth의 것을 조회합니다.
-     * @param authorization 토큰
      * @return 공유스페이스 목록
      */
     @GetMapping("/my-spaces")
-    public ResponseEntity<ResponseDTO<List<MySpaceWallDTO>>> mySpacesList(
-            @RequestHeader(JwtTokenProvider.HEADER) String authorization
-    ) {
-        Long memberId = JwtTokenProvider.getMemberIdFromToken(authorization.split(" ")[1]);
-
+    public ResponseEntity<ResponseDTO<List<MySpaceWallDTO>>> mySpacesList() {
         return ResponseEntity
                 .ok(new ResponseDTO<>(
-                        memberService.findMySpaceWalls(memberId),
+                        memberService.findMySpaceWalls(),
                         "사용자가 공동 작업자로 속한 공유스페이스 목록을 조회합니다.")
                 );
     }
