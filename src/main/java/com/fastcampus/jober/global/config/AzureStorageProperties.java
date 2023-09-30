@@ -10,6 +10,10 @@ public class AzureStorageProperties {
     private String key;
     private String containerName;
 
+    public String getConnectionString() {
+        return "DefaultEndpointsProtocol=https;AccountName=" + account + ";AccountKey=" + key + ";EndpointSuffix=core.windows.net";
+    }
+
     public String getAccount() {
         return account;
     }
