@@ -44,8 +44,6 @@ INSERT INTO space_wall_permission (space_wall_member_id, auths, created_at) VALU
 INSERT INTO space_wall_member (member_id, space_wall_id, created_at) VALUES (4, 2, now()); -- VIEWER 4
 INSERT INTO space_wall_permission (space_wall_member_id, auths, created_at) VALUES (10, 'VIEWER', now());
 
--- 임의의 공유스페이스 2에 공동작업자 등록 --
-
 -- Template 1 ~ 5
 INSERT INTO template(title, description, hashtag, created_at)
 VALUES ('회사 채용', '회사 채용 불합격 통지 템플릿 입니다.', '채용, 불합격템플릿, 템플릿', now());

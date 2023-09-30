@@ -1,5 +1,3 @@
-
-
 -- 회원가입 시 데이터 생성 플로우 --
 -- 가입 > 워크스페이스 생성(생략) > 공유스페이스 생성 > OWNER 권한으로 공동작업자에 등록 > 공유스페이스 히스토리 생성
 INSERT INTO member (email, password, username, created_at) VALUES ('member1@gmail.com', 'apaqj11!', '멤버1', CURRENT_TIMESTAMP);
