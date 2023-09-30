@@ -19,7 +19,7 @@ import org.hibernate.annotations.OnDeleteAction;
 })
 @Data
 @EqualsAndHashCode(callSuper=false)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
 @Builder
 public class SpaceWallMember extends BaseTimeEntity {
