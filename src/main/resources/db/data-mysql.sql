@@ -266,16 +266,16 @@ INSERT INTO my_template(template_id, member_id, created_at) values (33, 1, now()
 INSERT INTO my_template(template_id, member_id, created_at) values (27, 1, now());
 
 -- TemplateUsedHistory
-INSERT INTO template_used_history(template_id, member_id, used_at) values (1, 1, '2023-09-22T08:34:55.000Z');
-INSERT INTO template_used_history(template_id, member_id, used_at) values (2, 1, '2023-09-20T15:21:30.000Z');
-INSERT INTO template_used_history(template_id, member_id, used_at) values (5, 1, '2023-09-22T08:30:11.000Z');
-INSERT INTO template_used_history(template_id, member_id, used_at) values (6, 1, '2023-09-22T09:31:50.000Z');
-INSERT INTO template_used_history(template_id, member_id, used_at) values (7, 1, '2023-09-23T14:27:27.000Z');
-INSERT INTO template_used_history(template_id, member_id, used_at) values (21, 2, '2023-09-22T08:34:55.000Z');
-INSERT INTO template_used_history(template_id, member_id, used_at) values (15, 2, '2023-09-20T15:21:30.000Z');
-INSERT INTO template_used_history(template_id, member_id, used_at) values (6, 2, '2023-09-22T08:30:11.000Z');
-INSERT INTO template_used_history(template_id, member_id, used_at) values (2, 2, '2023-09-22T09:31:50.000Z');
-INSERT INTO template_used_history(template_id, member_id, used_at) values (18, 2, '2023-09-23T14:27:27.000Z');
+INSERT INTO template_used_history(template_id, member_id, used_at) values (1, 1, '2023-09-22T08:34:55.000');
+INSERT INTO template_used_history(template_id, member_id, used_at) values (2, 1, '2023-09-20T15:21:30.000');
+INSERT INTO template_used_history(template_id, member_id, used_at) values (5, 1, '2023-09-22T08:30:11.000');
+INSERT INTO template_used_history(template_id, member_id, used_at) values (6, 1, '2023-09-22T09:31:50.000');
+INSERT INTO template_used_history(template_id, member_id, used_at) values (7, 1, '2023-09-23T14:27:27.000');
+INSERT INTO template_used_history(template_id, member_id, used_at) values (21, 2, '2023-09-22T08:34:55.000');
+INSERT INTO template_used_history(template_id, member_id, used_at) values (15, 2, '2023-09-20T15:21:30.000');
+INSERT INTO template_used_history(template_id, member_id, used_at) values (6, 2, '2023-09-22T08:30:11.000');
+INSERT INTO template_used_history(template_id, member_id, used_at) values (2, 2, '2023-09-22T09:31:50.000');
+INSERT INTO template_used_history(template_id, member_id, used_at) values (18, 2, '2023-09-23T14:27:27.000');
 
 -- SpaceWallTemp
 INSERT INTO space_wall_temp (space_wall_id, url, title, description, profile_image_url, background_image_url, share_url, share_expired_at, sequence, created_at)
