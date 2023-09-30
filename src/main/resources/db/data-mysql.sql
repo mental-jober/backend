@@ -314,20 +314,23 @@ VALUES (2, null, null, 10, 'link', true, '링크 타입 타이틀 입니다.', '
 -- 추가 하위 공유스페이스
 INSERT INTO space_wall (create_member_id, url, title, description, profile_image_url, background_image_url, path_ids, authorized, sequence, created_at)
 VALUES (1, 'https://dummy-url-1-1.com', 'Dummy Title 1-1', 'Dummy Description 1-1', 'https://dummy-profile-image-1-1.com', 'https://dummy-bg-image-1-1.com', '1-5', TRUE, 1, CURRENT_TIMESTAMP);
-INSERT INTO space_wall (create_member_id, url, title, description, profile_image_url, background_image_url, path_ids, authorized, sequence, created_at)
-VALUES (1, 'https://dummy-url-1-2.com', 'Dummy Title 1-2', 'Dummy Description 1-2', 'https://dummy-profile-image-1-2.com', 'https://dummy-bg-image-1-2.com', '1-6', TRUE, 1, CURRENT_TIMESTAMP);
-INSERT INTO space_wall (create_member_id, url, title, description, profile_image_url, background_image_url, path_ids, authorized, sequence, created_at)
-VALUES (1, 'https://dummy-url-1-1-1.com', 'Dummy Title 1-1-1', 'Dummy Description 1-1-1', 'https://dummy-profile-image-1-1-1.com', 'https://dummy-bg-image-1-1-1.com', '1-5-7', TRUE, 1, CURRENT_TIMESTAMP);
-INSERT INTO space_wall (create_member_id, url, title, description, profile_image_url, background_image_url, path_ids, authorized, sequence, created_at)
-VALUES (2, 'https://dummy-url-2-1.com', 'Dummy Title 2-1', 'Dummy Description 2-1', 'https://dummy-profile-image-2-1.com', 'https://dummy-bg-image-2-1.com', '2-8', TRUE, 1, CURRENT_TIMESTAMP);
-
 INSERT INTO space_wall_member (member_id, space_wall_id, created_at) VALUES (1, 5, CURRENT_TIMESTAMP);
 INSERT INTO space_wall_permission (space_wall_member_id, auths, created_at) VALUES (11, 'OWNER', CURRENT_TIMESTAMP);
+
+INSERT INTO space_wall (create_member_id, url, title, description, profile_image_url, background_image_url, path_ids, authorized, sequence, created_at)
+VALUES (1, 'https://dummy-url-1-2.com', 'Dummy Title 1-2', 'Dummy Description 1-2', 'https://dummy-profile-image-1-2.com', 'https://dummy-bg-image-1-2.com', '1-6', TRUE, 1, CURRENT_TIMESTAMP);
 INSERT INTO space_wall_member (member_id, space_wall_id, created_at) VALUES (1, 6, CURRENT_TIMESTAMP);
 INSERT INTO space_wall_permission (space_wall_member_id, auths, created_at) VALUES (12, 'OWNER', CURRENT_TIMESTAMP);
+
+INSERT INTO space_wall (create_member_id, url, title, description, profile_image_url, background_image_url, path_ids, authorized, sequence, created_at)
+VALUES (1, 'https://dummy-url-1-1-1.com', 'Dummy Title 1-1-1', 'Dummy Description 1-1-1', 'https://dummy-profile-image-1-1-1.com', 'https://dummy-bg-image-1-1-1.com', '1-5-7', TRUE, 1, CURRENT_TIMESTAMP);
 INSERT INTO space_wall_member (member_id, space_wall_id, created_at) VALUES (1, 7, CURRENT_TIMESTAMP);
 INSERT INTO space_wall_permission (space_wall_member_id, auths, created_at) VALUES (13, 'OWNER', CURRENT_TIMESTAMP);
+
+INSERT INTO space_wall (create_member_id, url, title, description, profile_image_url, background_image_url, path_ids, authorized, sequence, created_at)
+VALUES (2, 'https://dummy-url-2-1.com', 'Dummy Title 2-1', 'Dummy Description 2-1', 'https://dummy-profile-image-2-1.com', 'https://dummy-bg-image-2-1.com', '2-8', TRUE, 1, CURRENT_TIMESTAMP);
 INSERT INTO space_wall_member (member_id, space_wall_id, created_at) VALUES (2, 8, CURRENT_TIMESTAMP);
 INSERT INTO space_wall_permission (space_wall_member_id, auths, created_at) VALUES (14, 'OWNER', CURRENT_TIMESTAMP);
+
 INSERT INTO space_wall_member (member_id, space_wall_id, created_at) VALUES (4, 8, CURRENT_TIMESTAMP);
 INSERT INTO space_wall_permission (space_wall_member_id, auths, created_at) VALUES (15, 'VIEWER', CURRENT_TIMESTAMP);
