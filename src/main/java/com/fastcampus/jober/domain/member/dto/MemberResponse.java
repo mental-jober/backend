@@ -20,17 +20,19 @@ public class MemberResponse {
         private String email;
         private String username;
         private List<PermissionDTO> permissionDTOs;
-        private Long spaceWallId;
 
         public MemberDTO(Member member) {
             this.id = member.getId();
             this.email = member.getEmail();
             this.username = member.getUsername();
-            this.spaceWallId = member.getSpaceWalls().get(0).getId();
             List<PermissionDTO> permissions = new ArrayList<>();
             for (SpaceWallMember spaceWallMember : member.getSpaceWallMember()) {
                 PermissionDTO permissionDTO =
-                        new PermissionDTO(spaceWallMember.getId(), spaceWallMember.getSpaceWallPermission().getAuths());
+                        new PermissionDTO(
+                                spaceWallMember.getSpaceWall().getId(),
+                                spaceWallMember.getId(),
+                                spaceWallMember.getSpaceWallPermission().getAuths()
+                        );
                 permissions.add(permissionDTO);
             }
             this.permissionDTOs = permissions;
@@ -42,10 +44,12 @@ public class MemberResponse {
     @Setter
     @RequiredArgsConstructor
     public static class PermissionDTO {
+        private Long spaceWallId;
         private Long spaceWallMemberId;
         private Auths auths;
 
-        public PermissionDTO(Long spaceWallMemberId, Auths auths) {
+        public PermissionDTO(Long spaceWallId, Long spaceWallMemberId, Auths auths) {
+            this.spaceWallId = spaceWallId;
             this.spaceWallMemberId = spaceWallMemberId;
             this.auths = auths;
         }
