@@ -16,47 +16,62 @@ import com.fastcampus.jober.global.error.exception.SpaceWallNotFoundException;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class SpaceWallService {
 
     private final SpaceWallRepository spaceWallRepository;
-    private final StringRedisTemplate redisTemplate;
     private final MemberRepository memberRepository;
     private final ComponentService componentService;
 
     @Transactional
-    public SpaceWallResponse.ResponseDto create(SpaceWallRequest.CreateDto createDto,
-        MemberDetails memberDetails) {
+    public SpaceWallResponse.ResponseDto create(
+            SpaceWallRequest.CreateDto createDto,
+            Long createMemberId
+    ) {
         if (createDto == null) {
             throw new SpaceWallBadRequestException("생성된 DTO가 잘못되었습니다.");
         }
 
-        Long currentMemberId = memberDetails.getMember().getId();
-        Member currentMember = memberRepository.findById(currentMemberId)
-            .orElseThrow(() -> new RuntimeException("ID가 있는 회원을 찾을 수 없습니다.: " + currentMemberId));
+        Member currentMember = memberRepository.findById(createMemberId)
+            .orElseThrow(() -> new RuntimeException("ID가 있는 회원을 찾을 수 없습니다.: " + createMemberId));
 
-        SpaceWall spaceWall = createDto.toEntityWithMember(currentMember);
+        Long parentSpaceWallId = createDto.getParentSpaceWallId();
+        String newPathIds = null;
+        if (parentSpaceWallId != null) { // 부모 id 있는 경우, 만약 부모 id 없으면 path_ids = null;
+            Optional<SpaceWall> optionalSpaceWall = spaceWallRepository.findById(parentSpaceWallId);
+            if (optionalSpaceWall.isPresent()) {
+                SpaceWall parentSpaceWall = optionalSpaceWall.get();
+                if (parentSpaceWall.getPathIds() != null) // path_ids 있는 경우, 기존 것 + "-부모id"
+                    newPathIds = parentSpaceWall.getPathIds() + "-" + parentSpaceWallId;
+                if (parentSpaceWall.getPathIds() == null)
+                    newPathIds = String.valueOf(parentSpaceWallId);
+            }
+        }
+
+        SpaceWall spaceWall = createDto.toEntityWithMember(currentMember, newPathIds, parentSpaceWallId);
         SpaceWall savedSpaceWall = spaceWallRepository.save(spaceWall);
         return new SpaceWallResponse.ResponseDto(savedSpaceWall, null);
     }
 
-    @Transactional
-    public SpaceWallResponse.EmptySpaceResponseDto createEmptySpace(
-        SpaceWallRequest.CreateDto createDto, MemberDetails memberDetails) {
-        Long currentMemberId = memberDetails.getMember().getId();
-        Member currentMember = memberRepository.findById(currentMemberId)
-            .orElseThrow(() -> new RuntimeException("ID가 있는 회원을 찾을 수 없습니다.: " + currentMemberId));
-
-        SpaceWall spaceWall = createDto.toEntityWithMember(currentMember);
-        spaceWall = spaceWallRepository.save(spaceWall);
-
-        return new SpaceWallResponse.EmptySpaceResponseDto(spaceWall);
-    }
+//    @Transactional
+//    public SpaceWallResponse.EmptySpaceResponseDto createEmptySpace(
+//        SpaceWallRequest.CreateDto createDto, MemberDetails memberDetails) {
+//        Long currentMemberId = memberDetails.getMember().getId();
+//        Member currentMember = memberRepository.findById(currentMemberId)
+//            .orElseThrow(() -> new RuntimeException("ID가 있는 회원을 찾을 수 없습니다.: " + currentMemberId));
+//
+//        SpaceWall spaceWall = createDto.toEntityWithMember(currentMember);
+//        spaceWall = spaceWallRepository.save(spaceWall);
+//
+//        return new SpaceWallResponse.EmptySpaceResponseDto(spaceWall);
+//    }
 
     @Transactional(readOnly = true)
     public SpaceWallResponse.ResponseDto findById(Long id) {

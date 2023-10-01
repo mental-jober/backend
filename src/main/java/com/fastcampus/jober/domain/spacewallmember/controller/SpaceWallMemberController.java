@@ -3,24 +3,21 @@ package com.fastcampus.jober.domain.spacewallmember.controller;
 import com.fastcampus.jober.domain.member.service.MemberService;
 import com.fastcampus.jober.domain.spacewall.service.SpaceWallService;
 import com.fastcampus.jober.domain.spacewallmember.service.SpaceWallMemberService;
-import com.fastcampus.jober.global.auth.session.MemberDetails;
-import com.fastcampus.jober.global.constant.Auths;
 import com.fastcampus.jober.global.error.exception.MemberException;
-import com.fastcampus.jober.global.error.exception.SpaceWallMemberException;
 import com.fastcampus.jober.global.error.exception.SpaceWallNotFoundException;
 import com.fastcampus.jober.global.utils.api.dto.ResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.fastcampus.jober.domain.spacewallmember.dto.SpaceWallMemberRequest.*;
+import static com.fastcampus.jober.domain.spacewallmember.dto.SpaceWallMemberRequest.AssignDTO;
 import static com.fastcampus.jober.domain.spacewallmember.dto.SpaceWallMemberResponse.SpaceWallMemberDTO;
-import static com.fastcampus.jober.global.constant.ErrorCode.*;
+import static com.fastcampus.jober.global.constant.ErrorCode.INVALID_REQUEST;
+import static com.fastcampus.jober.global.constant.ErrorCode.NOT_FOUND_MEMBER;
 
 @RestController
 @RequiredArgsConstructor
