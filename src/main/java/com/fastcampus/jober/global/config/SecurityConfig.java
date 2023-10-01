@@ -138,8 +138,10 @@ public class SecurityConfig {
                                     new AntPathRequestMatcher("/check-email/**")
                             )
                             .access("isAuthenticated()")
-                            .requestMatchers(new AntPathRequestMatcher("/spaces/member/**"))
+                            .requestMatchers(new AntPathRequestMatcher("/spaces/history/**"))
                             .access("isAuthenticated() and hasAnyAuthority('EDITOR', 'OWNER')")
+                            .requestMatchers(new AntPathRequestMatcher("/spaces/member/**"))
+                            .access("isAuthenticated() and hasAnyAuthority('OWNER')")
                             .anyRequest().permitAll();
                 });
         return http.build();
