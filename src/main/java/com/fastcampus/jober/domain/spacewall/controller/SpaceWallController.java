@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -79,6 +80,16 @@ public class SpaceWallController {
 
         return new ResponseEntity<>(
             new ResponseDTO<>(HttpStatus.OK, "정상적으로 처리되었습니다.", updateUrl),
+            HttpStatus.OK);
+    }
+
+    @PutMapping("/show/{id}")
+    public ResponseEntity<ResponseDTO<String>> authorizedModify(@PathVariable Long id,
+        @RequestParam boolean authorized) {
+
+        spaceWallService.modifyAuthorized(id, authorized);
+
+        return new ResponseEntity<>(new ResponseDTO<>(HttpStatus.OK, "정상적으로 처리되었습니다.", null),
             HttpStatus.OK);
     }
 }

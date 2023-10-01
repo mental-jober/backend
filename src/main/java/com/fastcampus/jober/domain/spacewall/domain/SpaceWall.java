@@ -107,4 +107,8 @@ public class SpaceWall extends BaseTimeEntity {
     public int getSizeOfPathIds() {
         return this.pathIds.length();
     }
+
+    public void updateAuthorized(boolean authorized) {
+        this.authorized = authorized;
+    }
 }
