@@ -14,12 +14,11 @@ import com.fastcampus.jober.global.auth.session.MemberDetails;
 import com.fastcampus.jober.global.error.exception.SpaceWallBadRequestException;
 import com.fastcampus.jober.global.error.exception.SpaceWallNotFoundException;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -45,11 +44,13 @@ public class SpaceWallService {
         SpaceWall savedSpaceWall = spaceWallRepository.save(spaceWall);
         return new SpaceWallResponse.ResponseDto(savedSpaceWall, null);
     }
+
     @Transactional
-    public SpaceWallResponse.EmptySpaceResponseDto createEmptySpace(SpaceWallRequest.CreateDto createDto, MemberDetails memberDetails) {
+    public SpaceWallResponse.EmptySpaceResponseDto createEmptySpace(
+        SpaceWallRequest.CreateDto createDto, MemberDetails memberDetails) {
         Long currentMemberId = memberDetails.getMember().getId();
         Member currentMember = memberRepository.findById(currentMemberId)
-                .orElseThrow(() -> new RuntimeException("ID가 있는 회원을 찾을 수 없습니다.: " + currentMemberId));
+            .orElseThrow(() -> new RuntimeException("ID가 있는 회원을 찾을 수 없습니다.: " + currentMemberId));
 
         SpaceWall spaceWall = createDto.toEntityWithMember(currentMember);
         spaceWall = spaceWallRepository.save(spaceWall);
@@ -64,9 +65,10 @@ public class SpaceWallService {
         }
 
         SpaceWall spaceWall = spaceWallRepository.findById(id)
-                .orElseThrow(() -> new SpaceWallNotFoundException("ID가 있는 공유페이지을 찾을 수 없습니다: " + id));
+            .orElseThrow(() -> new SpaceWallNotFoundException("ID가 있는 공유페이지을 찾을 수 없습니다: " + id));
 
-        List<ComponentResponse.ComponentResponseDTO> componentList = componentService.findComponentListByspaceWallId(spaceWall);
+        List<ComponentResponse.ComponentResponseDTO> componentList = componentService.findComponentListByspaceWallId(
+            spaceWall);
 
         return new SpaceWallResponse.ResponseDto(spaceWall, componentList);
     }
@@ -159,5 +161,13 @@ public class SpaceWallService {
 
     private boolean isExistUrl(String url) {
         return spaceWallRepository.existsByUrl(url);
+    }
+
+    @Transactional
+    public void modifyAuthorized(Long id, boolean authorized) {
+        SpaceWall spaceWall = spaceWallRepository.findById(id)
+            .orElseThrow(() -> new SpaceWallNotFoundException("공유스페이스를 찾을 수 없습니다."));
+
+        spaceWall.updateAuthorized(authorized);
     }
 }
