@@ -79,7 +79,7 @@ public class CustomAuthorizationManager implements
         }
 
         if (uri.contains("/spaces/history")) {
-            return auth == Auths.EDITOR;
+            return auth == Auths.EDITOR || auth == Auths.OWNER;
         }
 
         if (uri.contains("/spaces")) {
