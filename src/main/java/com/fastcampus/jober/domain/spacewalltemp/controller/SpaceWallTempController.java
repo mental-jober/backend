@@ -1,5 +1,6 @@
 package com.fastcampus.jober.domain.spacewalltemp.controller;
 
+import com.fastcampus.jober.domain.spacewall.dto.SpaceWallResponse;
 import com.fastcampus.jober.domain.spacewall.service.SpaceWallService;
 import com.fastcampus.jober.domain.spacewalltemp.dto.SpaceWallTempRequest;
 import com.fastcampus.jober.domain.spacewalltemp.dto.SpaceWallTempResponse;
@@ -50,7 +51,7 @@ public class SpaceWallTempController {
             HttpStatus.CREATED);
     }
 
-    @GetMapping("/{spaceWallId}")
+    @GetMapping("/view/{spaceWallId}")
     public ResponseEntity<ResponseDTO<SpaceWallTempResponseDTO>> spaceWallTempFind(
         @PathVariable Long spaceWallId) {
 
@@ -58,14 +59,13 @@ public class SpaceWallTempController {
             throw new SpaceWallTempException(ErrorCode.NOT_EXSIST_SPACEWALLTEMP);
         }
 
-
         SpaceWallTempResponseDTO responseDTO = spaceWallTempService.findSpaceWallTemp(spaceWallId);
         return new ResponseEntity<>(
             new ResponseDTO<>(HttpStatus.OK, "편집 중인 페이지를 조회했습니다.", responseDTO),
             HttpStatus.OK);
     }
 
-    @PutMapping("/{spaceWallId}")
+    @PutMapping("/save/{spaceWallId}")
     public ResponseEntity<ResponseDTO<SpaceWallTempResponseDTO>> spaceWallTempModify(
         @PathVariable Long spaceWallId,
         @RequestBody SpaceWallTempRequest.ModifyDTO modifyDTO) {
@@ -82,6 +82,26 @@ public class SpaceWallTempController {
             HttpStatus.OK);
     }
 
+
+    @PutMapping("/done/{spaceWallId}")
+    public ResponseEntity<ResponseDTO<SpaceWallResponse.ResponseDto>> spaceWallTempDone(
+        @PathVariable Long spaceWallId,
+        @RequestBody SpaceWallTempRequest.ModifyDTO modifyDTO
+    ) {
+        if (!spaceWallTempService.checkSpaceWallTempExists(spaceWallId)) {
+            throw new SpaceWallTempException(ErrorCode.NOT_EXSIST_SPACEWALLTEMP);
+        }
+
+         spaceWallTempService.modifySpaceWallTemp(spaceWallId, modifyDTO);
+
+        SpaceWallResponse.ResponseDto responseDTO  = spaceWallTempService.doneSpaceWallTemp(spaceWallId);
+
+
+        return new ResponseEntity<>(
+            new ResponseDTO<>(HttpStatus.OK, "편집 중인 페이지를 저장했습니다.", responseDTO),
+            HttpStatus.OK);
+
+    }
 
 
 }
