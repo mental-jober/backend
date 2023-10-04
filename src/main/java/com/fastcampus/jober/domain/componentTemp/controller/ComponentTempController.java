@@ -65,7 +65,7 @@ public class ComponentTempController {
 
     @GetMapping("/{componentTempId}")
     public ResponseEntity<ResponseDTO<ComponentTempResponseDTO>> componentTempDetails(
-        @PathVariable("componentTempId") Long componentTempId){
+        @PathVariable("componentTempId") Long componentTempId) {
 
         if (!componentTempService.checkComponentTempExists(componentTempId)) {
             throw new ComponentTempException(ErrorCode.INVALID_COMPONENTTEMPID);
