@@ -48,4 +48,16 @@ public class ComponentTempRequest {
         private String content;
     }
 
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ModifyDTOInSWT{
+        private Long componentTempId;
+        private boolean visible;
+        private int sequence;
+        private boolean deleted;
+    }
+
 }

@@ -94,10 +94,10 @@ public class ComponentTempService {
             componentTemp.setTemplate(template);
             return ComponentTempResponseDTO.toDTOTemplateType(componentTemp);
         } else if (type.equals("cont")){ // 콘텐츠 타입
-            componentTemp.setTitle(modifyDTO.getTitle());
             componentTemp.setContent(modifyDTO.getContent());
             return ComponentTempResponseDTO.toDTO(componentTemp);
         } else if (type.equals("link")) { // 링크 타입
+            componentTemp.setTitle(modifyDTO.getTitle());
             componentTemp.setContent(modifyDTO.getContent());
             return ComponentTempResponseDTO.toDTO(componentTemp);
         }
