@@ -31,7 +31,7 @@ public class ComponentTempRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class AddDTO{
-        private Long parentSpaceWallTempId;
+        private Long spaceWallId;
         private String type;
         private int sequence;
     }

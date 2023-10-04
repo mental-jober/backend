@@ -42,7 +42,8 @@ public class ComponentTempService {
             throw new ComponentTempException(ErrorCode.INVALID_COMPONENT_TYPE);
         }
 
-        SpaceWallTemp parentSpaceWallTemp = spaceWallTempRepository.findById(addDTO.getParentSpaceWallTempId()).get(); // 예외처리
+        SpaceWallTemp parentSpaceWallTemp = spaceWallTempRepository.findSpaceWallTempBySpaceWallId(
+            addDTO.getSpaceWallId());
 
         ComponentTemp componentTemp = ComponentTemp.builder()
             .parentSpaceWallTemp(parentSpaceWallTemp)

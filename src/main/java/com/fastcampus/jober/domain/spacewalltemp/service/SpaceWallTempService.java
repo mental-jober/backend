@@ -8,13 +8,16 @@ import com.fastcampus.jober.domain.componentTemp.dto.ComponentTempResponse;
 import com.fastcampus.jober.domain.componentTemp.dto.ComponentTempResponse.ComponentTempResponseDTO;
 import com.fastcampus.jober.domain.componentTemp.repository.ComponentTempRepository;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
+import com.fastcampus.jober.domain.spacewall.dto.SpaceWallResponse;
 import com.fastcampus.jober.domain.spacewall.repository.SpaceWallRepository;
+import com.fastcampus.jober.domain.spacewall.service.SpaceWallService;
 import com.fastcampus.jober.domain.spacewalltemp.domain.SpaceWallTemp;
 import com.fastcampus.jober.domain.spacewalltemp.dto.SpaceWallTempRequest;
 import com.fastcampus.jober.domain.spacewalltemp.dto.SpaceWallTempRequest.ModifyDTO;
 import com.fastcampus.jober.domain.spacewalltemp.dto.SpaceWallTempResponse.SpaceWallTempResponseDTO;
 import com.fastcampus.jober.domain.spacewalltemp.repository.SpaceWallTempRepository;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +30,7 @@ public class SpaceWallTempService {
     private final SpaceWallRepository spaceWallRepository;
     private final ComponentRepository componentRepository;
     private final ComponentTempRepository componentTempRepository;
+    private final SpaceWallService spaceWallService;
 
 
     @Transactional
@@ -89,7 +93,8 @@ public class SpaceWallTempService {
             .sequence(spaceWallTemp.getSequence())
             .createdAt(spaceWallTemp.getCreatedAt())
             .updateddAt(spaceWallTemp.getUpdatedAt())
-            .componentTempList(ComponentTempResponse.ComponentTempResponseDTO.listToDTO(componentTempList))
+            .componentTempList(
+                ComponentTempResponse.ComponentTempResponseDTO.listToDTO(componentTempList))
             .build();
     }
 
@@ -98,10 +103,11 @@ public class SpaceWallTempService {
     public SpaceWallTempResponseDTO modifySpaceWallTemp(Long spaceWallId, ModifyDTO modifyDTO) {
 
 //
-       SpaceWallTemp spaceWallTemp  = spaceWallTempRepository.findById(modifyDTO.getSpaceWallTempId()).get();
+        SpaceWallTemp spaceWallTemp = spaceWallTempRepository.findById(
+            modifyDTO.getSpaceWallTempId()).get();
 
         spaceWallTemp.update(modifyDTO);
-        
+
         List<ModifyDTOInSWT> componentTempList = modifyDTO.getComponentTempList();
 
         for (int i = 0; i < componentTempList.size(); i++) {
@@ -117,6 +123,77 @@ public class SpaceWallTempService {
         }
 
         return findSpaceWallTemp(spaceWallId);
+    }
+
+    @Transactional
+    public SpaceWallResponse.ResponseDto doneSpaceWallTemp(Long spaceWallId) {
+        /*
+        먼저 spaceWall, spaceWallTemp, componentList, componentTempList를 불러온다.
+        컴포넌트 먼저 업데이터, 삭제
+         */
+        SpaceWall spaceWall = spaceWallRepository.findById(spaceWallId).get();
+        SpaceWallTemp spaceWallTemp = spaceWallTempRepository.findSpaceWallTempBySpaceWallId(
+            spaceWallId);
+
+        List<Component> componentList = componentRepository.findComponentBySpaceWall(spaceWall);
+        List<ComponentTemp> componentTempList = componentTempRepository.findComponentTempBySpaceWallTemp(
+            spaceWallTemp);
+
+        /*
+        뭐로 for문을 돌릴까??
+        component로 돌려서 temp에 id값이 들어있지 않으면 삭제를 하고
+        있으면 update
+
+        그럼 새로 생성된 거는 componentTemp 한번 돌리면서 detleted가 false이면서 compontnet_id가
+        Null값인 애로 새로 생성
+         */
+
+        for (int i = 0; i < componentList.size(); i++) {
+            Component component = componentList.get(i);
+            boolean updated = false;
+
+            for (int j = 0; j < componentTempList.size(); j++) {
+                ComponentTemp componentTemp = componentTempList.get(j);
+                if (Objects.equals(componentTemp.getComponentId(), component.getId())) {
+                    component.update(componentTemp);
+                    updated = true;
+                }
+            }
+
+            if (!updated) {
+                componentRepository.delete(component);
+            }
+
+        }
+
+        for (int i = 0; i < componentTempList.size(); i++) {
+            ComponentTemp componentTemp= componentTempList.get(i);
+
+            if (!componentTemp.isDeleted() && componentTemp.getComponentId() == null) {
+                Component newComponent = Component.builder()
+                    .parentSpaceWall(spaceWall)
+                    .template(componentTemp.getTemplate())
+                    .thisSpaceWall(componentTemp.getThisSpaceWall())
+                    .type(componentTemp.getType())
+                    .visible(componentTemp.isVisible())
+                    .title(componentTemp.getTitle())
+                    .content(componentTemp.getContent())
+                    .sequence(componentTemp.getSequence())
+                    .build();
+                componentRepository.save(newComponent);
+            }
+
+        }
+
+        for (int i = 0; i < componentTempList.size(); i++) {
+            componentTempRepository.delete(componentTempList.get(i));
+        }
+
+        spaceWall.updateBySWT(spaceWallTemp);
+
+        spaceWallTempRepository.delete(spaceWallTemp);
+
+        return spaceWallService.findById(spaceWallId);
     }
 
 }
