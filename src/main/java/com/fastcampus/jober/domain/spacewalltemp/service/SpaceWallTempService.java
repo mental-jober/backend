@@ -5,17 +5,16 @@ import com.fastcampus.jober.domain.component.repository.ComponentRepository;
 import com.fastcampus.jober.domain.componentTemp.domain.ComponentTemp;
 import com.fastcampus.jober.domain.componentTemp.dto.ComponentTempRequest.ModifyDTOInSWT;
 import com.fastcampus.jober.domain.componentTemp.dto.ComponentTempResponse;
-import com.fastcampus.jober.domain.componentTemp.dto.ComponentTempResponse.ComponentTempResponseDTO;
 import com.fastcampus.jober.domain.componentTemp.repository.ComponentTempRepository;
 import com.fastcampus.jober.domain.spacewall.domain.SpaceWall;
 import com.fastcampus.jober.domain.spacewall.dto.SpaceWallResponse;
 import com.fastcampus.jober.domain.spacewall.repository.SpaceWallRepository;
 import com.fastcampus.jober.domain.spacewall.service.SpaceWallService;
 import com.fastcampus.jober.domain.spacewalltemp.domain.SpaceWallTemp;
-import com.fastcampus.jober.domain.spacewalltemp.dto.SpaceWallTempRequest;
 import com.fastcampus.jober.domain.spacewalltemp.dto.SpaceWallTempRequest.ModifyDTO;
 import com.fastcampus.jober.domain.spacewalltemp.dto.SpaceWallTempResponse.SpaceWallTempResponseDTO;
 import com.fastcampus.jober.domain.spacewalltemp.repository.SpaceWallTempRepository;
+import com.fastcampus.jober.domain.template.service.TemplateUsedHistoryService;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +30,7 @@ public class SpaceWallTempService {
     private final ComponentRepository componentRepository;
     private final ComponentTempRepository componentTempRepository;
     private final SpaceWallService spaceWallService;
+    private final TemplateUsedHistoryService templateUsedHistoryService;
 
 
     @Transactional
@@ -126,7 +126,7 @@ public class SpaceWallTempService {
     }
 
     @Transactional
-    public SpaceWallResponse.ResponseDto doneSpaceWallTemp(Long spaceWallId) {
+    public SpaceWallResponse.ResponseDto doneSpaceWallTemp(Long spaceWallId, Long memberId) {
         /*
         먼저 spaceWall, spaceWallTemp, componentList, componentTempList를 불러온다.
         컴포넌트 먼저 업데이터, 삭제
@@ -167,7 +167,7 @@ public class SpaceWallTempService {
         }
 
         for (int i = 0; i < componentTempList.size(); i++) {
-            ComponentTemp componentTemp= componentTempList.get(i);
+            ComponentTemp componentTemp = componentTempList.get(i);
 
             if (!componentTemp.isDeleted() && componentTemp.getComponentId() == null) {
                 Component newComponent = Component.builder()
@@ -181,6 +181,13 @@ public class SpaceWallTempService {
                     .sequence(componentTemp.getSequence())
                     .build();
                 componentRepository.save(newComponent);
+
+                if (!componentTemp.getType().equals("temp")) {
+                    continue;
+                }
+
+                templateUsedHistoryService.saveHistory(memberId,
+                    componentTemp.getTemplate().getId());
             }
 
         }

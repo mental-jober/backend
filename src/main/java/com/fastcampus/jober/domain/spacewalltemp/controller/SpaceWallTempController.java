@@ -3,10 +3,9 @@ package com.fastcampus.jober.domain.spacewalltemp.controller;
 import com.fastcampus.jober.domain.spacewall.dto.SpaceWallResponse;
 import com.fastcampus.jober.domain.spacewall.service.SpaceWallService;
 import com.fastcampus.jober.domain.spacewalltemp.dto.SpaceWallTempRequest;
-import com.fastcampus.jober.domain.spacewalltemp.dto.SpaceWallTempResponse;
 import com.fastcampus.jober.domain.spacewalltemp.dto.SpaceWallTempResponse.SpaceWallTempResponseDTO;
-import com.fastcampus.jober.domain.spacewalltemp.repository.SpaceWallTempRepository;
 import com.fastcampus.jober.domain.spacewalltemp.service.SpaceWallTempService;
+import com.fastcampus.jober.global.auth.session.MemberDetails;
 import com.fastcampus.jober.global.constant.ErrorCode;
 import com.fastcampus.jober.global.error.exception.SpaceWallException;
 import com.fastcampus.jober.global.error.exception.SpaceWallTempException;
@@ -15,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -86,16 +86,17 @@ public class SpaceWallTempController {
     @PutMapping("/done/{spaceWallId}")
     public ResponseEntity<ResponseDTO<SpaceWallResponse.ResponseDto>> spaceWallTempDone(
         @PathVariable Long spaceWallId,
-        @RequestBody SpaceWallTempRequest.ModifyDTO modifyDTO
+        @RequestBody SpaceWallTempRequest.ModifyDTO modifyDTO, @AuthenticationPrincipal
+    MemberDetails memberDetails
     ) {
         if (!spaceWallTempService.checkSpaceWallTempExists(spaceWallId)) {
             throw new SpaceWallTempException(ErrorCode.NOT_EXSIST_SPACEWALLTEMP);
         }
 
-         spaceWallTempService.modifySpaceWallTemp(spaceWallId, modifyDTO);
+        spaceWallTempService.modifySpaceWallTemp(spaceWallId, modifyDTO);
 
-        SpaceWallResponse.ResponseDto responseDTO  = spaceWallTempService.doneSpaceWallTemp(spaceWallId);
-
+        SpaceWallResponse.ResponseDto responseDTO = spaceWallTempService.doneSpaceWallTemp(
+            spaceWallId, memberDetails.getMemberId());
 
         return new ResponseEntity<>(
             new ResponseDTO<>(HttpStatus.OK, "편집 중인 페이지를 저장했습니다.", responseDTO),
