@@ -14,6 +14,7 @@ import com.fastcampus.jober.domain.space.spacewall.repository.SpaceWallRepositor
 import com.fastcampus.jober.domain.space.spacewall.spacewallmember.domain.SpaceWallMember;
 import com.fastcampus.jober.domain.space.spacewall.spacewallmember.repository.SpaceWallMemberRepository;
 import com.fastcampus.jober.global.constant.ErrorCode;
+import com.fastcampus.jober.global.error.exception.MemberException;
 import com.fastcampus.jober.global.error.exception.SpaceWallException;
 import com.fastcampus.jober.global.security.auth.session.MemberDetails;
 import com.fastcampus.jober.global.error.exception.SpaceWallBadRequestException;
@@ -46,7 +47,7 @@ public class SpaceWallService {
         }
 
         Member currentMember = memberRepository.findById(createMemberId)
-                .orElseThrow(() -> new SpaceWallException(ErrorCode.NOT_FOUND_MEMBER));
+                .orElseThrow(() -> new MemberException(ErrorCode.SPACE_WALL_NOT_FOUND));
 
         Long parentSpaceWallId = createDto.getParentSpaceWallId();
         String newPathIds = null;
@@ -103,10 +104,10 @@ public class SpaceWallService {
         }
 
         SpaceWall spaceWall = spaceWallRepository.findById(id)
-                .orElseThrow(() -> new SpaceWallException(ErrorCode.SPACEWALL_NOT_FOUND));
+                .orElseThrow(() -> new SpaceWallException(ErrorCode.SPACE_WALL_NOT_FOUND));
 
         if (!spaceWall.getCreateMember().getId().equals(memberDetails.getMember().getId())) {
-            throw new SpaceWallException(ErrorCode.SPACEWALL_NO_PERMISSION_TO_DELETE);
+            throw new MemberException(ErrorCode.SPACEWALL_NO_PERMISSION_TO_DELETE);
         }
 
         if ("1".equals(spaceWall.getPathIds())) {
