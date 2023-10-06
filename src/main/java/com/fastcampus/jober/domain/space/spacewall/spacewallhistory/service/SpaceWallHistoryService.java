@@ -97,7 +97,7 @@ public class SpaceWallHistoryService {
     @Transactional(readOnly = true)
     public SpaceWallHistoryResponseDTO findHistoryByMemberIdAndHistoryId(Long memberId, Long historyId) {
         SpaceWallHistory history = spaceWallHistoryRepository.findById(historyId)
-                .orElseThrow(() -> new SpaceWallNotFoundException("히스토리를 찾을 수 없습니다."));
+                .orElseThrow(() -> new SpaceWallException(ErrorCode.SPACEWALL_HISTORY_NOT_FOUND));
 
         if (!history.getCreateMemberId().equals(memberId)) {
             throw new SpaceWallException(ErrorCode.INVALID_HISTORY_ACCESS);
