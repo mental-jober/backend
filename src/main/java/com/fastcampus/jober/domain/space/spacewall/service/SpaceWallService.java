@@ -40,11 +40,11 @@ public class SpaceWallService {
             Long createMemberId
     ) {
         if (createDto == null) {
-            throw new SpaceWallBadRequestException("생성된 DTO가 잘못되었습니다.");
+            throw new SpaceWallBadRequestException("공유페이지 생성 요청이 잘못되었습니다.");
         }
 
         Member currentMember = memberRepository.findById(createMemberId)
-            .orElseThrow(() -> new RuntimeException("ID가 있는 회원을 찾을 수 없습니다.: " + createMemberId));
+                .orElseThrow(() -> new SpaceWallNotFoundException("회원 정보를 찾을 수 없습니다. ID: " + createMemberId));
 
         Long parentSpaceWallId = createDto.getParentSpaceWallId();
         String newPathIds = null;
@@ -64,27 +64,14 @@ public class SpaceWallService {
         return new SpaceWallResponse.ResponseDto(savedSpaceWall, null);
     }
 
-//    @Transactional
-//    public SpaceWallResponse.EmptySpaceResponseDto createEmptySpace(
-//        SpaceWallRequest.CreateDto createDto, MemberDetails memberDetails) {
-//        Long currentMemberId = memberDetails.getMember().getId();
-//        Member currentMember = memberRepository.findById(currentMemberId)
-//            .orElseThrow(() -> new RuntimeException("ID가 있는 회원을 찾을 수 없습니다.: " + currentMemberId));
-//
-//        SpaceWall spaceWall = createDto.toEntityWithMember(currentMember);
-//        spaceWall = spaceWallRepository.save(spaceWall);
-//
-//        return new SpaceWallResponse.EmptySpaceResponseDto(spaceWall);
-//    }
-
     @Transactional(readOnly = true)
     public SpaceWallResponse.ResponseDto findById(Long id) {
         if (id == null) {
-            throw new SpaceWallBadRequestException("공유페이지 ID는 null일 수 없습니다.");
+            throw new SpaceWallBadRequestException("공유페이지 ID가 제공되지 않았습니다.");
         }
 
         SpaceWall spaceWall = spaceWallRepository.findById(id)
-            .orElseThrow(() -> new SpaceWallNotFoundException("ID가 있는 공유페이지을 찾을 수 없습니다: " + id));
+                .orElseThrow(() -> new SpaceWallNotFoundException("공유페이지를 찾을 수 없습니다. ID: " + id));
 
         List<ComponentResponse.ComponentResponseDTO> componentList = componentService.findComponentListByspaceWallId(
             spaceWall);
@@ -94,14 +81,13 @@ public class SpaceWallService {
 
     @Transactional
     public SpaceWallResponse.ResponseDto update(Long id, SpaceWallRequest.UpdateDto updateDto,
-        MemberDetails memberDetails) {
+                                                MemberDetails memberDetails) {
         if (id == null || updateDto == null) {
-            throw new SpaceWallBadRequestException("업데이트할 매개 변수가 잘못되었습니다.");
+            throw new SpaceWallBadRequestException("공유페이지 업데이트 요청이 잘못되었습니다.");
         }
 
         SpaceWall spaceWall = spaceWallRepository.findById(id)
-            .orElseThrow(() -> new SpaceWallNotFoundException("ID가 있는 공유페이지을 찾을 수 없습니다: " + id));
-
+                .orElseThrow(() -> new SpaceWallNotFoundException("공유페이지를 찾을 수 없습니다. ID: " + id));
         SpaceWall updatedSpaceWall = updateDto.toEntity();
         spaceWall.update(updatedSpaceWall);
 
@@ -111,11 +97,11 @@ public class SpaceWallService {
     @Transactional
     public void delete(Long id, MemberDetails memberDetails) {
         if (id == null) {
-            throw new SpaceWallBadRequestException("공유페이지 ID는 null일 수 없습니다.");
+            throw new SpaceWallBadRequestException("공유페이지 ID가 제공되지 않았습니다.");
         }
 
         SpaceWall spaceWall = spaceWallRepository.findById(id)
-                .orElseThrow(() -> new SpaceWallNotFoundException("ID가 있는 공유페이지을 찾을 수 없습니다.: " + id));
+                .orElseThrow(() -> new SpaceWallNotFoundException("공유페이지를 찾을 수 없습니다. ID: " + id));
 
         if (!spaceWall.getCreateMember().getId().equals(memberDetails.getMember().getId())) {
             throw new SpaceWallBadRequestException("이 공유페이지를 삭제할 권한이 없습니다.");
