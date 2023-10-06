@@ -50,6 +50,7 @@ public enum ErrorCode {
     SPACEWALL_NO_PERMISSION_TO_DELETE(HttpStatus.BAD_REQUEST, "이 공유페이지를 삭제할 권한이 없습니다."),
     SPACEWALL_CANNOT_DELETE_ROOT(HttpStatus.BAD_REQUEST, "최상단의 공유페이지는 삭제할 수 없습니다."),
     SPACEWALL_HISTORY_NOT_FOUND(HttpStatus.BAD_REQUEST, "히스토리를 찾을 수 없습니다."),
+    HISTORY_NOT_FOUND(HttpStatus.BAD_REQUEST, "해당 회원의 최근 히스토리가 존재하지 않습니다."),
     INVALID_SPACEWALL_PERMISSION_ID(HttpStatus.BAD_REQUEST, "잘못된 공유페이스 권한 ID입니다."),
     INVALID_SPACEWALL_ID(HttpStatus.BAD_REQUEST, "잘못된 공유페이스 ID입니다."),
     NO_MOVE_PERMISSION(HttpStatus.FORBIDDEN, "이 페이지를 이동시킬 권한이 없습니다."),

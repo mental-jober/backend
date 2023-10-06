@@ -85,6 +85,9 @@ public class SpaceWallHistoryService {
     public List<SpaceWallHistoryResponseDTO> findRecentHistoryByMemberId(Long memberId) {
         List<SpaceWallHistory> histories =
                 spaceWallHistoryRepository.findTop5ByCreateMemberIdOrderByCreatedAtDesc(memberId);
+        if (histories.isEmpty()) {
+            throw new SpaceWallException(ErrorCode.HISTORY_NOT_FOUND);
+        }
         List<SpaceWallHistoryResponseDTO> response = new ArrayList<>();
 
         for (SpaceWallHistory history : histories) {
