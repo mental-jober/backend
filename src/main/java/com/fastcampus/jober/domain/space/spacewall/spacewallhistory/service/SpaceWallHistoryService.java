@@ -7,6 +7,8 @@ import com.fastcampus.jober.domain.space.component.componenthistory.repository.C
 import com.fastcampus.jober.domain.member.repository.MemberRepository;
 import com.fastcampus.jober.domain.space.spacewall.spacewallhistory.repository.SpaceWallHistoryRepository;
 import com.fastcampus.jober.domain.space.spacewall.spacewallhistory.domain.SpaceWallHistory;
+import com.fastcampus.jober.global.constant.ErrorCode;
+import com.fastcampus.jober.global.error.exception.SpaceWallException;
 import com.fastcampus.jober.global.security.auth.session.MemberDetails;
 import com.fastcampus.jober.global.error.exception.SpaceWallBadRequestException;
 import com.fastcampus.jober.global.error.exception.SpaceWallNotFoundException;
@@ -98,7 +100,7 @@ public class SpaceWallHistoryService {
                 .orElseThrow(() -> new SpaceWallNotFoundException("히스토리를 찾을 수 없습니다."));
 
         if (!history.getCreateMemberId().equals(memberId)) {
-            throw new SpaceWallBadRequestException("잘못된 접근입니다.");
+            throw new SpaceWallException(ErrorCode.INVALID_HISTORY_ACCESS);
         }
 
         return new SpaceWallHistoryResponseDTO(history);

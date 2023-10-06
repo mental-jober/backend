@@ -48,6 +48,9 @@ public enum ErrorCode {
     ALREADY_EXSIST_SPACEWALLTEMP(HttpStatus.BAD_REQUEST, "편집 중이던 SpaceWallTemp가 존재합니다."),
     SPACE_WALL_NOT_FOUND(HttpStatus.BAD_REQUEST,"ID가 있는 공유페이지을 찾을 수 없습니다: "),
     RUNTIME_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다."),
+    SPACEWALL_NO_PERMISSION_TO_DELETE(HttpStatus.BAD_REQUEST, "이 공유페이지를 삭제할 권한이 없습니다."),
+    SPACEWALL_CANNOT_DELETE_ROOT(HttpStatus.BAD_REQUEST, "최상단의 공유페이지는 삭제할 수 없습니다."),
+    INVALID_HISTORY_ACCESS(HttpStatus.METHOD_NOT_ALLOWED, "잘못된 접근입니다."),
     BAD_SPACE_WALL_REQUEST(HttpStatus.BAD_REQUEST,"공유페이지 요청이 잘못되었습니다."),
     NOT_EXSIST_SPACEWALLTEMP(HttpStatus.BAD_REQUEST, "편집 중이던 SpaceWallTemp가 존재하지 않습니다.")
     ;
