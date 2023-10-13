@@ -119,7 +119,10 @@ jobs:
           path: application-prod.yml
 
       - name: Move application-prod.yml to the appropriate directory
-        run: mv -f application-prod.yml ./src/main/resources/application-prod.yml
+        run: |
+            mkdir -p ./src/main/resources/
+            mv -f application-prod.yml ./src/main/resources/application-prod.yml
+            
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
