@@ -77,6 +77,11 @@ jobs:
         with:
           name: config-file
           path: application-prod.yml
+          
+      - name: Move application-prod.yml to the appropriate directory
+        run: |
+            mkdir -p ./src/main/resources/
+            mv -f application-prod.yml ./src/main/resources/application-prod.yml
 
       - name: caching
         uses: actions/cache@v3
@@ -93,13 +98,9 @@ jobs:
         shell: bash
         
       - name: Build with Gradle
-        run: ./gradlew clean build -x test
+        run: ./gradlew clean build -x test -Pprod
         shell: bash
         
-      - name: List jar files
-        run: ls -l ${{ github.workspace }}/build/libs/
-        shell: bash
-
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
@@ -121,11 +122,6 @@ jobs:
         with:
           name: config-file
           path: application-prod.yml
-
-      - name: Move application-prod.yml to the appropriate directory
-        run: |
-            mkdir -p ./src/main/resources/
-            mv -f application-prod.yml ./src/main/resources/application-prod.yml
             
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
