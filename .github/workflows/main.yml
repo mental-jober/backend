@@ -95,6 +95,10 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build -x test
         shell: bash
+        
+      - name: List jar files
+        run: ls -l ${{ github.workspace }}/build/libs/
+        shell: bash
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
