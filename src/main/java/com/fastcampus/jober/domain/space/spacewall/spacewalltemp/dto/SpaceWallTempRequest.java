@@ -22,7 +22,7 @@ public class SpaceWallTempRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ModifyDTO{
-        private Long spaceWallTempId;
+//        private Long spaceWallTempId;
         private Long spaceWallId;
         private String title;
         private String description;
