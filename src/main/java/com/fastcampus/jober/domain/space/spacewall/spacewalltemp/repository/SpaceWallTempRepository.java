@@ -11,7 +11,7 @@ public interface SpaceWallTempRepository extends JpaRepository<SpaceWallTemp, Lo
 
 
     @Query("SELECT CASE WHEN COUNT(swt) > 0 THEN true ELSE false END FROM SpaceWallTemp swt WHERE swt.spaceWall.id = :spaceWallId")
-    boolean existsSpaceWallTempBySpaceWall(@Param("spaceWallId")Long spaceWallId);
+    boolean existsSpaceWallTempBySpaceWallId(@Param("spaceWallId")Long spaceWallId);
 
     @Query("select SWT from SpaceWallTemp SWT where SWT.spaceWall = (select SW from SpaceWall SW where SW.id = :spaceWallId)")
     SpaceWallTemp findSpaceWallTempBySpaceWallId(@Param("spaceWallId") Long spaceWallId);

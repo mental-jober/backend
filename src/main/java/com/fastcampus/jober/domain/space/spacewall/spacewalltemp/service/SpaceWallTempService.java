@@ -35,7 +35,7 @@ public class SpaceWallTempService {
 
     @Transactional
     public boolean checkSpaceWallTempExists(Long spaceWallId) {
-        return spaceWallTempRepository.existsSpaceWallTempBySpaceWall(spaceWallId);
+        return spaceWallTempRepository.existsSpaceWallTempBySpaceWallId(spaceWallId);
     }
 
 
@@ -84,7 +84,6 @@ public class SpaceWallTempService {
             spaceWallTemp);
 
         return SpaceWallTempResponseDTO.builder()
-            .spaceWallTempId(spaceWallTemp.getId())
             .spaceWallId(spaceWallTemp.getSpaceWall().getId())
             .title(spaceWallTemp.getTitle())
             .description(spaceWallTemp.getDescription())
@@ -102,9 +101,7 @@ public class SpaceWallTempService {
     @Transactional
     public SpaceWallTempResponseDTO modifySpaceWallTemp(Long spaceWallId, ModifyDTO modifyDTO) {
 
-//
-        SpaceWallTemp spaceWallTemp = spaceWallTempRepository.findById(
-            modifyDTO.getSpaceWallTempId()).get();
+        SpaceWallTemp spaceWallTemp = spaceWallTempRepository.findSpaceWallTempBySpaceWallId(spaceWallId);
 
         spaceWallTemp.update(modifyDTO);
 
@@ -127,10 +124,7 @@ public class SpaceWallTempService {
 
     @Transactional
     public ResponseDto doneSpaceWallTemp(Long spaceWallId, Long memberId) {
-        /*
-        먼저 spaceWall, spaceWallTemp, componentList, componentTempList를 불러온다.
-        컴포넌트 먼저 업데이터, 삭제
-         */
+
         SpaceWall spaceWall = spaceWallRepository.findById(spaceWallId).get();
         SpaceWallTemp spaceWallTemp = spaceWallTempRepository.findSpaceWallTempBySpaceWallId(
             spaceWallId);

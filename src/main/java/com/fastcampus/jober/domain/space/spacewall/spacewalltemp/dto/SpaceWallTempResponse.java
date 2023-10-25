@@ -16,7 +16,6 @@ public class SpaceWallTempResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class SpaceWallTempResponseDTO{
-        private Long spaceWallTempId;
         private Long spaceWallId;
         private String title;
         private String description;
