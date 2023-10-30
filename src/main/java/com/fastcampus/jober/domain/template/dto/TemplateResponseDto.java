@@ -20,6 +20,7 @@ public class TemplateResponseDto {
         private String description;
         private List<String> hashtags;
         private String thumbnailUrl;
+        private boolean favorite;
 
         public ListDto(Template template) {
             this.id = template.getId();
@@ -27,6 +28,7 @@ public class TemplateResponseDto {
             this.description = template.getDescription();
             this.hashtags = template.getHashtags();
             this.thumbnailUrl = template.getThumbnailImageUrl();
+            this.favorite = false;
         }
     }
 }
