@@ -45,7 +45,9 @@ public class TemplateService {
             .title(m.getTitle())
             .description(m.getDescription())
             .hashtags(m.getHashtags())
-            .thumbnailUrl(m.getThumbnailImageUrl()).build()
+            .thumbnailUrl(m.getThumbnailImageUrl())
+            .favorite(isFavorite(member, m))
+            .build()
         );
 
         return listDtos;
@@ -85,5 +87,16 @@ public class TemplateService {
 
         return templateTypeRepository.findAllByKeywordAndType(keyword, templateCategory,
             pageable);
+    }
+
+    private boolean isFavorite(Member member, Template template) {
+        MyTemplate myTemplate = myTemplateRepository.findByMemberAndTemplate(member, template)
+            .orElse(null);
+
+        if (myTemplate == null || myTemplate.getId().equals(0L)) {
+            return false;
+        }
+
+        return true;
     }
 }
